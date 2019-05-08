@@ -1,7 +1,8 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django_mysql.models import JSONField
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 try:
@@ -57,6 +58,21 @@ class NotificationType(EnumField, models.CharField):
         super(NotificationType, self).__init__(*args, **kwargs)
 
 
+class Users(AbstractUser):
+    address = models.TextField(null=True)
+    avatar = models.FileField(null=True, upload_to='avatar/', validators=[FileExtensionValidator(allowed_extensions=['jpg','png','svg'])])
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # USERNAME_FIELD = 'email'
+
+    def get_full_name(self):
+        return "{} {}".format(self.first_name, self.last_name)
+
+    class Meta:
+        db_table = "users"
+
+
 class Projects(models.Model):
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=200, null=True, blank=True)
@@ -66,8 +82,8 @@ class Projects(models.Model):
     energetic_standard = models.CharField(max_length=100, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    created_by = models.ForeignKey(User, related_name='project_created_by', null=True, on_delete=models.SET_NULL)
-    updated_by = models.ForeignKey(User, related_name='project_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(Users, related_name='project_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(Users, related_name='project_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -77,8 +93,8 @@ class Projects(models.Model):
 
 class ProjectStuff(models.Model):
     project = models.ForeignKey(Projects, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User, related_name='project_assigned_by', null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(Users, related_name='project_assigned_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -89,8 +105,8 @@ class Buildings(models.Model):
     number = models.CharField(max_length=10)
     description = models.TextField(null=True, blank=True)
     project = models.ForeignKey(Projects, on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User, related_name='building_created_by', null=True, on_delete=models.SET_NULL)
-    updated_by = models.ForeignKey(User, related_name='building_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(Users, related_name='building_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(Users, related_name='building_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -102,7 +118,7 @@ class BuildingPlans(models.Model):
     title = models.CharField(max_length=100)
     plan_file = models.FileField(null=True, upload_to='building/plan_pdf/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg'])])
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User, related_name='building_plan_created_by', null=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(Users, related_name='building_plan_created_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -117,8 +133,8 @@ class Flats(models.Model):
     client_address = models.CharField(max_length=150, null=True, blank=True)
     client_email = models.CharField(max_length=50, null=True, blank=True)
     client_tel = models.CharField(max_length=50, null=True, blank=True)
-    created_by = models.ForeignKey(User, related_name='flat_created_by', null=True, on_delete=models.SET_NULL)
-    updated_by = models.ForeignKey(User, related_name='flat_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(Users, related_name='flat_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(Users, related_name='flat_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -130,7 +146,7 @@ class FlatPlans(models.Model):
     title = models.CharField(max_length=100)
     plan_file = models.FileField(null=True, upload_to='flat/plan_pdf/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg'])])
     flat = models.ForeignKey(Flats, on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User, related_name='flat_plan_created_by', null=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(Users, related_name='flat_plan_created_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -141,8 +157,8 @@ class Components(models.Model):
     name = models.CharField(max_length=100)
     static_description = models.TextField(null=True, blank=True)
     parent = models.ForeignKey('self', null=True, related_name='parent_component', on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User, related_name='component_created_by', null=True, on_delete=models.SET_NULL)
-    updated_by = models.ForeignKey(User, related_name='component_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(Users, related_name='component_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(Users, related_name='component_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -155,8 +171,8 @@ class BuildingComponents(models.Model):
     flat = models.ForeignKey(Flats, null=True, on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
     component = models.ForeignKey(Components, null=True, on_delete=models.SET_NULL)
-    created_by = models.ForeignKey(User, related_name='building_component_created_by', null=True, on_delete=models.SET_NULL)
-    updated_by = models.ForeignKey(User, related_name='building_component_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(Users, related_name='building_component_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(Users, related_name='building_component_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -166,11 +182,11 @@ class BuildingComponents(models.Model):
 
 class Tasks(models.Model):
     building_component = models.ForeignKey(BuildingComponents, on_delete=models.CASCADE)
-    assign_to = models.ForeignKey(User, related_name='task_assign_to', null=True, on_delete=models.SET_NULL)
-    assigned_by = models.ForeignKey(User, related_name='task_assigned_by', null=True, on_delete=models.SET_NULL)
+    assign_to = models.ForeignKey(Users, related_name='task_assign_to', null=True, on_delete=models.SET_NULL)
+    assigned_by = models.ForeignKey(Users, related_name='task_assigned_by', null=True, on_delete=models.SET_NULL)
     followers = JSONField(default=dict)
-    created_by = models.ForeignKey(User, related_name='task_created_by', null=True, on_delete=models.SET_NULL)
-    updated_by = models.ForeignKey(User, related_name='task_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(Users, related_name='task_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(Users, related_name='task_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -183,7 +199,7 @@ class Comments(models.Model):
     type = CommentType(max_length=10, default="text")
     file_type = models.CharField(max_length=50, null=True, blank=True)
     task = models.ForeignKey(Tasks, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -195,7 +211,7 @@ class HandWorker(models.Model):
     address = models.CharField(max_length=200, null=True, blank=True)
     email = models.CharField(max_length=50, null=True, blank=True)
     telephone = models.CharField(max_length=50, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(Users, on_delete=models.CASCADE)
     working_type = JSONField(default=dict)
 
     class Meta:
@@ -206,7 +222,7 @@ class QrCode(models.Model):
     unique_key = models.CharField(max_length=50)
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
     flat = models.ForeignKey(Flats, null=True, on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User, related_name='qr_created_by', null=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(Users, related_name='qr_created_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -226,7 +242,7 @@ class Notification(models.Model):
 class NotificationStatus(models.Model):
     status = models.BooleanField(default=False)
     notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "notification_status"
@@ -235,7 +251,7 @@ class NotificationStatus(models.Model):
 class ResetPassword(models.Model):
     hash_code = models.CharField(max_length=200)
     already_used = models.BooleanField(default=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

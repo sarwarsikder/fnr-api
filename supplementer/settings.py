@@ -72,6 +72,8 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'adminapp.Users'
+
 WSGI_APPLICATION = 'supplementer.wsgi.application'
 
 
