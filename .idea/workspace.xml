@@ -2,37 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="01c7c939-5647-4ae7-b167-6e579bbc5a57" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/supplementer.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adminapp/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adminapp/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adminapp/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adminapp/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adminapp/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adminapp/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adminapp/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adminapp/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entrypoint.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serviceapp/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serviceapp/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serviceapp/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serviceapp/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serviceapp/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serviceapp/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/serviceapp/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/supplementer/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/supplementer/local_settings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/supplementer/settings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/supplementer/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/supplementer/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +28,7 @@
         <entry file="file://$PROJECT_DIR$/adminapp/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="772">
-              <caret line="243" lean-forward="true" selection-start-line="243" selection-end-line="243" />
+              <caret line="243" selection-start-line="243" selection-end-line="243" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -70,7 +40,7 @@
         <entry file="file://$PROJECT_DIR$/supplementer/local_settings.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="450">
-              <caret line="30" column="30" lean-forward="true" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
+              <caret line="30" column="30" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -79,7 +49,7 @@
         <entry file="file://$PROJECT_DIR$/supplementer/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="315">
-              <caret line="21" column="9" lean-forward="true" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+              <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
               <folding>
                 <element signature="e#636#677#0" expanded="true" />
               </folding>
@@ -91,16 +61,25 @@
         <entry file="file://$PROJECT_DIR$/docker-compose.yml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="450">
-              <caret line="30" column="10" lean-forward="true" selection-start-line="30" selection-start-column="10" selection-end-line="30" selection-end-column="10" />
+              <caret line="30" column="10" selection-start-line="30" selection-start-column="10" selection-end-line="30" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/entrypoint.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="9" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/entrypoint.sh">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="9" lean-forward="true" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
+            <state relative-caret-position="75">
+              <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -132,6 +111,7 @@
         <option value="$PROJECT_DIR$/supplementer/urls.py" />
         <option value="$PROJECT_DIR$/docker-compose.yml" />
         <option value="$PROJECT_DIR$/supplementer/local_settings.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -221,15 +201,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1557289182946</updated>
-      <workItem from="1557289184221" duration="3073000" />
+      <workItem from="1557289184221" duration="3084000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3073000" />
+    <option name="totallyTimeSpent" value="3084000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="993" y="25" width="927" height="1055" extended-state="4" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32236096" />
@@ -268,7 +249,7 @@
     <entry file="file://$PROJECT_DIR$/adminapp/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="772">
-          <caret line="243" lean-forward="true" selection-start-line="243" selection-end-line="243" />
+          <caret line="243" selection-start-line="243" selection-end-line="243" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
@@ -285,7 +266,7 @@
     <entry file="file://$PROJECT_DIR$/supplementer/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
-          <caret line="21" column="9" lean-forward="true" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+          <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
           <folding>
             <element signature="e#636#677#0" expanded="true" />
           </folding>
@@ -298,21 +279,28 @@
     <entry file="file://$PROJECT_DIR$/supplementer/local_settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
-          <caret line="30" column="30" lean-forward="true" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
+          <caret line="30" column="30" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/docker-compose.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
-          <caret line="30" column="10" lean-forward="true" selection-start-line="30" selection-start-column="10" selection-end-line="30" selection-end-column="10" />
+          <caret line="30" column="10" selection-start-line="30" selection-start-column="10" selection-end-line="30" selection-end-column="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/entrypoint.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
-          <caret line="4" column="9" lean-forward="true" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
+          <caret line="4" column="9" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
         </state>
       </provider>
     </entry>
