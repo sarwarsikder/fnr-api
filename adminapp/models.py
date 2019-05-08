@@ -1,0 +1,243 @@
+from django.db import models
+from django.core.validators import FileExtensionValidator
+from django.contrib.auth.models import User
+from django_mysql.models import JSONField
+
+# Create your models here.
+try:
+    unicode = unicode
+except NameError:
+    # 'unicode' is undefined, must be Python 3
+    str = str
+    unicode = str
+    bytes = bytes
+    basestring = (str, bytes)
+else:
+    # 'unicode' exists, must be Python 2
+    str = str
+    unicode = unicode
+    bytes = str
+    basestring = basestring
+
+
+class EnumField(models.Field):
+    def __init__(self, *args, **kwargs):
+        super(EnumField, self).__init__(*args, **kwargs)
+        assert self.choices, "Need choices for enumeration"
+
+    def db_type(self, connection):
+        if not all(isinstance(col, basestring) for col, _ in self.choices):
+            raise ValueError("MySQL ENUM values should be strings")
+        return "ENUM({})".format(','.join("'{}'".format(col)
+                                          for col, _ in self.choices))
+
+
+class CommentType(EnumField, models.CharField):
+    def __init__(self, *args, **kwargs):
+        roles = [
+            ('text', 'Text'),
+            ('file', 'File')
+        ]
+        kwargs.setdefault('choices', roles)
+        super(CommentType, self).__init__(*args, **kwargs)
+
+
+class NotificationType(EnumField, models.CharField):
+    def __init__(self, *args, **kwargs):
+        roles = [
+            ('edit_task', 'Edit Task'),
+            ('assign_worker', 'Assign Worker'),
+            ('task_done', 'Task Done'),
+            ('task_pending', 'Task Pending'),
+            ('task_comment', 'Task Comment'),
+            ('attach_file', 'Attach File'),
+            ('change_due_date', 'Change Due Date'),
+        ]
+        kwargs.setdefault('choices', roles)
+        super(NotificationType, self).__init__(*args, **kwargs)
+
+
+class Projects(models.Model):
+    name = models.CharField(max_length=200)
+    address = models.CharField(max_length=200, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    type = models.CharField(max_length=100, null=True, blank=True)
+    energetic_standard = models.CharField(max_length=100, null=True, blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='project_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(User, related_name='project_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "projects"
+
+
+class ProjectStuff(models.Model):
+    project = models.ForeignKey(Projects, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, related_name='project_assigned_by', null=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "project_stuff"
+
+
+class Buildings(models.Model):
+    number = models.CharField(max_length=10)
+    description = models.TextField(null=True, blank=True)
+    project = models.ForeignKey(Projects, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, related_name='building_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(User, related_name='building_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "buildings"
+
+
+class BuildingPlans(models.Model):
+    title = models.CharField(max_length=100)
+    plan_file = models.FileField(null=True, upload_to='building/plan_pdf/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg'])])
+    building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, related_name='building_plan_created_by', null=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "building_plans"
+
+
+class Flats(models.Model):
+    number = models.CharField(max_length=10)
+    description = models.TextField(null=True, blank=True)
+    building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
+    client_name = models.CharField(max_length=100, null=True, blank=True)
+    client_address = models.CharField(max_length=150, null=True, blank=True)
+    client_email = models.CharField(max_length=50, null=True, blank=True)
+    client_tel = models.CharField(max_length=50, null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='flat_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(User, related_name='flat_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "flats"
+
+
+class FlatPlans(models.Model):
+    title = models.CharField(max_length=100)
+    plan_file = models.FileField(null=True, upload_to='flat/plan_pdf/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg'])])
+    flat = models.ForeignKey(Flats, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, related_name='flat_plan_created_by', null=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "flat_plans"
+
+
+class Components(models.Model):
+    name = models.CharField(max_length=100)
+    static_description = models.TextField(null=True, blank=True)
+    parent = models.ForeignKey('self', null=True, related_name='parent_component', on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, related_name='component_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(User, related_name='component_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "components"
+
+
+class BuildingComponents(models.Model):
+    building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
+    flat = models.ForeignKey(Flats, null=True, on_delete=models.CASCADE)
+    description = models.TextField(null=True, blank=True)
+    component = models.ForeignKey(Components, null=True, on_delete=models.SET_NULL)
+    created_by = models.ForeignKey(User, related_name='building_component_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(User, related_name='building_component_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "building_components"
+
+
+class Tasks(models.Model):
+    building_component = models.ForeignKey(BuildingComponents, on_delete=models.CASCADE)
+    assign_to = models.ForeignKey(User, related_name='task_assign_to', null=True, on_delete=models.SET_NULL)
+    assigned_by = models.ForeignKey(User, related_name='task_assigned_by', null=True, on_delete=models.SET_NULL)
+    followers = JSONField(default=dict)
+    created_by = models.ForeignKey(User, related_name='task_created_by', null=True, on_delete=models.SET_NULL)
+    updated_by = models.ForeignKey(User, related_name='task_last_updated_by', null=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "tasks"
+
+
+class Comments(models.Model):
+    text = models.TextField()
+    type = CommentType(max_length=10, default="text")
+    file_type = models.CharField(max_length=50, null=True, blank=True)
+    task = models.ForeignKey(Tasks, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "comments"
+
+
+class HandWorker(models.Model):
+    company_name = models.CharField(max_length=100)
+    address = models.CharField(max_length=200, null=True, blank=True)
+    email = models.CharField(max_length=50, null=True, blank=True)
+    telephone = models.CharField(max_length=50, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    working_type = JSONField(default=dict)
+
+    class Meta:
+        db_table = "handworker"
+
+
+class QrCode(models.Model):
+    unique_key = models.CharField(max_length=50)
+    building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
+    flat = models.ForeignKey(Flats, null=True, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, related_name='qr_created_by', null=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "qr_code"
+
+
+class Notification(models.Model):
+    type = NotificationType(max_length=20)
+    text = models.TextField()
+    task = models.ForeignKey(Tasks, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "notification"
+
+
+class NotificationStatus(models.Model):
+    status = models.BooleanField(default=False)
+    notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "notification_status"
+
+
+class ResetPassword(models.Model):
+    hash_code = models.CharField(max_length=200)
+    already_used = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "reset_password"
