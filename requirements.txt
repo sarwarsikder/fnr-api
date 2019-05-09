@@ -3,6 +3,8 @@ chardet==3.0.4
 Django==2.2.1
 django-mysql==3.0.0.post1
 django-oauth-toolkit==1.2.0
+djangorestframework==3.9.3
+html2text==2018.1.9
 idna==2.8
 mysqlclient==1.4.2.post1
 oauthlib==3.0.1

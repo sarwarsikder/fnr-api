@@ -252,6 +252,7 @@ class ResetPassword(models.Model):
     hash_code = models.CharField(max_length=200)
     already_used = models.BooleanField(default=False)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    expired_at = models.DateTimeField(default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import include
 from django.urls import path
+from serviceapp.views.user_views import UserInfo, ResetPasswordRequestViewSet
 
 urlpatterns = [
     path('auth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    path('user-profile/', UserInfo.as_view()),
+    path('forget-password/', ResetPasswordRequestViewSet.forget_password),
 ]
