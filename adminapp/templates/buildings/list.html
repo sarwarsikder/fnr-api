@@ -1,0 +1,19 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+
+    <!-- /.content-wrapper -->
+    {% include "layout/datatable_footer.html" %}
+    <script>
+        $(function () {
+            $('#example1').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true
+            });
+        });
+    </script>
+{% endblock %}

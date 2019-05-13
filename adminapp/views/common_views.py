@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.conf import settings
 from django.template.loader import render_to_string

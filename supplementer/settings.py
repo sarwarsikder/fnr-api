@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'adminapp.middleware.user_login_middleware.UserLoginMiddleware'
 ]
 
 ROOT_URLCONF = 'supplementer.urls'

@@ -1,0 +1,110 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Staff List</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h3 class="card-title">Staff Lists</h3>
+                                </div>
+                                <div class="col-sm text-right">
+                                    <a href="add_staff.html" class="btn btn-primary">Add Users</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>User Type</th>
+                                        <th>Join Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Jaimee</td>
+                                        <td>Lannister</td>
+                                        <td>Kingslayer</td>
+                                        <td>jaimee@got.com</td>
+                                        <td>Admin</td>
+                                        <td>03/02/2018</td>
+                                        <td>Active</td>
+                                        <td>
+                                            <button data-toggle="dropdown" href="#" class="btn btn-success"><i
+                                                    class="fa fa-gear"></i></button>
+                                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                                <div class="dropdown-divider"></div>
+                                                <a href="edit_staff .html" class="dropdown-item">
+                                                    <i class="fa fa-pencil mr-2"></i> Edit
+                                                </a>
+                                                <div class="dropdown-divider"></div>
+                                                <a href="#" class="dropdown-item">
+                                                    <i class="fa fa-times mr-2"></i> Delete
+                                                </a>
+                                                <div class="dropdown-divider"></div>
+                                                <a href="staff_profile.html" class="dropdown-item">
+                                                    <i class="fa fa-file mr-2"></i> Profile
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    {% include "layout/datatable_footer.html" %}
+    <script>
+        $(function () {
+            $('#example1').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% load staticfiles %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="{% url 'index' %}" class="brand-link">
+                <img src="{% static "assets/images/AdminLTELogo.png" %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">AdminLTE 3</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="{% static "assets/images/user2-160x160.jpg" %}" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">Alexander Pierce</a>
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+                        <li class="nav-item">
+                            <div class="sidebar_select">
+                                <div class="form-group sidebar_select">
+                                    <p><label>Current Project</label></p>
+                                    <select class="form-control select2"
+                                        data-placeholder="Select a Project" style="width: 100%;">
+                                        <option>Alabama</option>
+                                        <option>Alaska</option>
+                                        <option>California</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'index' %}" class="nav-link active">
+                                <i class="nav-icon fa fa-th"></i>
+                                <p>
+                                    Dashboard
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'staffs' %}" class="nav-link">
+                                <i class="nav-icon fa fa-users"></i>
+                                <p>
+                                    Staff List
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'companies' %}" class="nav-link">
+                                <i class="nav-icon fa fa-building-o"></i>
+                                <p>
+                                    Companies
+                                </p>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item has-treeview">
+                            <a href="buildings.html" class="nav-link">
+                                <i class="nav-icon fa fa-pie-chart"></i>
+                                <p>
+                                    Buildings
+                                    <i class="right fa fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Buildings 1</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Buildings 2</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p> Buildings 3</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item has-treeview">
+                            <a href="flat.html" class="nav-link">
+                                <i class="nav-icon fa fa-pie-chart"></i>
+                                <p>
+                                    Flats
+                                    <i class="right fa fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Flat 1</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Flat 2</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p> Flat 3</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'projects' %}" class="nav-link">
+                                <i class="nav-icon fa fa-building-o"></i>
+                                <p>
+                                    Projects
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'components' %}" class="nav-link">
+                                <i class="nav-icon fa fa-table"></i>
+                                <p>
+                                    Components
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>

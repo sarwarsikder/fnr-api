@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="shortcut icon" href="https://www.101computing.net/wp/wp-content/themes/responsive-child/favicon.ico" />
+
+
+    <title>Subplimentor | Dashboard </title>
+{#    <link rel="stylesheet" href="supplimentor_pages/css/style.css">#}
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/font-awesome.min.css' %}">
+    <!-- IonIcons -->
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/adminlte.min.css' %}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/style.css' %}">
+
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/select2.min.css' %}">
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to to the body tag
+to get the desired effect
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Navbar -->
+        {% include "layout/header.html" %}
+        <!-- /.navbar -->
+
+        <!-- Main Sidebar Container -->
+        {% include "layout/sidebar.html" %}
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            {% csrf_token %}
+            {% block content %}
+
+            {% endblock %}
+
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- Control Sidebar -->
+{#        <aside class="control-sidebar control-sidebar-dark">#}
+{#            <!-- Control sidebar content goes here -->#}
+{#        </aside>#}
+        <!-- /.control-sidebar -->
+
+        <!-- Main Footer -->
+        {% include "layout/footer.html" %}
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+
+    <!-- jQuery -->
+    <script src="{% static 'assets/javascripts/jquery.min.js' %}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/javascripts/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE -->
+    <script src="{% static 'assets/javascripts/adminlte.min.js' %}"></script>
+
+    <!-- OPTIONAL SCRIPTS -->
+    <script src="{% static 'assets/javascripts/Chart.min.js' %}"></script>
+    <script src="{% static 'assets/javascripts/demo.js' %}"></script>
+    <script src="{% static 'assets/javascripts/dashboard3.js' %}"></script>
+    <script src="{% static 'assets/javascripts/select2.full.min.js' %}"></script>
+    <script>
+        $(function () {
+            $('.select2').select2()
+        });
+    </script>
+</body>
+
+</html>
