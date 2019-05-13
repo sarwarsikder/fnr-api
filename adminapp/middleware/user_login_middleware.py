@@ -29,9 +29,9 @@ class UserLoginMiddleware(generic.DetailView):
             browser_current_url = resolve(request.path_info).url_name
             # if 'bikeshare_settings' not in request.session:
             #     request.session["bikeshare_settings"] = CommonView.getCommonSettings(request)
-            if browser_current_url != 'login' and browser_current_url != 'reset-password' and browser_current_url != 'reset-your-password':
-                if not request.user.is_authenticated:
-                    return redirect('login')
+            # if browser_current_url != 'login' and browser_current_url != 'reset-password' and browser_current_url != 'reset-your-password':
+            #     if not request.user.is_authenticated:
+            #         return redirect('login')
         # else:
         #     if request.is_ajax() == False:
         #         if 'user_bikeshare_settings' not in request.session:
