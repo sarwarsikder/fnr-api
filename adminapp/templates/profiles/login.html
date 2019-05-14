@@ -1,4 +1,5 @@
 {% extends "layout/login.html" %}
+{% block title %}Supplementer :: Login{% endblock %}
 {% block content %}
     <div class="login-box">
         <div class="login-logo">
@@ -43,7 +44,7 @@
                 </form>
 
                 <p class="mb-1">
-                    <a href="#">I forgot my password</a>
+                    <a href="{% url 'forget-password' %}">I forgot my password</a>
                 </p>
             </div>
             <!-- /.login-card-body -->

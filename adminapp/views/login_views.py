@@ -20,6 +20,12 @@ class LoginView(generic.DetailView):
         user = authenticate(username=username, password=password)
         if user is not None and user.is_staff:
             login(request, user)
+            user_data = {
+                "id": user.id
+            }
+            request.session['is_logged_in'] = True
+            request.session['supplementer_user'] = user_data
+            request.session.modified = True
             return redirect('index')
         else:
             # Return an 'invalid login' error message.
@@ -29,6 +35,7 @@ class LoginView(generic.DetailView):
 class LogoutView(generic.DetailView):
     def get(self, request):
         del request.session['supplementer_user']
+        del request.session['is_logged_in']
         logout(request)
         return redirect('login')
 

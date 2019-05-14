@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Log in</title>
+  <title>{% block title %}{% endblock %}</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -18,6 +18,10 @@
 {#  <link rel="stylesheet" href="../../plugins/iCheck/square/blue.css">#}
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <script src="{% static 'assets/javascripts/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/javascripts/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'assets/javascripts/jquery.growl.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/jquery.growl.css' %}">
 </head>
 <body class="hold-transition login-page">
 {% block content %}
@@ -26,7 +30,6 @@
 <!-- /.login-box -->
 
 <!-- jQuery -->
-<script src="{% static 'assets/javascripts/jquery.min.js' %}"></script>
 <!-- Bootstrap 4 -->
 <script src="{% static 'assets/javascripts/bootstrap.bundle.min.js' %}"></script>
 <!-- iCheck -->

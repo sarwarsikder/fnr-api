@@ -14,13 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from adminapp.views import common_views, login_views, staff_views, company_views, project_views, building_views, flat_views, component_views
+from adminapp.views import common_views, login_views, staff_views, company_views, project_views, building_views, flat_views, component_views, reset_password
 
 urlpatterns = [
     path('', common_views.IndexView.as_view(), name='index'),
-    path('login', login_views.LoginView.as_view(), name='login'),
-    path('staffs', staff_views.StaffView.as_view(), name='staffs'),
-    path('companies', company_views.CompanyView.as_view(), name='companies'),
-    path('projects', project_views.ProjectView.as_view(), name='projects'),
-    path('components', component_views.ComponentView.as_view(), name='components'),
+    path('login/', login_views.LoginView.as_view(), name='login'),
+    path('logout/', login_views.LogoutView.as_view(), name='logout'),
+    path('forget-password/', reset_password.ResetPasswordRequestView.as_view(), name='forget-password'),
+    path('reset-password/', reset_password.ResetPasswordView.as_view(), name='reset-password'),
+    path('staffs/', staff_views.StaffView.as_view(), name='staffs'),
+    path('companies/', company_views.CompanyView.as_view(), name='companies'),
+    path('projects/', project_views.ProjectView.as_view(), name='projects'),
+    path('components/', component_views.ComponentView.as_view(), name='components'),
 ]

@@ -44,6 +44,7 @@ class UserInfo(APIView):
         try:
             partial = kwargs.pop('partial', True)
             instance = Users.objects.get(id=request.user.id)
+
             serializer = UserSerializer(instance, data=request.data, partial=partial)
             serializer.is_valid(raise_exception=True)
             serializer.update(instance, request.data)
