@@ -17,22 +17,22 @@ class UserLoginMiddleware(generic.DetailView):
 
     def __call__(self, request):
         path = request.path.split('/')[1]
+        print(path)
         # user = authenticate(username='admin', password='wsit97480')
         # logout(request)
         # if user is not None:
         #     login(request, user)
         # request.user = Users.objects.get(id=1)
-        if path == '':
-            # if path != 'api':
-            #     if path == 'admin':
-            settings.USE_TZ = False
-            browser_current_url = resolve(request.path_info).url_name
-            # if 'bikeshare_settings' not in request.session:
-            #     request.session["bikeshare_settings"] = CommonView.getCommonSettings(request)
-            if browser_current_url != 'login' and browser_current_url != 'forget-password' and browser_current_url != 'reset-password':
-                if not request.user.is_authenticated:
-                    return redirect('login')
-        # else:
+        if path == '' or path != 'api':
+            if request.is_ajax() == False:
+                settings.USE_TZ = False
+                browser_current_url = resolve(request.path_info).url_name
+                # if 'bikeshare_settings' not in request.session:
+                #     request.session["bikeshare_settings"] = CommonView.getCommonSettings(request)
+                if browser_current_url != 'login' and browser_current_url != 'forget-password' and browser_current_url != 'reset-password':
+                    if not request.user.is_authenticated:
+                        return redirect('login')
+        # elif path != 'api':
         #     if request.is_ajax() == False:
         #         if 'user_bikeshare_settings' not in request.session:
         #             response = requests.get(settings.API_URL+"/settings/")
