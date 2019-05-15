@@ -60,7 +60,7 @@ class NotificationType(EnumField, models.CharField):
 
 class Users(AbstractUser):
     address = models.TextField(null=True)
-    avatar = models.FileField(null=True, upload_to='avatar/', validators=[FileExtensionValidator(allowed_extensions=['jpg','png','svg'])])
+    avatar = models.FileField(null=True, upload_to='adminapp/static/assets/avatar/', validators=[FileExtensionValidator(allowed_extensions=['jpg','png','svg'])])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -116,7 +116,7 @@ class Buildings(models.Model):
 
 class BuildingPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='building/plan_pdf/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg'])])
+    plan_file = models.FileField(null=True, upload_to='static/assets/building/plan_pdf/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg'])])
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
     created_by = models.ForeignKey(Users, related_name='building_plan_created_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -144,7 +144,7 @@ class Flats(models.Model):
 
 class FlatPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='flat/plan_pdf/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg'])])
+    plan_file = models.FileField(null=True, upload_to='static/assets/flat/plan_pdf/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg'])])
     flat = models.ForeignKey(Flats, on_delete=models.CASCADE)
     created_by = models.ForeignKey(Users, related_name='flat_plan_created_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)

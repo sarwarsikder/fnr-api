@@ -17,7 +17,6 @@ class UserLoginMiddleware(generic.DetailView):
 
     def __call__(self, request):
         path = request.path.split('/')[1]
-        print(path)
         # user = authenticate(username='admin', password='wsit97480')
         # logout(request)
         # if user is not None:

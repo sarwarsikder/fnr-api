@@ -1,0 +1,96 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {% load i18n %}
+{#    {% include "layout/datatable_footer.html" %}#}
+    {% block extra_head %}
+        <script type="text/javascript">
+            var STAFF_LIST_JSON_URL = '{% url "staffList" %}';
+            // translations for datatables
+        </script>
+        <script src="{% static 'assets/javascripts/datatables/staff_datatable.js' %}"></script>
+    {% endblock %}
+    <!-- Content Header (Page header) -->
+    
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <input type="hidden" value="{{ show_entries }}" id="show_entries">
+                <input type="hidden" value="{{ sorted_column }}" id="sorted_column_stand">
+                <input type="hidden" value="{{ sorting_order }}" id="sorting_order_stand">
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Staff List</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card data_table_card">
+                        <!-- class name data_table_card will be added to all wrapper class of data table -->
+                        <div class="card-header">
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h3 class="card-title">Staff Lists</h3>
+                                </div>
+                                <div class="col-sm text-right">
+                                    <a href="{% url 'staffs-add' %}" class="btn btn-primary">Add Staff</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="staffs-table" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Username</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+{#    <script>#}
+{#         $(function () {#}
+{#                $('#staffs-table').DataTable({#}
+{#                    "paging": true,#}
+{#                    "lengthChange": false,#}
+{#                    "searching": false,#}
+{#                    "ordering": true,#}
+{#                    "info": true,#}
+{#                    "autoWidth": true#}
+{#                });#}
+{#            });#}
+{#    </script>#}
+{% endblock %}

@@ -135,6 +135,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'workspaceinfotech@gmail.com'
 EMAIL_HOST_PASSWORD = 'workspaceit'
 
+PROJECT_TITLE = "Supplementer"
+
 OAUTH2_PROVIDER = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': 86400,
 }

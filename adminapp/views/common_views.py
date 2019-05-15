@@ -20,6 +20,7 @@ class CommonView(generic.DetailView):
         try:
             context["request"] = request
             context["base_url"] = settings.SITE_URL
+            context["project_title"] = settings.PROJECT_TITLE
             mail_template_content = render_to_string(template, context)
             sender_mail = settings.EMAIL_HOST_USER
             # if user_id:
@@ -32,6 +33,27 @@ class CommonView(generic.DetailView):
             LogHelper.elog(e)
             response['success'] = False
         return HttpResponse(json.dumps(response), content_type='application/json')
+
+    def common_datatable_context(self):
+        show_entries = 4
+        sorted_column = 0
+        sorting_order = 'asc'
+        context = {
+            'show_entries': show_entries,
+            'sorting_order': sorting_order,
+            'sorted_column': sorted_column
+        }
+        return context
+
+    def get_file_path(file):
+        file = str(file)
+        file_path = ""
+        try:
+            path = file.split("adminapp/")[1]
+            file_path = settings.SITE_URL+"/"+path
+        except Exception as e:
+            LogHelper.elog(e)
+        return file_path
 
 
 

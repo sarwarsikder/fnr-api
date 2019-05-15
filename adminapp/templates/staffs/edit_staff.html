@@ -1,0 +1,148 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Staff List</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h3 class="card-title">Add Staff</h3>
+                                </div>
+                                <div class="col-sm text-right">
+                                    <a href="{% url 'staffs' %}" class="btn btn-primary">Get back To Staff List</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <form id="form-edit-staff" action="{% url 'staffs-add' %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="{{ form.first_name.id_for_label }}">First name</label>
+                                            <div class="has-feedback">
+                                                <input type="text" id="id_first_name" name="first_name" class="form-control" placeholder="Enter First name" value="{{ form.first_name.value }}">
+                                                {{ form.first_name.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.last_name.id_for_label }}">Last name</label>
+                                            <div class="has-feedback">
+                                                <input type="text" class="form-control" id="id_last_name" name="last_name"
+                                                       placeholder="Enter Last Name" value="{{ form.last_name.value }}">
+                                                {{ form.last_name.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                <label for="{{ form.address.id_for_label }}">Address</label>
+                                                <div class="has-feedback">
+                                                    <textarea id="id_address" name="address" class="form-control"
+                                                              placeholder="Enter staff address">{{ form.address.value|default_if_none:"" }}</textarea>
+                                                    {{ form.address.errors }}
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="{{ form.email.id_for_label }}">Email address</label>
+                                            <div class="has-feedback">
+                                                <input type="email" class="form-control" id="id_email" name="email" placeholder="Enter email" value="{{ form.email.value }}">
+                                                {{ form.email.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.username.id_for_label }}">User name</label>
+                                            <div class="has-feedback">
+                                                <input type="text" class="form-control" id="id_username" name="username"
+                                                       placeholder="Enter User name" value="{{ form.username.value }}">
+                                                {{ form.username.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                <label for="{{ form.avatar.id_for_label }}">Upload Photo</label>
+                                                <div class="has-feedback">
+                                                    <input type="file" id="id_avatar" name="avatar">
+                                                    {#                                    <span style="font-size: 14px;font-weight: 300;color: #544544;font-style: italic;">N.B: Standard Photo size 270 X 299 pixel</span>#}
+                                                    {{ avatar.url }}
+                                                    <img id="temp_image" class="temp-image"
+                                                         src="{% if avatar %}{{ avatar }}{% else %}{% static 'assets/images/avatar5.png' %}{% endif %}" alt="" height="225"/>
+                                                    {{ form.avatar.errors }}
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <button type="submit" class="btn btn-primary">Update Staff</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <script>
+        $(function () {
+            $("#form-edit-staff").validate({
+                ignore: '.ignore',
+                focusInvalid: true,
+                rules: {
+                    'username': {
+                        required: true
+                    },
+                    'first_name': {
+                        required: true
+                    },
+                    'last_name': {
+                        required: true
+                    },
+                    'email': {
+                        required: true
+                    },
+                    'address': {
+                        required: false
+                    },
+                    'avatar': {
+                        required: false
+                    }
+                }
+            });
+            $('#form-edit-staff').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
+        });
+    </script>
+{% endblock %}

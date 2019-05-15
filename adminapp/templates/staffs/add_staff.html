@@ -1,0 +1,172 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-left">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Staff List</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h3 class="card-title">Add Staff</h3>
+                                </div>
+                                <div class="col-sm text-right">
+                                    <a href="{% url 'staffs' %}" class="btn btn-primary">Get back To Staff List</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <form id="form-add-staff" action="{% url 'staffs-add' %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="{{ form.first_name.id_for_label }}">First name</label>
+                                            <div class="has-feedback">
+                                                <input type="text" id="id_first_name" name="first_name" class="form-control" placeholder="Enter First name">
+                                                {{ form.first_name.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.last_name.id_for_label }}">Last name</label>
+                                            <div class="has-feedback">
+                                                <input type="text" class="form-control" id="id_last_name" name="last_name"
+                                                       placeholder="Enter Last Name">
+                                                {{ form.last_name.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.username.id_for_label }}">User name</label>
+                                            <div class="has-feedback">
+                                                <input type="text" class="form-control" id="id_username" name="username"
+                                                       placeholder="Enter User name">
+                                                {{ form.username.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                <label for="{{ form.address.id_for_label }}">Address</label>
+                                                <div class="has-feedback">
+                                                    <textarea id="id_address" name="address" class="form-control"
+                                                              placeholder="Enter staff address"></textarea>
+                                                    {{ form.address.errors }}
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label for="{{ form.email.id_for_label }}">Email address</label>
+                                            <div class="has-feedback">
+                                                <input type="email" class="form-control" id="id_email" name="email" placeholder="Enter email">
+                                                {{ form.email.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.password.id_for_label }}">Password</label>
+                                            <div class="has-feedback">
+                                                <input type="password" class="form-control" id="id_password" name="password"
+                                                       placeholder="Enter Password">
+                                                {{ form.password.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="{{ form.confirm_password.id_for_label }}">Confirm Password</label>
+                                            <div class="has-feedback">
+                                                <input type="password" class="form-control" id="id_confirm_password" name="confirm_password"
+                                                       placeholder="Confirm Password">
+                                                {{ form.confirm_password.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                <label for="{{ form.avatar.id_for_label }}">Upload Photo</label>
+                                                <div class="has-feedback">
+                                                    <input type="file" id="id_avatar" name="avatar">
+                                                    {#                                    <span style="font-size: 14px;font-weight: 300;color: #544544;font-style: italic;">N.B: Standard Photo size 270 X 299 pixel</span>#}
+                                                    <img id="temp_image" class="temp-image"
+                                                         src="{% static 'assets/images/avatar5.png' %}" alt="" height="225"/>
+                                                    {{ form.avatar.errors }}
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <button type="submit" class="btn btn-primary">Add Staff</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <script>
+        $(function () {
+            $("#form-add-staff").validate({
+                ignore: '.ignore',
+                focusInvalid: true,
+                rules: {
+                    'username': {
+                        required: true
+                    },
+                    'first_name': {
+                        required: true
+                    },
+                    'last_name': {
+                        required: true
+                    },
+                    'email': {
+                        required: true
+                    },
+                    'password': {
+                        required: true,
+                        minlength: 6
+                    },
+                    'confirm_password': {
+                        required: true,
+                        minlength: 6,
+                        equalTo: 'input[name="password"]'
+                    },
+                    'address': {
+                        required: false
+                    },
+                    'avatar': {
+                        required: false
+                    }
+                }
+            });
+            $('#form-add-staff').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
