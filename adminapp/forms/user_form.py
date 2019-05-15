@@ -55,7 +55,7 @@ class UserUpdateForm(ProfileForm):
 
     class Meta:
         model = Users
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'last_name', 'email', 'address')
 
     def clean(self):
         cleaned_data = super(ProfileForm, self).clean()

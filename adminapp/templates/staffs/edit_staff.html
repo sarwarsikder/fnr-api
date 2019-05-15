@@ -38,7 +38,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <form id="form-edit-staff" action="{% url 'staffs-add' %}" method="post" enctype="multipart/form-data">
+                            <form id="form-edit-staff" action="" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{ form.non_field_errors }}
                                 <div class="row">

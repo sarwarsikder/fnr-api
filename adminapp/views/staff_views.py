@@ -57,16 +57,17 @@ class StaffFormView(View):
 
 
 class StaffUpdateView(UpdateView):
+
     model = Users
-    form_class = UserUpdateForm
     template_name = 'staffs/edit_staff.html'
+    form_class = UserUpdateForm
 
     def form_valid(self, form):
         form.update(request=self.request)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse_lazy('staffs-all')
+        return reverse_lazy('staffs')
 
     def get_context_data(self, **kwargs):
         context = super(StaffUpdateView, self).get_context_data(**kwargs)
