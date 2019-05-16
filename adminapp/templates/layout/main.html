@@ -1,40 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
 {% load staticfiles %}
 {% load i18n %}
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <link rel="shortcut icon" href="https://www.101computing.net/wp/wp-content/themes/responsive-child/favicon.ico" />
-
-
-    <title>Subplimentor | Dashboard </title>
-{#    <link rel="stylesheet" href="supplimentor_pages/css/style.css">#}
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/font-awesome.min.css' %}">
-    <!-- IonIcons -->
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/adminlte.min.css' %}">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/style.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/dataTables.bootstrap4.css' %}">
-
-    <!-- Select2 -->
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/select2.min.css' %}">
-    <script src="{% static 'assets/javascripts/libraries/jquery.min.js' %}"></script>
-    <script src="{% static 'assets/javascripts/libraries/jquery.validate.min.js' %}"></script>
-    <script src="{% static 'assets/javascripts/libraries/jquery.growl.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/jquery.growl.css' %}">
-    <script src="{% static 'assets/javascripts/libraries/jquery.dataTables.min.js' %}"></script>
-{#    <link rel="stylesheet" href="{% static 'assets/stylesheets/jquery.dataTables.min.css' %}">#}
-{#    <link rel="stylesheet" href="{% static 'assets/stylesheets/test.css' %}">#}
-{#    <script src="{% static 'assets/javascripts/test.js' %}"></script>#}
-    <script src="{% static 'assets/javascripts/libraries/dataTables.bootstrap4.js' %}"></script>
-    <script src="{% static 'assets/javascripts/libraries/select2.full.min.js' %}"></script>
-</head>
+{% include "layout/header.html" %}
+{% include "layout/navbar.html" %}
+{% include "layout/sidebar.html" %}
 <!--
 BODY TAG OPTIONS:
 =================
@@ -46,16 +14,6 @@ to get the desired effect
 |---------------------------------------------------------|
 -->
 
-<body class="hold-transition sidebar-mini">
-    <div class="wrapper">
-        <!-- Navbar -->
-        {% include "layout/header.html" %}
-        <!-- /.navbar -->
-
-        <!-- Main Sidebar Container -->
-        {% include "layout/sidebar.html" %}
-
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             {% csrf_token %}
             {% block content %}
@@ -65,13 +23,7 @@ to get the desired effect
         </div>
         <!-- /.content-wrapper -->
 
-        <!-- Control Sidebar -->
-{#        <aside class="control-sidebar control-sidebar-dark">#}
-{#            <!-- Control sidebar content goes here -->#}
-{#        </aside>#}
-        <!-- /.control-sidebar -->
 
-        <!-- Main Footer -->
         {% include "layout/footer.html" %}
     </div>
     <!-- ./wrapper -->
