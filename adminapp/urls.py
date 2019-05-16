@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from adminapp.views import common_views, login_views, staff_views, company_views, project_views, building_views, flat_views, component_views, reset_password
+from adminapp.views import common_views, login_views, staff_views,user_views, company_views, project_views, building_views, flat_views, component_views, reset_password
 
 urlpatterns = [
     path('', common_views.IndexView.as_view(), name='index'),
@@ -23,6 +23,10 @@ urlpatterns = [
     path('forget-password/', reset_password.ResetPasswordRequestView.as_view(), name='forget-password'),
     path('reset-password/', reset_password.ResetPasswordView.as_view(), name='reset-password'),
     path('staffs/', staff_views.StaffView.as_view(), name='staffs'),
+    path('users/', user_views.UserView.as_view(), name='users'),
+    path('user/profile/<int:id>/', user_views.UserView.profile, name='user-profile'),
+    path('user/edit/<int:id>/', user_views.UserView.edit, name='user-edit'),
+    path('user/update/<int:id>/', user_views.UserView.update, name='user-update'),
     path('companies/', company_views.CompanyView.as_view(), name='companies'),
     path('projects/', project_views.ProjectView.as_view(), name='projects'),
     path('components/', component_views.ComponentView.as_view(), name='components'),
