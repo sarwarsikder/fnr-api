@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from adminapp.views.mail import MailHelper
 from adminapp.views.helper import LogHelper
+from adminapp.models import Components
 
 
 class IndexView(generic.DetailView):
@@ -35,7 +36,7 @@ class CommonView(generic.DetailView):
         return HttpResponse(json.dumps(response), content_type='application/json')
 
     def common_datatable_context(self):
-        show_entries = 4
+        show_entries = 10
         sorted_column = 0
         sorting_order = 'asc'
         context = {
@@ -54,6 +55,10 @@ class CommonView(generic.DetailView):
         except Exception as e:
             LogHelper.elog(e)
         return file_path
+
+    def get_all_main_component(request):
+        components = Components.objects.filter(parent__isnull=True)
+        return components
 
 
 

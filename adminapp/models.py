@@ -218,11 +218,9 @@ class Comments(models.Model):
 
 class HandWorker(models.Model):
     company_name = models.CharField(max_length=100)
-    address = models.CharField(max_length=200, null=True, blank=True)
-    email = models.CharField(max_length=50, null=True, blank=True)
     telephone = models.CharField(max_length=50, null=True, blank=True)
     user = models.OneToOneField(Users, on_delete=models.CASCADE)
-    working_type = JSONField(default=dict)
+    working_type = JSONField(default="[]")
 
     class Meta:
         db_table = "handworker"

@@ -12,27 +12,28 @@
     <title>Subplimentor | Dashboard </title>
 {#    <link rel="stylesheet" href="supplimentor_pages/css/style.css">#}
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/font-awesome.min.css' %}">
     <!-- IonIcons -->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/adminlte.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/adminlte.min.css' %}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'assets/stylesheets/style.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/dataTables.bootstrap4.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/dataTables.bootstrap4.css' %}">
 
     <!-- Select2 -->
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/select2.min.css' %}">
-    <script src="{% static 'assets/javascripts/jquery.min.js' %}"></script>
-    <script src="{% static 'assets/javascripts/jquery.validate.min.js' %}"></script>
-    <script src="{% static 'assets/javascripts/jquery.growl.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/jquery.growl.css' %}">
-    <script src="{% static 'assets/javascripts/jquery.dataTables.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/select2.min.css' %}">
+    <script src="{% static 'assets/javascripts/libraries/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/javascripts/libraries/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'assets/javascripts/libraries/jquery.growl.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/jquery.growl.css' %}">
+    <script src="{% static 'assets/javascripts/libraries/jquery.dataTables.min.js' %}"></script>
 {#    <link rel="stylesheet" href="{% static 'assets/stylesheets/jquery.dataTables.min.css' %}">#}
 {#    <link rel="stylesheet" href="{% static 'assets/stylesheets/test.css' %}">#}
 {#    <script src="{% static 'assets/javascripts/test.js' %}"></script>#}
-    <script src="{% static 'assets/javascripts/dataTables.bootstrap4.js' %}"></script>
+    <script src="{% static 'assets/javascripts/libraries/dataTables.bootstrap4.js' %}"></script>
+    <script src="{% static 'assets/javascripts/libraries/select2.full.min.js' %}"></script>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -78,21 +79,20 @@ to get the desired effect
     <!-- REQUIRED SCRIPTS -->
 
     <!-- Bootstrap -->
-    <script src="{% static 'assets/javascripts/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/javascripts/libraries/bootstrap.bundle.min.js' %}"></script>
     <!-- AdminLTE -->
-    <script src="{% static 'assets/javascripts/adminlte.min.js' %}"></script>
+    <script src="{% static 'assets/javascripts/libraries/adminlte.min.js' %}"></script>
 
     <!-- OPTIONAL SCRIPTS -->
 {#    <script src="{% static 'assets/javascripts/Chart.min.js' %}"></script>#}
 {#    <script src="{% static 'assets/javascripts/demo.js' %}"></script>#}
 {#    <script src="{% static 'assets/javascripts/dashboard3.js' %}"></script>#}
-    <script src="{% static 'assets/javascripts/bootbox.min.js' %}"></script>
-    <script src="{% static 'assets/javascripts/select2.full.min.js' %}"></script>
+    <script src="{% static 'assets/javascripts/libraries/bootbox.min.js' %}"></script>
     <script src="{% static 'assets/javascripts/common.js' %}"></script>
     <script src="{% static 'assets/javascripts/admin.js' %}"></script>
     <script>
         $(function () {
-            $('.select2').select2()
+            $('#current-project').select2()
         });
     </script>
     <script type="text/javascript">

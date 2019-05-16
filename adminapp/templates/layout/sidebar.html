@@ -14,7 +14,7 @@
                         <img src="{% static "assets/images/user2-160x160.jpg" %}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                        <a href="#" class="d-block">{{ request.user.first_name }} {{ request.user.last_name }}</a>
                     </div>
                 </div>
 
@@ -27,7 +27,7 @@
                             <div class="sidebar_select">
                                 <div class="form-group sidebar_select">
                                     <p><label>Current Project</label></p>
-                                    <select class="form-control select2"
+                                    <select class="form-control select2" id="current-project"
                                         data-placeholder="Select a Project" style="width: 100%;">
                                         <option>Alabama</option>
                                         <option>Alaska</option>

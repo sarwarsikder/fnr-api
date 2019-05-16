@@ -28,7 +28,11 @@ urlpatterns = [
     url(r'^staffs/update/(?P<pk>[\w-]+)/$', staff_views.StaffUpdateView.as_view(), name='staffs-update'),
     url(r'^staffs/delete/$', staff_views.StaffsView.delete, name='staffs-delete'),
     url(r'^staff-list/$', datatables.StaffListView.as_view(), name='staffList'),
-    url(r'^companies/$', company_views.CompanyView.as_view(), name='companies'),
+    url(r'^companies/$', company_views.CompaniesView.as_view(), name='companies'),
+    url(r'^companies/add/$', company_views.CompanyFormView.as_view(), name='companies-add'),
+    url(r'^companies/update/(?P<pk>[\w-]+)/$', company_views.CompanyUpdateView.as_view(), name='companies-update'),
+    url(r'^companies/delete/$', company_views.CompaniesView.delete, name='companies-delete'),
+    url(r'^company-list/$', datatables.CompanyListView.as_view(), name='companyList'),
     url(r'^projects/$', project_views.ProjectView.as_view(), name='projects'),
     url(r'^components/$', component_views.ComponentView.as_view(), name='components'),
 ]
