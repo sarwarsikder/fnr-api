@@ -73,11 +73,14 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 
 	var attach = function( container, buttons ) {
 		var i, ien, node, button;
-		var clickHandler = function ( e ) {
-			e.preventDefault();
-			if ( !$(e.currentTarget).hasClass('disabled') && api.page() != e.data.action ) {
-				api.page( e.data.action ).draw( 'page' );
-			}
+		// var clickHandler = function ( e ) {
+		// 	e.preventDefault();
+		// 	if ( !$(e.currentTarget).hasClass('disabled') && api.page() != e.data.action ) {
+		// 		api.page( e.data.action ).draw( 'page' );
+		// 	}
+		// };
+		var clickHandler = function (e) {
+			DataTable.ext.internal._fnPageChange(settings, e.data.action, true);
 		};
 
 		for ( i=0, ien=buttons.length ; i<ien ; i++ ) {

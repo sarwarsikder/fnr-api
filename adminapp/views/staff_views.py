@@ -21,7 +21,8 @@ class StaffsView(generic.DetailView):
         response = {}
         try:
             userId = request.POST.get('id')
-            Users.objects.filter(id=userId).update(is_active='0')
+            # Users.objects.filter(id=userId).update(is_active='0')
+            Users.objects.get(id=userId).delete()
             response['success'] = True
             response['message'] = "User delete successfully"
         except Exception as e:

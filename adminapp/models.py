@@ -3,6 +3,8 @@ from django.core.validators import FileExtensionValidator
 # from django.contrib.auth.models import User
 from django_mysql.models import JSONField
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 # Create your models here.
 try:
@@ -71,6 +73,11 @@ class Users(AbstractUser):
 
     class Meta:
         db_table = "users"
+
+
+@receiver(post_delete, sender=Users)
+def submission_delete(sender, instance, **kwargs):
+   instance.avatar.delete(False)
 
 
 class Projects(models.Model):
