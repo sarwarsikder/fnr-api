@@ -9,7 +9,7 @@ class ProfileForm(forms.ModelForm):
     last_name = forms.CharField(required=True, max_length=45)
     email = forms.CharField(required=True, max_length=45)
     avatar = forms.FileField(required=False)
-    address = forms.CharField(required=True, max_length=1000)
+    address = forms.CharField(required=False, max_length=1000)
     is_active = forms.CharField(required=False, max_length=1)
 
     class Meta:

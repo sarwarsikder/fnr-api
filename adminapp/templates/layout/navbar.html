@@ -62,10 +62,15 @@
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="profile.php" class="dropdown-item">
+                        <a href="#" class="dropdown-item">
+                            {{ request.user.first_name }} {{ request.user.last_name }}
+                        </a>
+                        <div class="dropdown-divider"></div>
+
+                        <a href="{% url 'profile-update' %}" class="dropdown-item">
                             <i class="fa fa-users mr-2"></i> Profile
                         </a>
-                        <a href="change_password.php" class="dropdown-item">
+                        <a href="{% url 'change-password' %}" class="dropdown-item">
                             <i class="fas fa-key mr-2"></i> Change Password
                         </a>
                         <div class="dropdown-divider"></div>

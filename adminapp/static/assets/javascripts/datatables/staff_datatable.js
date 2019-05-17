@@ -36,8 +36,8 @@ $(document).ready(function () {
                     if (full[4] == "True"){
                         is_checked = "checked";
                     }
-                    var status = '<label class="switch" for="checkbox">'+
-                                '<input type="checkbox" class="user-status-checkbox" id="checkbox" '+is_checked+' />'+
+                    var status = '<label class="switch" for="checkbox-'+full[0]+'">'+
+                                '<input type="checkbox" class="user-status-checkbox" id="checkbox-'+full[0]+'" '+is_checked+' />'+
                                 '<div class="slider round"></div>';
                     return status;
                 }

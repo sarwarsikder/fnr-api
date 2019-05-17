@@ -8,7 +8,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-left">
                         <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-                        <li class="breadcrumb-item active">Staff List</li>
+                        <li class="breadcrumb-item active">Profile</li>
                     </ol>
                 </div>
                 <!-- /.col -->
@@ -29,13 +29,13 @@
 
                             <div class="row">
                                 <div class="col-sm">
-                                    <h3 class="card-title">Edit Staff</h3>
+                                    <h3 class="card-title">Profile</h3>
                                 </div>
                             </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <form id="form-edit-staff" action="" method="post" enctype="multipart/form-data">
+                            <form id="form-edit-profile" action="" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{ form.non_field_errors }}
                                 <div class="row">
@@ -107,7 +107,7 @@
                                     </div>
 
                                     <div class="col-sm-6 offset-sm-3 col-xs-12">
-                                        <button type="submit" class="btn btn-primary">Update Staff</button>
+                                        <button type="submit" class="btn btn-primary">Update Profile</button>
 
                                     </div>
                                 </div>
@@ -124,7 +124,7 @@
     </div>
     <script>
         $(function () {
-            $("#form-edit-staff").validate({
+            $("#form-edit-profile").validate({
                 ignore: '.ignore',
                 focusInvalid: true,
                 rules: {
@@ -148,7 +148,7 @@
                     }
                 }
             });
-            $('#form-edit-staff').on('submit', function () {
+            $('#form-edit-profile').on('submit', function () {
                 if ($(this).valid()) {
                     return true;
                 }

@@ -14,11 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import include
-from django.urls import path
+from django.conf.urls import url
 from serviceapp.views.user_views import UserInfo, ResetPasswordRequestViewSet
 
 urlpatterns = [
-    path('auth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    path('user-profile/', UserInfo.as_view()),
-    path('forget-password/', ResetPasswordRequestViewSet.forget_password),
+    url(r'^auth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    url(r'^user-profile/', UserInfo.as_view()),
+    url(r'^forget-password/', ResetPasswordRequestViewSet.forget_password),
+    url(r'^change-user-password/', ResetPasswordRequestViewSet.change_user_password),
 ]

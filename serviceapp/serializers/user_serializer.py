@@ -3,15 +3,15 @@ from adminapp.models import Users
 
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(required=True)
+    username = serializers.CharField(read_only=True)
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
-    email = serializers.CharField(required=True)
+    email = serializers.CharField(read_only=True)
     avatar = serializers.CharField(required=False)
-    address = serializers.CharField(required=False)
-    telephone = serializers.CharField(required=False, read_only=True)
-    company_name = serializers.CharField(required=False, read_only=True)
-    working_type = serializers.CharField(required=False, read_only=True)
+    address = serializers.CharField(read_only=True)
+    telephone = serializers.CharField(required=False)
+    company_name = serializers.CharField(required=False)
+    working_type = serializers.CharField(required=False)
 
     class Meta:
         model = Users

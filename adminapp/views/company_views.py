@@ -33,7 +33,6 @@ class CompaniesView(generic.DetailView):
 
     def create_worker(request, data):
         try:
-            print(data['working_type'])
             form_data = {
                 'company_name': data['company_name'],
                 'telephone': data['telephone'],

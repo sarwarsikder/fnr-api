@@ -31,6 +31,20 @@ class StaffsView(generic.DetailView):
             response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+    def change_user_status(request):
+        response = {}
+        try:
+            userId = request.POST.get('id')
+            status = request.POST.get('status')
+            Users.objects.filter(id=userId).update(is_active=status)
+            response['success'] = True
+            response['message'] = "Status Changed Successfully"
+        except Exception as e:
+            LogHelper.elog(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
 
 class StaffFormView(View):
     form_class = UserForm

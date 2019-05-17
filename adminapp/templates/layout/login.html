@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/adminlte.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/stylesheets/style.css' %}">
   <!-- iCheck -->
 {#  <link rel="stylesheet" href="../../plugins/iCheck/square/blue.css">#}
   <!-- Google Font: Source Sans Pro -->
@@ -24,9 +25,19 @@
     <link rel="stylesheet" href="{% static 'assets/stylesheets/libraries/jquery.growl.css' %}">
 </head>
 <body class="hold-transition login-page">
+<div class="login-box">
+        <div class="login-logo">
+{#            <a href="{% url 'index' %}"><b>Admin</b>LTE</a>#}
+            <a href="{% url 'index' %}" class="brand-link login_page_bl">
+                <img src="{% static "assets/images/logo.png" %}" alt="AdminLTE Logo" class="brand-image img-circle"
+                    style="opacity: .8">
+                <span class="brand-text font-weight-light">F&R Projectbau GmbH</span>
+            </a>
+        </div>
 {% block content %}
 
 {% endblock %}
+</div>
 <!-- /.login-box -->
 
 <!-- jQuery -->

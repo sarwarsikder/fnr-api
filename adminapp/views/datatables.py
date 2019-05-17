@@ -15,7 +15,7 @@ class StaffListView(BaseDatatableView):
     order_columns = ['id', 'username', 'full_name', 'email', 'is_active']
 
     def get_initial_queryset(self):
-        return Users.objects.annotate(full_name=Concat('first_name', Value(' '), 'last_name')).filter(is_active=1).exclude(id=self.request.user.id).exclude(is_superuser=True)
+        return Users.objects.annotate(full_name=Concat('first_name', Value(' '), 'last_name')).filter(is_staff=True).exclude(id=self.request.user.id).exclude(is_superuser=True)
 
 
 class CompanyListView(BaseDatatableView):
@@ -24,5 +24,5 @@ class CompanyListView(BaseDatatableView):
     order_columns = ['user.id', 'company_name', 'user.username', 'full_name', 'user.email', 'user.is_active', 'telephone']
 
     def get_initial_queryset(self):
-        return HandWorker.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name')).filter(user__is_active=1)
+        return HandWorker.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name')).all()
 

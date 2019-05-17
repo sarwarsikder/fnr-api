@@ -60,9 +60,14 @@ class UserInfo(APIView):
             if working_type:
                 worker_form['working_type'] = working_type
             HandWorker.objects.filter(user_id=instance.id).update(**worker_form)
-            serializer = UserSerializer(instance, data=request.data, partial=partial)
+            updated_data = {}
+            if 'first_name' in request.data:
+                updated_data['first_name'] = request.data['first_name']
+            if 'last_name' in request.data:
+                updated_data['last_name'] = request.data['last_name']
+            serializer = UserSerializer(instance, data=updated_data, partial=partial)
             serializer.is_valid(raise_exception=True)
-            serializer.update(instance, request.data)
+            serializer.update(instance, updated_data)
 
             if getattr(instance, '_prefetched_objects_cache', None):
                 # If 'prefetch_related' has been applied to a queryset, we need to
@@ -126,6 +131,26 @@ class ResetPasswordRequestViewSet:
             return Response({'success': False, 'message': "Something went wrong."},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @api_view(["post"])
+    def change_user_password(request):
+        try:
+            if not request.user.is_authenticated:
+                return Response({'success': False, 'message': "User not authorized."},
+                                status=status.HTTP_401_UNAUTHORIZED)
+            old_password = request.data.pop("old_password", '')
+            password = request.data.pop("password", '')
+            confirm_password = request.data.pop("confirm_password", '')
+            if password != confirm_password:
+                return Response({"password": "Passwords did not match"}, status=status.HTTP_400_BAD_REQUEST)
+            if request.user.check_password(old_password):
+                request.user.set_password(password)
+                request.user.save()
+            else:
+                return Response({"old_password": "Old Passwords did not match"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': True, 'message': "Password Change Successfully."}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'success': False, 'message': "Something went wrong."},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # class UploadsView(APIView):
 #
