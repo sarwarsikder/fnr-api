@@ -26,56 +26,7 @@ to get the desired effect
 
         {% include "layout/footer.html" %}
     </div>
-    <!-- ./wrapper -->
 
-    <!-- REQUIRED SCRIPTS -->
-
-    <!-- Bootstrap -->
-    <script src="{% static 'assets/javascripts/libraries/bootstrap.bundle.min.js' %}"></script>
-    <!-- AdminLTE -->
-    <script src="{% static 'assets/javascripts/libraries/adminlte.min.js' %}"></script>
-
-    <!-- OPTIONAL SCRIPTS -->
-{#    <script src="{% static 'assets/javascripts/Chart.min.js' %}"></script>#}
-{#    <script src="{% static 'assets/javascripts/demo.js' %}"></script>#}
-{#    <script src="{% static 'assets/javascripts/dashboard3.js' %}"></script>#}
-    <script src="{% static 'assets/javascripts/libraries/bootbox.min.js' %}"></script>
-    <script src="{% static 'assets/javascripts/common.js' %}"></script>
-    <script src="{% static 'assets/javascripts/admin.js' %}"></script>
-    <script>
-        $(function () {
-            $('#current-project').select2()
-        });
-    </script>
-    <script type="text/javascript">
-        var init = [];
-        init.push(function () {
-            // Javascript code here
-        });
-        var dt_language = {
-            "emptyTable": "{% trans "No data available in table" %}",
-            "info": "{% trans "Showing _START_ to _END_ of _TOTAL_ entries" %}",
-            "infoEmpty": "{% trans "Showing 0 to 0 of 0 entries" %}",
-            "infoFiltered": "{% trans "(filtered from _MAX_ total entries)" %}",
-            "infoPostFix": "",
-            "thousands": ",",
-            "lengthMenu": "{% trans "Show _MENU_ entries" %}",
-            "loadingRecords": "{% trans "Loading..." %}",
-            "processing": "{% trans "Processing..." %}",
-            "search": "{% trans "Search:" %}",
-            "zeroRecords": "{% trans "No matching records found" %}",
-            "paginate": {
-                "first": "{% trans "First" %}",
-                "last": "{% trans "Last" %}",
-                "next": "{% trans "Next" %}",
-                "previous": "{% trans "Previous" %}"
-            },
-            "aria": {
-                "sortAscending": "{% trans ": activate to sort column ascending" %}",
-                "sortDescending": "{% trans ": activate to sort column descending" %}"
-            }
-        }
-    </script>
 </body>
 
 </html>

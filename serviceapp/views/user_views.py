@@ -4,7 +4,7 @@ from rest_framework.permissions import BasePermission
 from rest_framework import viewsets, status, mixins
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from adminapp.models import Users, ResetPassword
+from adminapp.models import Users, ResetPassword, HandWorker
 from serviceapp.serializers.user_serializer import UserSerializer
 from django.http import JsonResponse
 from django.conf import settings
@@ -37,6 +37,11 @@ class UserInfo(APIView):
     permission_classes = (UserProfilePermissions, )
 
     def get(self, request):
+        request.user.avatar = CommonView.get_file_path(request.user.avatar)
+        if not request.user.is_staff:
+            request.user.telephone = request.user.handworker.telephone
+            request.user.company_name = request.user.handworker.company_name
+            request.user.working_type = json.loads(request.user.handworker.working_type)
         serializer = UserSerializer(request.user)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -44,7 +49,17 @@ class UserInfo(APIView):
         try:
             partial = kwargs.pop('partial', True)
             instance = Users.objects.get(id=request.user.id)
-
+            company_name = request.data.pop("company_name", '')
+            telephone = request.data.pop("telephone", '')
+            working_type = request.data.pop("working_type", '')
+            worker_form = {}
+            if company_name:
+                worker_form['company_name'] = company_name
+            if telephone:
+                worker_form['telephone'] = telephone
+            if working_type:
+                worker_form['working_type'] = working_type
+            HandWorker.objects.filter(user_id=instance.id).update(**worker_form)
             serializer = UserSerializer(instance, data=request.data, partial=partial)
             serializer.is_valid(raise_exception=True)
             serializer.update(instance, request.data)
@@ -53,8 +68,13 @@ class UserInfo(APIView):
                 # If 'prefetch_related' has been applied to a queryset, we need to
                 # forcibly invalidate the prefetch cache on the instance.
                 instance._prefetched_objects_cache = {}
-
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            new_serializer_data = dict(serializer.data)
+            new_serializer_data['avatar'] = CommonView.get_file_path(request.user.avatar)
+            if not request.user.is_staff:
+                new_serializer_data['telephone'] = instance.handworker.telephone
+                new_serializer_data['company_name'] = instance.handworker.company_name
+                new_serializer_data['working_type'] = json.loads(instance.handworker.working_type)
+            return Response(new_serializer_data, status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             response = {

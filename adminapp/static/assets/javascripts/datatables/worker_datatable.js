@@ -32,10 +32,13 @@ $(document).ready(function () {
                 "className": "",
                 "targets": 5,
                 'render': function (data, type, full, meta) {
-                    var status = '<span class="label label-primary">Active</span>';
-                    if (full[5] == '0') {
-                        status = '<span class="label label-warning">Inactive</span>';
+                    var is_checked = "";
+                    if (full[5] == "True"){
+                        is_checked = "checked";
                     }
+                    var status = '<label class="switch" for="checkbox">'+
+                                '<input type="checkbox" class="user-status-checkbox" id="checkbox" '+is_checked+' />'+
+                                '<div class="slider round"></div>';
                     return status;
                 }
             },
@@ -46,8 +49,8 @@ $(document).ready(function () {
                 "targets": 7,
                 'render': function (data, type, full, meta) {
                     var updateUrl = base_url+"/companies/update/"+full[0]+"/";
-                    var actions = '<a href="'+updateUrl+'" class="btn btn-primary worker-info" data-toggle="tooltip" data-placement="top" title="Edit Staff" data-original-title="Edit"><i class="dropdown-icon fa fa-edit"></i></a>'+
-                                  '<button class="btn btn-danger delete-worker" data-id="'+full[0]+'" data-toggle="tooltip" data-placement="top" title="Delete Staff" data-original-title="Delete"><i class="dropdown-icon fa fa-times-circle"></i></button>';
+                    var actions = '<a href="'+updateUrl+'" class="btn btn-primary btn-lil worker-info" data-toggle="tooltip" data-placement="top" title="Edit Handwerker" data-original-title="Edit"><i class="dropdown-icon fa fa-edit"></i></a>'+
+                                  '<button class="btn btn-danger btn-lil delete-worker" data-id="'+full[0]+'" data-toggle="tooltip" data-placement="top" title="Delete Handwerker" data-original-title="Delete"><i class="dropdown-icon fa fa-times-circle"></i></button>';
                     return actions;
                 }
             }
