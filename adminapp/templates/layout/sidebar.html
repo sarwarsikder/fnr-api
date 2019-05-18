@@ -108,21 +108,23 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="projects.php" class="nav-link">
+                            <a href="{% url 'projects' %}" class="nav-link">
                                 <i class="nav-icon fas fa-map-marked"></i>
                                 <p>
                                     Projects
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="components.php" class="nav-link">
-                                <i class="nav-icon fa fa-table"></i>
-                                <p>
-                                    Components
-                                </p>
-                            </a>
-                        </li>
+                        {% if request.user.is_superuser %}
+                            <li class="nav-item">
+                                <a href="{% url 'components' %}" class="nav-link">
+                                    <i class="nav-icon fa fa-table"></i>
+                                    <p>
+                                        Components
+                                    </p>
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

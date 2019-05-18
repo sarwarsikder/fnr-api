@@ -1,0 +1,103 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb ">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Components</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h3 class="card-title">Components</h3>
+                                </div>
+                                <div class="col-sm text-right">
+                                    <a href="add_task.php" class="btn btn-primary" data-toggle="tooltip"
+                                       data-placement="top" title="Add Task"><i class="fa fa-plus"></i></a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body task-card">
+                            <div id="accordion">
+                                {% for component in components %}
+                                    <div class="card">
+                                        <div class="card-header task_group_header"
+                                             id="heading-{{ component.id }}" data-toggle="collapse"
+                                             data-target="#collapse-{{ component.id }}"
+                                             aria-expanded="true" aria-controls="collapse-{{ component.id }}">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link">
+                                                    {{ component.name }}
+                                                </button>
+                                            </h5>
+                                        </div>
+
+                                        <div id="collapse-{{ component.id }}" class="collapse "
+                                             aria-labelledby="heading-{{ component.id }}"
+                                             data-parent="#accordion">
+                                            <div class="card-body">
+                                                {% if component.sub_components %}
+                                                {% for sub_component in component.sub_components %}
+                                                    <div class="row">
+                                                        <a href="task-detail.php" class="task_title">
+                                                            <div class="col-md-12 task_wrap">
+                                                                {{ sub_component.name }}
+                                                                <div class="dropdown-divider"></div>
+                                                                <p>{{ sub_component.static_description }}</p>
+                                                            </div>
+                                                        </a>
+
+                                                    </div>
+                                                {% endfor %}
+                                                    {% else %}
+                                                    <div class="row">
+                                                        <a href="task-detail.php" class="task_title">
+                                                            <div class="col-md-12 task_wrap">
+                                                                {{ component.name }}
+                                                                <div class="dropdown-divider"></div>
+                                                                <p>{{ component.static_description }}</p>
+                                                            </div>
+                                                        </a>
+
+                                                    </div>
+                                            {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.col-lg-6 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+    {% include "layout/datatable_footer.html" %}
+{% endblock %}
