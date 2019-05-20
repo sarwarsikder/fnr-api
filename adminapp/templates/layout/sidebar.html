@@ -91,14 +91,16 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{% url 'staffs' %}" class="nav-link">
-                                <i class="nav-icon fa fa-users"></i>
-                                <p>
-                                    Staff List
-                                </p>
-                            </a>
-                        </li>
+                        {% if request.user.is_superuser %}
+                            <li class="nav-item">
+                                <a href="{% url 'staffs' %}" class="nav-link">
+                                    <i class="nav-icon fa fa-users"></i>
+                                    <p>
+                                        Staff List
+                                    </p>
+                                </a>
+                            </li>
+                        {% endif %}
                         <li class="nav-item">
                             <a href="{% url 'companies' %}" class="nav-link">
                                 <i class="nav-icon fas fa-gavel"></i>
@@ -107,6 +109,7 @@
                                 </p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="{% url 'projects' %}" class="nav-link">
                                 <i class="nav-icon fas fa-map-marked"></i>
@@ -115,7 +118,7 @@
                                 </p>
                             </a>
                         </li>
-                        {% if request.user.is_superuser %}
+                    {% if request.user.is_superuser %}
                             <li class="nav-item">
                                 <a href="{% url 'components' %}" class="nav-link">
                                     <i class="nav-icon fa fa-table"></i>

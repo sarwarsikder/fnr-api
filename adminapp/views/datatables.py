@@ -1,7 +1,7 @@
 from django.db.models import Case, Value, When, Count
 from django.db.models.functions import Concat
 
-from adminapp.models import Users, HandWorker
+from adminapp.models import Users, HandWorker, Projects
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.db import connection
 from django.template.loader import render_to_string
@@ -25,4 +25,16 @@ class CompanyListView(BaseDatatableView):
 
     def get_initial_queryset(self):
         return HandWorker.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name')).all()
+
+
+class ProjectListView(BaseDatatableView):
+    model = Projects
+    columns = ['id', 'name', 'city', 'type', 'start_date', 'end_date', 'user_type']
+    order_columns = ['id', 'name', 'city', 'type', 'start_date', 'end_date']
+
+    def get_initial_queryset(self):
+        if self.request.user.is_superuser:
+            return Projects.objects.all()
+        else:
+            return Projects.objects.annotate(user_type=Case(When(projectstuff__user__is_superuser=True, then='projectstuff__user__is_superuser'), default='projectstuff__user__is_superuser')).filter(projectstuff__user_id=self.request.user.id)
 

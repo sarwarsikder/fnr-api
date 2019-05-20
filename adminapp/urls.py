@@ -38,6 +38,10 @@ urlpatterns = [
     url(r'^companies/delete/$', company_views.CompaniesView.delete, name='companies-delete'),
     url(r'^company-list/$', datatables.CompanyListView.as_view(), name='companyList'),
     url(r'^change-user-status/$', staff_views.StaffsView.change_user_status, name='change-user-status'),
-    url(r'^projects/$', project_views.ProjectView.as_view(), name='projects'),
+    url(r'^projects/$', project_views.ProjectsView.as_view(), name='projects'),
+    url(r'^projects/add/$', project_views.ProjectFormView.as_view(), name='projects-add'),
+    url(r'^projects/update/(?P<pk>[\w-]+)/$', project_views.ProjectUpdateView.as_view(), name='projects-update'),
+    url(r'^projects/delete/$', project_views.ProjectsView.delete, name='projects-delete'),
+    url(r'^project-list/$', datatables.ProjectListView.as_view(), name='projectList'),
     url(r'^components/$', component_views.ComponentView.as_view(), name='components'),
 ]

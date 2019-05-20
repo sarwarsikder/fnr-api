@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from adminapp.views.mail import MailHelper
 from adminapp.views.helper import LogHelper
 from adminapp.models import Components
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 class IndexView(generic.DetailView):
@@ -59,6 +60,12 @@ class CommonView(generic.DetailView):
     def get_all_main_component(request):
         components = Components.objects.filter(parent__isnull=True)
         return components
+
+    def superuser_login(request):
+        if request.user.is_authenticated and request.user.is_superuser:
+            return True
+        else:
+            return False
 
 
 

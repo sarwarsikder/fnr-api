@@ -45,47 +45,47 @@ class UserInfo(APIView):
         serializer = UserSerializer(request.user)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, *args, **kwargs ):
-        try:
-            partial = kwargs.pop('partial', True)
-            instance = Users.objects.get(id=request.user.id)
-            company_name = request.data.pop("company_name", '')
-            telephone = request.data.pop("telephone", '')
-            working_type = request.data.pop("working_type", '')
-            worker_form = {}
-            if company_name:
-                worker_form['company_name'] = company_name
-            if telephone:
-                worker_form['telephone'] = telephone
-            if working_type:
-                worker_form['working_type'] = working_type
-            HandWorker.objects.filter(user_id=instance.id).update(**worker_form)
-            updated_data = {}
-            if 'first_name' in request.data:
-                updated_data['first_name'] = request.data['first_name']
-            if 'last_name' in request.data:
-                updated_data['last_name'] = request.data['last_name']
-            serializer = UserSerializer(instance, data=updated_data, partial=partial)
-            serializer.is_valid(raise_exception=True)
-            serializer.update(instance, updated_data)
-
-            if getattr(instance, '_prefetched_objects_cache', None):
-                # If 'prefetch_related' has been applied to a queryset, we need to
-                # forcibly invalidate the prefetch cache on the instance.
-                instance._prefetched_objects_cache = {}
-            new_serializer_data = dict(serializer.data)
-            new_serializer_data['avatar'] = CommonView.get_file_path(request.user.avatar)
-            if not request.user.is_staff:
-                new_serializer_data['telephone'] = instance.handworker.telephone
-                new_serializer_data['company_name'] = instance.handworker.company_name
-                new_serializer_data['working_type'] = json.loads(instance.handworker.working_type)
-            return Response(new_serializer_data, status=status.HTTP_200_OK)
-        except Exception as e:
-            print(e)
-            response = {
-                "message": "Something went wrong. please try again"
-            }
-            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+    # def post(self, request, *args, **kwargs ):
+    #     try:
+    #         partial = kwargs.pop('partial', True)
+    #         instance = Users.objects.get(id=request.user.id)
+    #         company_name = request.data.pop("company_name", '')
+    #         telephone = request.data.pop("telephone", '')
+    #         working_type = request.data.pop("working_type", '')
+    #         worker_form = {}
+    #         if company_name:
+    #             worker_form['company_name'] = company_name
+    #         if telephone:
+    #             worker_form['telephone'] = telephone
+    #         if working_type:
+    #             worker_form['working_type'] = working_type
+    #         HandWorker.objects.filter(user_id=instance.id).update(**worker_form)
+    #         updated_data = {}
+    #         if 'first_name' in request.data:
+    #             updated_data['first_name'] = request.data['first_name']
+    #         if 'last_name' in request.data:
+    #             updated_data['last_name'] = request.data['last_name']
+    #         serializer = UserSerializer(instance, data=updated_data, partial=partial)
+    #         serializer.is_valid(raise_exception=True)
+    #         serializer.update(instance, updated_data)
+    #
+    #         if getattr(instance, '_prefetched_objects_cache', None):
+    #             # If 'prefetch_related' has been applied to a queryset, we need to
+    #             # forcibly invalidate the prefetch cache on the instance.
+    #             instance._prefetched_objects_cache = {}
+    #         new_serializer_data = dict(serializer.data)
+    #         new_serializer_data['avatar'] = CommonView.get_file_path(request.user.avatar)
+    #         if not request.user.is_staff:
+    #             new_serializer_data['telephone'] = instance.handworker.telephone
+    #             new_serializer_data['company_name'] = instance.handworker.company_name
+    #             new_serializer_data['working_type'] = json.loads(instance.handworker.working_type)
+    #         return Response(new_serializer_data, status=status.HTTP_200_OK)
+    #     except Exception as e:
+    #         print(e)
+    #         response = {
+    #             "message": "Something went wrong. please try again"
+    #         }
+    #         return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ResetPasswordRequestViewSet:

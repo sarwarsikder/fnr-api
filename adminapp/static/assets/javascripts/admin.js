@@ -63,6 +63,37 @@ $(function () {
         });
     });
 
+    $body.on('click', '.delete-project', function () {
+        var $this = $(this);
+        var id = $this.data('id'),
+            csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        bootbox.confirm("Are you sure you want to delete this Project?", function (result) {
+            if (result) {
+                $.ajax({
+                    url: base_url + '/projects/delete/',
+                    type: 'POST',
+                    data: {
+                        'id': id,
+                        'csrfmiddlewaretoken': csrfToken
+                    },
+                    success: function (responseText) {
+                        var response = responseText;
+                        if (response.success) {
+                            $.growl.notice({message: response.message});
+                            var table = $('#projects-table').DataTable();
+                            table.row($this.closest('tr')).remove().draw();
+                        } else {
+                            $.growl.error({message: response.message});
+                        }
+                    },
+                    error: function (e) {
+                        clog(e);
+                    }
+                });
+            }
+        });
+    });
+
     $body.on('change', '.user-status-checkbox', function () {
         var $this = $(this);
         var status = 0;
