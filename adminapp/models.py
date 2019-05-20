@@ -98,6 +98,17 @@ class Projects(models.Model):
         db_table = "projects"
 
 
+class ProjectPlans(models.Model):
+    title = models.CharField(max_length=100)
+    plan_file = models.FileField(null=True, upload_to='static/assets/project/plan_pdf/')
+    project = models.ForeignKey(Projects, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(Users, related_name='project_plan_created_by', null=True, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "project_plans"
+
+
 class ProjectStuff(models.Model):
     project = models.ForeignKey(Projects, on_delete=models.CASCADE)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
@@ -123,7 +134,7 @@ class Buildings(models.Model):
 
 class BuildingPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='static/assets/building/plan_pdf/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg'])])
+    plan_file = models.FileField(null=True, upload_to='static/assets/building/plan_pdf/')
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
     created_by = models.ForeignKey(Users, related_name='building_plan_created_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -151,7 +162,7 @@ class Flats(models.Model):
 
 class FlatPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='static/assets/flat/plan_pdf/', validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg'])])
+    plan_file = models.FileField(null=True, upload_to='static/assets/flat/plan_pdf/')
     flat = models.ForeignKey(Flats, on_delete=models.CASCADE)
     created_by = models.ForeignKey(Users, related_name='flat_plan_created_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -181,6 +192,8 @@ class BuildingComponents(models.Model):
     flat = models.ForeignKey(Flats, null=True, on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
     component = models.ForeignKey(Components, null=True, on_delete=models.SET_NULL)
+    assign_to = models.ForeignKey(Users, related_name='component_assign_to', null=True, on_delete=models.SET_NULL)
+    assigned_by = models.ForeignKey(Users, related_name='component_assigned_by', null=True, on_delete=models.SET_NULL)
     created_by = models.ForeignKey(Users, related_name='building_component_created_by', null=True, on_delete=models.SET_NULL)
     updated_by = models.ForeignKey(Users, related_name='building_component_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -192,8 +205,6 @@ class BuildingComponents(models.Model):
 
 class Tasks(models.Model):
     building_component = models.ForeignKey(BuildingComponents, on_delete=models.CASCADE)
-    assign_to = models.ForeignKey(Users, related_name='task_assign_to', null=True, on_delete=models.SET_NULL)
-    assigned_by = models.ForeignKey(Users, related_name='task_assigned_by', null=True, on_delete=models.SET_NULL)
     followers = JSONField(default=dict)
     created_by = models.ForeignKey(Users, related_name='task_created_by', null=True, on_delete=models.SET_NULL)
     updated_by = models.ForeignKey(Users, related_name='task_last_updated_by', null=True, on_delete=models.SET_NULL)
@@ -207,7 +218,7 @@ class Tasks(models.Model):
 class Comments(models.Model):
     text = models.TextField()
     type = CommentType(max_length=10, default="text")
-    file_type = models.CharField(max_length=50, null=True, blank=True)
+    file_type = JSONField(default="[]")
     task = models.ForeignKey(Tasks, on_delete=models.CASCADE)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -242,6 +253,7 @@ class Notification(models.Model):
     text = models.TextField()
     task = models.ForeignKey(Tasks, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    sending_by = models.ForeignKey(Users, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "notification"
