@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from adminapp.views.mail import MailHelper
 from adminapp.views.helper import LogHelper
-from adminapp.models import Components
+from adminapp.models import Components, Projects
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 
@@ -66,6 +66,11 @@ class CommonView(generic.DetailView):
             return True
         else:
             return False
+
+    def get_all_projects(request):
+        projects = Projects.objects.all()
+        return projects
+
 
 
 

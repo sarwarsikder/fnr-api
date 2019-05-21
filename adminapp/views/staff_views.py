@@ -5,11 +5,12 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import View, UpdateView
-from adminapp.models import Users
-from adminapp.forms.user_form import UserForm, UserUpdateForm
+from adminapp.models import Users, ProjectStuff
+from adminapp.forms.user_form import UserForm, UserUpdateForm, UserPasswordChangeForm
 from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
 from django.conf import settings
+from adminapp.views.project_views import ProjectsView
 
 
 class StaffsView(generic.DetailView):
@@ -52,12 +53,15 @@ class StaffFormView(View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class
-        return render(request, self.template_name, {'form': form})
+        projects = CommonView.get_all_projects(request)
+        return render(request, self.template_name, {'form': form, 'projects': projects})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
+            projects = request.POST.getlist('project_list')
             obj = form.save(self, request)
+            ProjectsView.assign_staff(request, projects, obj.id)
             mailTemplate = "mails/user_registered.html"
             context = {
                 "user_full_name": obj.get_full_name(),
@@ -68,7 +72,8 @@ class StaffFormView(View):
             to = obj.email
             CommonView.sendEmail(self.request, mailTemplate, context, subject, to, obj.id)
             return HttpResponseRedirect('/staffs/')
-        return render(request, self.template_name, {'form': form})
+        projects = CommonView.get_all_projects(request)
+        return render(request, self.template_name, {'form': form, 'projects': projects})
 
 
 class StaffUpdateView(UpdateView):
@@ -79,6 +84,8 @@ class StaffUpdateView(UpdateView):
 
     def form_valid(self, form):
         form.update(request=self.request)
+        projects = self.request.POST.getlist('project_list')
+        ProjectsView.assign_staff(self.request, projects, self.object.id)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
@@ -86,27 +93,29 @@ class StaffUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(StaffUpdateView, self).get_context_data(**kwargs)
+        context['projects'] = CommonView.get_all_projects(self.request)
         context['avatar'] = CommonView.get_file_path(self.object.avatar)
+        context['project_list'] = list(ProjectStuff.objects.filter(user_id=self.object.id).values_list('project_id', flat=True))
         return context
 
 
-# class StaffPasswordChangeView(UpdateView):
-#     model = Users
-#     form_class = UserPasswordChangeForm
-#     template_name = 'users/user_password_change.html'
-#
-#     def get_success_url(self):
-#         return reverse_lazy('staffs-all')
-#
-#     def form_valid(self, form):
-#         form.save(request=self.request)
-#         mailTemplate = "mails/user_password_change.html"
-#         context = {
-#             "user_full_name": self.object.get_full_name(),
-#             "password": self.request.POST.get('password')
-#         }
-#         subject = "Password Change"
-#         to = self.object.email
-#         CommonView.sendEmail(self.request, mailTemplate, context, subject, to, self.object.id)
-#         return HttpResponseRedirect(self.get_success_url())
+class StaffPasswordChangeView(UpdateView):
+    model = Users
+    form_class = UserPasswordChangeForm
+    template_name = 'staffs/staff_password_change.html'
+
+    def get_success_url(self):
+        return reverse_lazy('staffs')
+
+    def form_valid(self, form):
+        form.save(request=self.request)
+        mailTemplate = "mails/user_password_change.html"
+        context = {
+            "user_full_name": self.object.get_full_name(),
+            "password": self.request.POST.get('password')
+        }
+        subject = "Password Change"
+        to = self.object.email
+        CommonView.sendEmail(self.request, mailTemplate, context, subject, to, self.object.id)
+        return HttpResponseRedirect(self.get_success_url())
 

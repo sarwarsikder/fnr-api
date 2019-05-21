@@ -1,5 +1,5 @@
 from django import forms
-from adminapp.models import Users
+from adminapp.models import Users, ProjectStuff
 import re
 
 
@@ -25,10 +25,11 @@ class ProfileForm(forms.ModelForm):
 class UserForm(ProfileForm):
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(required=True)
+    project_list = forms.CharField(required=False, max_length=1000)
 
     class Meta:
         model = Users
-        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'is_active', 'address', 'avatar')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'is_active', 'address', 'avatar', 'project_list')
 
     def clean(self):
         cleaned_data = super(ProfileForm, self).clean()
@@ -124,26 +125,26 @@ class WorkerUpdateForm(ProfileForm):
         return obj
 
 
-# class UserPasswordChangeForm(forms.ModelForm):
-#
-#     password = forms.CharField(widget=forms.PasswordInput(), max_length=200, min_length=6)
-#     confirm_password = forms.CharField(widget=forms.PasswordInput())
-#
-#     class Meta:
-#         model = Users
-#         fields = ('password',)
-#
-#     def clean(self):
-#         cleaned_data = super(UserPasswordChangeForm, self).clean()
-#         password = cleaned_data.get("password")
-#         confirm_password = cleaned_data.get("confirm_password")
-#
-#         if password != confirm_password:
-#             self.add_error('confirm_password', 'Passwords do not match.')
-#
-#     def save(self, request, commit=False):
-#         obj = super(UserPasswordChangeForm, self).save(commit=False)
-#         obj.set_password(self.cleaned_data['password'])
-#         obj.save()
-#         return obj
+class UserPasswordChangeForm(forms.ModelForm):
+
+    password = forms.CharField(widget=forms.PasswordInput(), max_length=200, min_length=6)
+    confirm_password = forms.CharField(widget=forms.PasswordInput())
+
+    class Meta:
+        model = Users
+        fields = ('password',)
+
+    def clean(self):
+        cleaned_data = super(UserPasswordChangeForm, self).clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if password != confirm_password:
+            self.add_error('confirm_password', 'Passwords do not match.')
+
+    def save(self, request, commit=False):
+        obj = super(UserPasswordChangeForm, self).save(commit=False)
+        obj.set_password(self.cleaned_data['password'])
+        obj.save()
+        return obj
 

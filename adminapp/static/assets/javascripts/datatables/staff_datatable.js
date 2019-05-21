@@ -49,7 +49,9 @@ $(document).ready(function () {
                 "targets": 5,
                 'render': function (data, type, full, meta) {
                     var updateUrl = base_url+"/staffs/update/"+full[0]+"/";
+                    var changePasswordUrl = base_url+"/staffs/change-password/"+full[0];
                     var actions = '<a href="'+updateUrl+'" class="btn btn-primary btn-lil staff-info" data-toggle="tooltip" data-placement="top" title="Edit Staff" data-original-title="Edit"><i class="dropdown-icon fa fa-edit"></i></a>'+
+                                  '<a href="'+changePasswordUrl+'" class="btn btn-primary btn-lil change-password" data-toggle="tooltip" data-placement="top" title="Change password" data-original-title="Change password"><i class="dropdown-icon fa fa-key"></i></a>'+
                                   '<button class="btn btn-danger btn-lil delete-staff" data-id="'+full[0]+'" data-toggle="tooltip" data-placement="top" title="Delete Staff" data-original-title="Delete"><i class="dropdown-icon fa fa-times-circle"></i></button>';
                     return actions;
                 }

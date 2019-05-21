@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import View, UpdateView
-from adminapp.models import Projects
+from adminapp.models import Projects, ProjectStuff
 from adminapp.forms.project_form import ProjectForm
 from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
@@ -32,6 +32,22 @@ class ProjectsView(generic.DetailView):
                 response['success'] = False
                 response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
+
+    def assign_staff(request, projects, user_id):
+        try:
+            project_exists = []
+            project_staff_list = []
+            for project in projects:
+                project_exists.append(project)
+                if not (ProjectStuff.objects.filter(user_id=user_id, project_id=project).exists()):
+                    project_staff = ProjectStuff(project_id=project, user_id=user_id, created_by=request.user)
+                    project_staff_list.append(project_staff)
+            ProjectStuff.objects.bulk_create(project_staff_list)
+            ProjectStuff.objects.filter(user_id=user_id).exclude(project_id__in=project_exists).delete()
+            return True
+        except Exception as e:
+            LogHelper.efail(e)
+            return True
 
 
 class ProjectFormView(View):
