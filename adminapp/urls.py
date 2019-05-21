@@ -33,17 +33,26 @@ urlpatterns = [
     url(r'^staffs/delete/$', staff_views.StaffsView.delete, name='staffs-delete'),
     url(r'^staff-list/$', datatables.StaffListView.as_view(), name='staffList'),
     url(r'^staffs/change-password/(?P<pk>[\w-]+)$', staff_views.StaffPasswordChangeView.as_view(),name='staffs-password-update'),
+
     url(r'^companies/$', company_views.CompaniesView.as_view(), name='companies'),
     url(r'^companies/add/$', company_views.CompanyFormView.as_view(), name='companies-add'),
     url(r'^companies/update/(?P<pk>[\w-]+)/$', company_views.CompanyUpdateView.as_view(), name='companies-update'),
     url(r'^companies/delete/$', company_views.CompaniesView.delete, name='companies-delete'),
     url(r'^company-list/$', datatables.CompanyListView.as_view(), name='companyList'),
     url(r'^companies/change-password/(?P<pk>[\w-]+)$', company_views.CompanyPasswordChangeView.as_view(),name='companies-password-update'),
+
     url(r'^change-user-status/$', staff_views.StaffsView.change_user_status, name='change-user-status'),
+
     url(r'^projects/$', project_views.ProjectsView.as_view(), name='projects'),
     url(r'^projects/add/$', project_views.ProjectFormView.as_view(), name='projects-add'),
     url(r'^projects/update/(?P<pk>[\w-]+)/$', project_views.ProjectUpdateView.as_view(), name='projects-update'),
     url(r'^projects/delete/$', project_views.ProjectsView.delete, name='projects-delete'),
     url(r'^project-list/$', datatables.ProjectListView.as_view(), name='projectList'),
+    url(r'^projects/(?P<project_id>[\w-]+)/buildings/$', building_views.BuildingsView.as_view(), name='buildings'),
+    url(r'^building-list/$', datatables.BuildingListView.as_view(), name='buildingList'),
+    url(r'^projects/(?P<project_id>[\w-]+)/buildings/add/$', building_views.BuildingFormView.as_view(), name='buildings-add'),
+    url(r'^projects/(?P<project_id>[\w-]+)/buildings/update/(?P<pk>[\w-]+)/$', building_views.BuildingUpdateView.as_view(), name='buildings-update'),
+    url(r'^projects/(?P<project_id>[\w-]+)/buildings/delete/$', building_views.BuildingsView.delete, name='buildings-delete'),
+
     url(r'^components/$', component_views.ComponentView.as_view(), name='components'),
 ]

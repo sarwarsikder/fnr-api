@@ -126,9 +126,14 @@ class ProjectStuff(models.Model):
 
 
 class Buildings(models.Model):
-    number = models.CharField(max_length=10)
+    hause_number = models.CharField(max_length=45)
+    display_number = models.CharField(max_length=45)
     description = models.TextField(null=True, blank=True)
     project = models.ForeignKey(Projects, on_delete=models.CASCADE)
+    grundung = models.CharField(max_length=45)
+    aussenwande_eg_og_dg = models.CharField(max_length=45)
+    fenster_beschattung = models.CharField(max_length=45)
+    dach = models.CharField(max_length=45, null=True, blank=True)
     created_by = models.ForeignKey(Users, related_name='building_created_by', null=True, on_delete=models.SET_NULL)
     updated_by = models.ForeignKey(Users, related_name='building_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)

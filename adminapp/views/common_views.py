@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from adminapp.views.mail import MailHelper
 from adminapp.views.helper import LogHelper
-from adminapp.models import Components, Projects
+from adminapp.models import Components, Projects, BuildingComponents, Tasks
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 
@@ -70,6 +70,48 @@ class CommonView(generic.DetailView):
     def get_all_projects(request):
         projects = Projects.objects.all()
         return projects
+
+    def create_default_building_components(request, building_id):
+        try:
+            default_components = Components.objects.filter(building=True)
+            building_components = []
+            for component in default_components:
+                component_form = {
+                    "description": component.static_description,
+                    "building_id": building_id,
+                    "created_by_id": request.user.id,
+                    "updated_by_id": request.user.id,
+                    "component_id": component.id
+                }
+                building_components.append(BuildingComponents(**component_form))
+            BuildingComponents.objects.bulk_create(building_components)
+            return True
+        except Exception as e:
+            LogHelper.efail(e)
+            return False
+
+    def create_default_tasks(request, components):
+        try:
+            task_list = []
+            for component in components:
+                task_flag = False
+                if component.component.parent:
+                    task_flag = True
+                elif not Components.objects.filter(parent_id=component.component.id).exists():
+                    task_flag = True
+                if task_flag:
+                    task_form = {
+                        "building_component_id": component.id,
+                        "created_by_id": request.user.id,
+                        "updated_by_id": request.user.id
+                    }
+                    task_list.append(Tasks(**task_form))
+            Tasks.objects.bulk_create(task_list)
+            return True
+        except Exception as e:
+            LogHelper.efail(e)
+            return False
+
 
 
 
