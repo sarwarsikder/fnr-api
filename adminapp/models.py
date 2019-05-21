@@ -23,6 +23,10 @@ else:
     basestring = basestring
 
 
+def my_default():
+    return {'foo': 'bar'}
+
+
 class EnumField(models.Field):
     def __init__(self, *args, **kwargs):
         super(EnumField, self).__init__(*args, **kwargs)
@@ -65,6 +69,7 @@ class Users(AbstractUser):
     avatar = models.FileField(null=True, upload_to='adminapp/static/assets/avatar/', validators=[FileExtensionValidator(allowed_extensions=['jpg','png','svg'])])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    current_activity = JSONField(default=my_default)
 
     # USERNAME_FIELD = 'email'
 
@@ -100,8 +105,9 @@ class Projects(models.Model):
 
 class ProjectPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='static/assets/project/plan_pdf/')
+    plan_file = models.FileField(null=True, upload_to='static/assets/project/plans/')
     project = models.ForeignKey(Projects, on_delete=models.CASCADE)
+    file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='project_plan_created_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -134,8 +140,9 @@ class Buildings(models.Model):
 
 class BuildingPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='static/assets/building/plan_pdf/')
+    plan_file = models.FileField(null=True, upload_to='static/assets/building/plans/')
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
+    file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='building_plan_created_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -162,8 +169,9 @@ class Flats(models.Model):
 
 class FlatPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='static/assets/flat/plan_pdf/')
+    plan_file = models.FileField(null=True, upload_to='static/assets/flat/plans/')
     flat = models.ForeignKey(Flats, on_delete=models.CASCADE)
+    file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='flat_plan_created_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
 

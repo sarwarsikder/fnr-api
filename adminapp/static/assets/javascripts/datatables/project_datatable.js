@@ -63,9 +63,6 @@ $(document).ready(function () {
                                       '<button class="btn btn-danger btn-lil delete-project" data-id="'+full[0]+'" data-toggle="tooltip" data-placement="top" title="Delete Project" data-original-title="Delete"><i class="fa fa-times-circle"></i></button>';
                         return actions;
                     }
-
-
-
                 }
             }
         ],
