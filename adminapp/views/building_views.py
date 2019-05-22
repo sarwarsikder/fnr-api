@@ -1,15 +1,17 @@
 import json
 
+import qrcode
 from django.views import generic
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import View, UpdateView
-from adminapp.models import Buildings, BuildingComponents, Components, Projects
+from adminapp.models import Buildings, BuildingComponents, Components, Projects, QrCode
 from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
 from adminapp.forms.building_form import BuildingForm
 from django.conf import settings
+import io
 
 
 class BuildingsView(generic.DetailView):
@@ -21,6 +23,16 @@ class BuildingsView(generic.DetailView):
             project = Projects.objects.get(id=project_id)
             context['project'] = project
             return render(request, 'buildings/building.html', context)
+        except Exception as e:
+            LogHelper.efail(e)
+            return redirect('index')
+
+    def preview_qr(request, pk):
+        try:
+            context = {}
+            qr_info = QrCode.objects.filter(building_id=pk, flat__isnull=True).select_related('building').first()
+            context['qr_info'] = qr_info
+            return render(request, 'buildings/preview_qr.html', context)
         except Exception as e:
             LogHelper.efail(e)
             return redirect('index')

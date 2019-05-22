@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import View, UpdateView
-from adminapp.models import Buildings, BuildingComponents, Flats
+from adminapp.models import Buildings, BuildingComponents, Flats, QrCode
 from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
 from adminapp.forms.flat_form import FlatForm
@@ -21,6 +21,16 @@ class FlatsView(generic.DetailView):
             building = Buildings.objects.get(id=building_id)
             context['building'] = building
             return render(request, 'flats/flat.html', context)
+        except Exception as e:
+            LogHelper.efail(e)
+            return redirect('index')
+
+    def preview_qr(request, pk):
+        try:
+            context = {}
+            qr_info = QrCode.objects.filter(flat_id=pk).select_related('flat').first()
+            context['qr_info'] = qr_info
+            return render(request, 'flats/preview_qr.html', context)
         except Exception as e:
             LogHelper.efail(e)
             return redirect('index')

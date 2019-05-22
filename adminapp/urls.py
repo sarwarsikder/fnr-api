@@ -53,12 +53,16 @@ urlpatterns = [
     url(r'^projects/(?P<project_id>[\w-]+)/buildings/add/$', building_views.BuildingFormView.as_view(), name='buildings-add'),
     url(r'^buildings/update/(?P<pk>[\w-]+)/$', building_views.BuildingUpdateView.as_view(), name='buildings-update'),
     url(r'^buildings/delete/$', building_views.BuildingsView.delete, name='buildings-delete'),
+    url(r'^buildings/qr/(?P<pk>[\w-]+)/$', building_views.BuildingsView.preview_qr, name='buildings-qr'),
 
     url(r'^buildings/(?P<building_id>[\w-]+)/flats/$', flat_views.FlatsView.as_view(), name='flats'),
     url(r'^flats-list/$', datatables.FlatListView.as_view(), name='flatList'),
     url(r'^buildings/(?P<building_id>[\w-]+)/flats/add/$', flat_views.FlatFormView.as_view(), name='flats-add'),
     url(r'^flats/update/(?P<pk>[\w-]+)/$', flat_views.FlatUpdateView.as_view(), name='flats-update'),
     url(r'^flats/delete/$', flat_views.FlatsView.delete, name='flats-delete'),
+    url(r'^flats/qr/(?P<pk>[\w-]+)/$', flat_views.FlatsView.preview_qr, name='flats-qr'),
 
     url(r'^components/$', component_views.ComponentView.as_view(), name='components'),
+
+    url(r'^qr-to-png/(?P<qr_id>[\w-]+)/$', common_views.QRResponse.as_view(), name='qr-to-png'),
 ]

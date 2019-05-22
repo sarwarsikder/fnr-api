@@ -10,6 +10,8 @@ from adminapp.views.mail import MailHelper
 from adminapp.views.helper import LogHelper
 from adminapp.models import Components, Projects, BuildingComponents, Tasks, QrCode
 from django.db.models import Q
+import qrcode
+import io
 
 
 class IndexView(generic.DetailView):
@@ -145,6 +147,31 @@ class CommonView(generic.DetailView):
         qr_code = QrCode(**qr_form)
         qr_code.save()
         return qr_code
+
+
+class QRResponse(generic.View):
+    def get(self, request, *args, **kwargs):
+        try:
+            qr_id = kwargs['qr_id']
+            qr_info = QrCode.objects.get(id=qr_id)
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=2
+            )
+            qr.add_data(qr_info.unique_key)
+            qr.make(fit=True)
+            img = qr.make_image()
+            output = io.BytesIO()
+            img.save(output, format='PNG')
+            output.seek(0)
+            output_s = output.read()
+            return HttpResponse(output_s, content_type="image/png")
+        except Exception as e:
+            LogHelper.efail(e)
+            return HttpResponse("", content_type="image/png")
+
 
 
 

@@ -251,7 +251,7 @@ class HandWorker(models.Model):
 
 
 class QrCode(models.Model):
-    unique_key = models.CharField(max_length=50)
+    unique_key = models.CharField(max_length=50, unique=True)
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
     flat = models.ForeignKey(Flats, null=True, on_delete=models.CASCADE)
     created_by = models.ForeignKey(Users, related_name='qr_created_by', null=True, on_delete=models.SET_NULL)
