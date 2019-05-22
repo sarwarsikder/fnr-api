@@ -1,4 +1,6 @@
 import json
+import random, string
+
 from django.shortcuts import render, redirect
 from django.views import generic
 from django.conf import settings
@@ -6,8 +8,8 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from adminapp.views.mail import MailHelper
 from adminapp.views.helper import LogHelper
-from adminapp.models import Components, Projects, BuildingComponents, Tasks
-from django.contrib.auth.decorators import login_required, user_passes_test
+from adminapp.models import Components, Projects, BuildingComponents, Tasks, QrCode
+from django.db.models import Q
 
 
 class IndexView(generic.DetailView):
@@ -71,20 +73,40 @@ class CommonView(generic.DetailView):
         projects = Projects.objects.all()
         return projects
 
-    def create_default_building_components(request, building_id):
+    def create_default_building_components(request, building):
         try:
-            default_components = Components.objects.filter(building=True)
+            default_components = Components.objects.filter(Q(type__isnull=True) | Q(type=building.grundung) | Q(type=building.aussenwande_eg_og_dg) | Q(type=building.fenster_beschattung) | Q(type=building.dach)).filter(building=True)
             building_components = []
             for component in default_components:
                 component_form = {
                     "description": component.static_description,
-                    "building_id": building_id,
-                    "created_by_id": request.user.id,
-                    "updated_by_id": request.user.id,
-                    "component_id": component.id
+                    "building": building,
+                    "created_by": request.user,
+                    "updated_by": request.user,
+                    "component": component
                 }
                 building_components.append(BuildingComponents(**component_form))
             BuildingComponents.objects.bulk_create(building_components)
+            return True
+        except Exception as e:
+            LogHelper.efail(e)
+            return False
+
+    def create_default_flat_components(request, flat):
+        try:
+            default_components = Components.objects.filter(flat=True)
+            flat_components = []
+            for component in default_components:
+                component_form = {
+                    "description": component.static_description,
+                    "flat": flat,
+                    "building": flat.building,
+                    "created_by": request.user,
+                    "updated_by": request.user,
+                    "component": component
+                }
+                flat_components.append(BuildingComponents(**component_form))
+            BuildingComponents.objects.bulk_create(flat_components)
             return True
         except Exception as e:
             LogHelper.efail(e)
@@ -101,9 +123,9 @@ class CommonView(generic.DetailView):
                     task_flag = True
                 if task_flag:
                     task_form = {
-                        "building_component_id": component.id,
-                        "created_by_id": request.user.id,
-                        "updated_by_id": request.user.id
+                        "building_component": component,
+                        "created_by": request.user,
+                        "updated_by": request.user
                     }
                     task_list.append(Tasks(**task_form))
             Tasks.objects.bulk_create(task_list)
@@ -111,6 +133,18 @@ class CommonView(generic.DetailView):
         except Exception as e:
             LogHelper.efail(e)
             return False
+
+    def generate_qr_code(request, building, flat=None):
+        unique_key = ''.join(random.choices(string.ascii_lowercase + string.digits, k=16))
+        qr_form = {
+            "unique_key": unique_key,
+            "building": building,
+            "flat": flat,
+            "created_by": request.user,
+        }
+        qr_code = QrCode(**qr_form)
+        qr_code.save()
+        return qr_code
 
 
 

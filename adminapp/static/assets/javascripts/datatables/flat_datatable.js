@@ -6,10 +6,10 @@ $(document).ready(function () {
     var data = {
         csrfmiddlewaretoken: csrf_token
     };
-    var $dataTableContainer = $('#buildings-table');
+    var $dataTableContainer = $('#flats-table');
     $dataTableContainer.show();
     $('body .loader').show();
-    var buildings_table = $dataTableContainer.DataTable({
+    var flats_table = $dataTableContainer.DataTable({
         "bAutoWidth": true,
         "language": dt_language,
         "order": [
@@ -30,13 +30,12 @@ $(document).ready(function () {
                 "orderable": false,
                 "searchable": false,
                 "className": "",
-                "targets": 4,
+                "targets": 5,
                 'render': function (data, type, full, meta) {
-                    var flat_url = base_url+"/buildings/"+full[0]+"/flats/";
-                    var updateUrl = base_url+"/buildings/update/"+full[0]+"/";
-                    var actions = '<a href="'+updateUrl+'" class="btn btn-primary btn-lil building-info" data-toggle="tooltip" data-placement="top" title="Edit Hause" data-original-title="Edit"><i class="fa fa-edit"></i></a>'+
-                                  '<a href="'+flat_url+'" class="btn btn-primary btn-lil building-flats" data-toggle="tooltip" data-placement="top" title="Hause Whonung"><i class="fas fa-door-closed"></i></a>'+
-                                  '<button class="btn btn-danger btn-lil delete-building" data-id="'+full[0]+'" data-toggle="tooltip" data-placement="top" title="Delete Hause" data-original-title="Delete"><i class="fa fa-times-circle"></i></button>';
+                    var updateUrl = base_url+"/flats/update/"+full[0]+"/";
+                    var actions = '<a href="'+updateUrl+'" class="btn btn-primary btn-lil flat-info" data-toggle="tooltip" data-placement="top" title="Edit Wohnung" data-original-title="Edit"><i class="fa fa-edit"></i></a>'+
+                                  '<a href="tasks-flat.php" class="btn btn-info btn-lil" data-toggle="tooltip" data-placement="top" title="Tasks"><i class="fa fa-list"></i></a>'+
+                                  '<button class="btn btn-danger btn-lil delete-flat" data-id="'+full[0]+'" data-toggle="tooltip" data-placement="top" title="Delete Wohnung" data-original-title="Delete"><i class="fa fa-times-circle"></i></button>';
                     return actions;
                 }
             }
@@ -48,7 +47,7 @@ $(document).ready(function () {
         "destroy": true,
         "ajax": {
             'type': 'POST',
-            'url': BUILDING_LIST_JSON_URL,
+            'url': FLAT_LIST_JSON_URL,
             'data': data
         },
         "initComplete": function () {

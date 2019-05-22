@@ -51,8 +51,14 @@ urlpatterns = [
     url(r'^projects/(?P<project_id>[\w-]+)/buildings/$', building_views.BuildingsView.as_view(), name='buildings'),
     url(r'^building-list/$', datatables.BuildingListView.as_view(), name='buildingList'),
     url(r'^projects/(?P<project_id>[\w-]+)/buildings/add/$', building_views.BuildingFormView.as_view(), name='buildings-add'),
-    url(r'^projects/(?P<project_id>[\w-]+)/buildings/update/(?P<pk>[\w-]+)/$', building_views.BuildingUpdateView.as_view(), name='buildings-update'),
-    url(r'^projects/(?P<project_id>[\w-]+)/buildings/delete/$', building_views.BuildingsView.delete, name='buildings-delete'),
+    url(r'^buildings/update/(?P<pk>[\w-]+)/$', building_views.BuildingUpdateView.as_view(), name='buildings-update'),
+    url(r'^buildings/delete/$', building_views.BuildingsView.delete, name='buildings-delete'),
+
+    url(r'^buildings/(?P<building_id>[\w-]+)/flats/$', flat_views.FlatsView.as_view(), name='flats'),
+    url(r'^flats-list/$', datatables.FlatListView.as_view(), name='flatList'),
+    url(r'^buildings/(?P<building_id>[\w-]+)/flats/add/$', flat_views.FlatFormView.as_view(), name='flats-add'),
+    url(r'^flats/update/(?P<pk>[\w-]+)/$', flat_views.FlatUpdateView.as_view(), name='flats-update'),
+    url(r'^flats/delete/$', flat_views.FlatsView.delete, name='flats-delete'),
 
     url(r'^components/$', component_views.ComponentView.as_view(), name='components'),
 ]

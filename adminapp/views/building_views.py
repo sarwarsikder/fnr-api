@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import View, UpdateView
-from adminapp.models import Buildings, BuildingComponents, Components
+from adminapp.models import Buildings, BuildingComponents, Components, Projects
 from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
 from adminapp.forms.building_form import BuildingForm
@@ -14,10 +14,16 @@ from django.conf import settings
 
 class BuildingsView(generic.DetailView):
     def get(self, request, *args, **kwargs):
-        project_id = kwargs['project_id']
-        context = CommonView.common_datatable_context(self)
-        context['project_id'] = project_id
-        return render(request, 'buildings/building.html', context)
+        try:
+            project_id = kwargs['project_id']
+            context = CommonView.common_datatable_context(self)
+            context['project_id'] = project_id
+            project = Projects.objects.get(id=project_id)
+            context['project'] = project
+            return render(request, 'buildings/building.html', context)
+        except Exception as e:
+            LogHelper.efail(e)
+            return redirect('index')
 
     def delete(request):
         response = {}
@@ -25,7 +31,7 @@ class BuildingsView(generic.DetailView):
             building_id = request.POST.get('id')
             Buildings.objects.get(id=building_id).delete()
             response['success'] = True
-            response['message'] = "Building delete successfully"
+            response['message'] = "Hause deleted successfully"
         except Exception as e:
             LogHelper.elog(e)
             response['success'] = False
@@ -49,9 +55,10 @@ class BuildingFormView(View):
                 project_id = kwargs['project_id']
                 request.project_id = project_id
                 obj = form.save(request=request)
-                default_components = CommonView.create_default_building_components(request, obj.id)
+                default_components = CommonView.create_default_building_components(request, obj)
+                qr = CommonView.generate_qr_code(request, obj)
                 if default_components:
-                    building_components = BuildingComponents.objects.filter(building_id=obj.id)
+                    building_components = BuildingComponents.objects.filter(building_id=obj.id, flat__isnull=True)
                     default_tasks = CommonView.create_default_tasks(request, building_components)
                 return HttpResponseRedirect('/projects/'+str(obj.project_id)+'/buildings/')
         except Exception as e:
@@ -69,7 +76,7 @@ class BuildingUpdateView(UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse_lazy('projects')
+        return reverse_lazy('buildings', kwargs={'project_id': self.object.project_id})
 
     def get_context_data(self, **kwargs):
         context = super(BuildingUpdateView, self).get_context_data(**kwargs)

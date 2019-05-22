@@ -4,11 +4,11 @@
     {% load i18n %}
     {% block extra_head %}
         <script type="text/javascript">
-            var project_id = window.location.pathname.split("/")[2];
-            var BUILDING_LIST_JSON_URL = '{% url "buildingList" %}?project_id='+project_id;
+            var building_id = window.location.pathname.split("/")[2];
+            var FLAT_LIST_JSON_URL = '{% url "flatList" %}?building_id=' + building_id;
             // translations for datatables
         </script>
-        <script src="{% static 'assets/javascripts/datatables/building_datatable.js' %}"></script>
+        <script src="{% static 'assets/javascripts/datatables/flat_datatable.js' %}"></script>
     {% endblock %}
     <div class="content-header">
         <div class="container-fluid">
@@ -22,12 +22,13 @@
                         <div class="brad_Wrap pull-left">
                             <ol class="breadcrumb ">
                                 <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-                                <li class="breadcrumb-item active">Hauser</li>
+                                <li class="breadcrumb-item active">Wohnung</li>
                             </ol>
                         </div>
                         <div class="brad_info pull-right">
                             <ul class="detail_breadcrumb">
-                                <li>{{ project.name|title }}</li>
+                                <li>{{ building.project.name|title }}</li>
+                                <li>{{ building.display_number|title }}</li>
                             </ul>
                         </div>
                     </div>
@@ -49,23 +50,25 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm">
-                                    <h3 class="card-title">Hauser</h3>
+                                    <h3 class="card-title">Wohnung</h3>
                                 </div>
                                 <div class="col-sm text-right">
-                                    <a href="{% url 'buildings-add' project_id=project_id %}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+                                    <a data-toggle="tooltip" data-placement="top" title="Add Wohnung"
+                                       href="{% url 'flats-add' building_id=building_id %}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
                                 </div>
                             </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="buildings-table" class="table table-bordered table-hover">
+                            <table id="flats-table" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Hause Number</th>
-                                    <th>Display Number</th>
-                                    <th>Description</th>
-                                    <th>Action</th>
+                                    <th>Wohnung Number</th>
+                                    <th>Client Name</th>
+                                    <th>Client Email</th>
+                                    <th>Client Telephone</th>
+                                    <th style="width: 200px;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -83,4 +86,15 @@
         </div>
         <!-- /.content -->
     </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+
+    </div>
+    <!-- /.content-wrapper -->
 {% endblock %}

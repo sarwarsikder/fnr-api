@@ -1,7 +1,7 @@
 from django.db.models import Case, Value, When, Count
 from django.db.models.functions import Concat
 
-from adminapp.models import Users, HandWorker, Projects, Buildings
+from adminapp.models import Users, HandWorker, Projects, Buildings, Flats
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.db import connection
 from django.template.loader import render_to_string
@@ -47,3 +47,13 @@ class BuildingListView(BaseDatatableView):
     def get_initial_queryset(self):
         project_id = self.request.GET.get('project_id')
         return Buildings.objects.filter(project_id=project_id)
+
+
+class FlatListView(BaseDatatableView):
+    model = Flats
+    columns = ['id', 'number', 'client_name', 'client_email', 'client_tel']
+    order_columns = ['id', 'number', 'client_name', 'client_email', 'client_tel']
+
+    def get_initial_queryset(self):
+        building_id = self.request.GET.get('building_id')
+        return Flats.objects.filter(building_id=building_id)

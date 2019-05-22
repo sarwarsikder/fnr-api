@@ -26,7 +26,7 @@ class ProjectsView(generic.DetailView):
                 project_id = request.POST.get('id')
                 Projects.objects.get(id=project_id).delete()
                 response['success'] = True
-                response['message'] = "Project delete successfully"
+                response['message'] = "Project deleted successfully"
             except Exception as e:
                 LogHelper.elog(e)
                 response['success'] = False

@@ -160,7 +160,7 @@ class Flats(models.Model):
     description = models.TextField(null=True, blank=True)
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
     client_name = models.CharField(max_length=100, null=True, blank=True)
-    client_address = models.CharField(max_length=150, null=True, blank=True)
+    client_address = models.TextField(null=True, blank=True)
     client_email = models.CharField(max_length=50, null=True, blank=True)
     client_tel = models.CharField(max_length=50, null=True, blank=True)
     created_by = models.ForeignKey(Users, related_name='flat_created_by', null=True, on_delete=models.SET_NULL)
