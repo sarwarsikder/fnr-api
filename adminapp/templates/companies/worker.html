@@ -17,11 +17,20 @@
                 <input type="hidden" value="{{ show_entries }}" id="show_entries">
                 <input type="hidden" value="{{ sorted_column }}" id="sorted_column_stand">
                 <input type="hidden" value="{{ sorting_order }}" id="sorting_order_stand">
-                <div class="col-sm-6">
-                    <ol class="breadcrumb ">
-                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-                        <li class="breadcrumb-item active">Handwerker</li>
-                    </ol>
+                <div class="col-sm-12 ">
+                    <div class="bradcrumb_container clearfix">
+                        <div class="brad_Wrap pull-left">
+                            <ol class="breadcrumb ">
+                                <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                                <li class="breadcrumb-item active">Handwerker</li>
+                            </ol>
+                        </div>
+                        <div class="brad_info pull-right">
+                            <ul class="detail_breadcrumb">
+
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.col -->
             </div>
