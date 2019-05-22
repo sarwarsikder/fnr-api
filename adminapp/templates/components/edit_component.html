@@ -11,7 +11,7 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-left">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Add Component</li>
+                                <li class="breadcrumb-item active">Update Component</li>
                             </ol>
                         </div>
                         <!-- /.col -->
@@ -32,34 +32,34 @@
 
                                     <div class="row">
                                         <div class="col-sm">
-                                            <h3 class="card-title">Add Component</h3>
+                                            <h3 class="card-title">Update Component</h3>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <form action="{% url 'component-add' %}" method="post">
+                                    <form action="{% url 'component-update' pk=data.id %}" method="post">
                                     {% csrf_token %}
 {#                                    {{ form }}#}
                                         <div class="row">
                                             <div class="col-sm-12 col-xs-12">
                                                 <div class="form-group">
-                                                    <label for="name">Name</label>
-                                                    <input type="text" class="form-control" name= "name" id="name" placeholder="Enter Name" value="{{ form.data.name }}">
+                                                    <label for="name">Name{{ data.id }}</label>
+                                                    <input type="text" class="form-control" name= "name" id="name" placeholder="Enter Name" value="{{ data.name }}">
                                                     {{ form.name.errors }}
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                         <div class="row">
-                                            
+
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="type">Type</label>
-                                                    <input type="type" class="form-control" name="type" id="cmail" placeholder="Enter Type" value="{{ form.data.type }}">
+                                                    <input type="type" class="form-control" name="type" id="cmail" placeholder="Enter Type" value="{{ data.type }}">
                                                     {{ form.type.errors }}
                                                 </div>
-                                                
+
                                             </div>
 
                                             <div class="col-sm-6 col-xs-12">
@@ -85,21 +85,21 @@
                                                     <label for="building" class="form-check-label">Buildings </label>
                                                     {{ form.building.errors }}
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-sm-12 col-xs-12">                                            
+                                            <div class="col-sm-12 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="description">Description</label>
-                                                    <textarea class="form-control" rows="3" name="static_description" placeholder="Enter Description"> {{ form.data.static_description }}</textarea>
+                                                    <textarea class="form-control" rows="3" name="static_description" placeholder="Enter Description"> {{ data.static_description }}</textarea>
                                                     {{ form.static_description.errors }}
                                                 </div>
-                                            
+
                                             </div>
                                             <div class="col-sm-6 col-xs-12">
-                                                <button type="submit" class="btn btn-primary">Add Components</button>
+                                                <button type="submit" class="btn btn-primary">Update Components</button>
                                             </div>
                                         </div>
                                         </form>
@@ -127,7 +127,7 @@
           // Initialize Select2
           $('#parent').select2();
 
-            $('#parent').val({{ form.data.parent_id }});
+            $('#parent').val({{ data.parent_id }});
             $('#parent').select2().trigger('change');
 
         });

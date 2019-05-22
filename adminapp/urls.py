@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^projects/delete/$', project_views.ProjectsView.delete, name='projects-delete'),
     url(r'^project-list/$', datatables.ProjectListView.as_view(), name='projectList'),
     url(r'^components/$', component_views.ComponentView.as_view(), name='components'),
-    url(r'^components/add-component/$', component_views.ComponentAddView.as_view(), name='component-add'),
-
+    url(r'^components/add/$', component_views.ComponentAddView.as_view(), name='component-add'),
+    url(r'^components/update/(?P<pk>[\w-]+)/$', component_views.ComponentUpdateView.as_view(), name='component-update'),
+    url(r'^components/delete$', component_views.ComponentView.delete, name='component-delete'),
 ]

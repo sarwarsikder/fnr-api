@@ -40,6 +40,7 @@ class ComponentForm(forms.ModelForm):
     def update(self, request, commit=True):
         cleaned_data = super(ComponentForm, self).clean()
         obj = super(ComponentForm, self).save(commit=False)
+        obj.created_by = request.user
         obj.updated_by = request.user
         obj.save()
         return obj
