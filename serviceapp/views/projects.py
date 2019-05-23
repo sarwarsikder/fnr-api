@@ -33,7 +33,7 @@ class ProjectViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         for the currently authenticated user.
         """
         projects = list(ProjectStuff.objects.values('id').filter(user_id=self.request.user.id, project__is_complete=False).values_list('project_id', flat=True))
-        queryset = Projects.objects.annotate(total_tasks=Count('buildings__buildingcomponents__tasks'), tasks_done=Count('buildings__buildingcomponents__tasks', filter=Q(buildings__buildingcomponents__tasks__status='done')),).filter(id__in=projects)
+        queryset = Projects.objects.annotate(total_tasks=Count('buildings__buildingcomponents__tasks'), tasks_done=Count('buildings__buildingcomponents__tasks', filter=Q(buildings__buildingcomponents__tasks__status='done'))).filter(id__in=projects)
         return queryset
 
 

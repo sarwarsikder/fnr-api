@@ -117,7 +117,7 @@ class Projects(models.Model):
 
 class ProjectPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='static/assets/project/plans/')
+    plan_file = models.FileField(null=True, upload_to='adminapp/static/assets/project/plans/')
     project = models.ForeignKey(Projects, on_delete=models.CASCADE)
     file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='project_plan_created_by', null=True, on_delete=models.SET_NULL)
@@ -157,7 +157,7 @@ class Buildings(models.Model):
 
 class BuildingPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='static/assets/building/plans/')
+    plan_file = models.FileField(null=True, upload_to='adminapp/static/assets/building/plans/')
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
     file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='building_plan_created_by', null=True, on_delete=models.SET_NULL)
@@ -186,7 +186,7 @@ class Flats(models.Model):
 
 class FlatPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='static/assets/flat/plans/')
+    plan_file = models.FileField(null=True, upload_to='adminapp/static/assets/flat/plans/')
     flat = models.ForeignKey(Flats, on_delete=models.CASCADE)
     file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='flat_plan_created_by', null=True, on_delete=models.SET_NULL)

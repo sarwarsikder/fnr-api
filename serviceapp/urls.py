@@ -18,6 +18,7 @@ from django.conf.urls import url
 from serviceapp.views.user_views import UserInfo, ResetPasswordRequestViewSet
 from rest_framework.routers import SimpleRouter
 from serviceapp.views.projects import ProjectViewSet, ProjectPlanViewSet
+from serviceapp.views.buildings import BuildingViewSet, BuildingPlanViewSet
 
 router = SimpleRouter()
 router.register(r'projects', ProjectViewSet)
@@ -28,5 +29,7 @@ urlpatterns = [
     url(r'^forget-password/', ResetPasswordRequestViewSet.forget_password),
     url(r'^change-user-password/', ResetPasswordRequestViewSet.change_user_password),
 
-    url(r'^project-plans/(?P<project_id>[\w-]+)/$', ProjectPlanViewSet.as_view()),
+    url(r'^project/(?P<project_id>[\w-]+)/plans/$', ProjectPlanViewSet.as_view()),
+    url(r'^project/(?P<project_id>[\w-]+)/buildings/$', BuildingViewSet.as_view()),
+    url(r'^building/(?P<building_id>[\w-]+)/plans/$', BuildingPlanViewSet.as_view()),
 ] + router.urls
