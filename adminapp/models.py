@@ -64,6 +64,17 @@ class NotificationType(EnumField, models.CharField):
         super(NotificationType, self).__init__(*args, **kwargs)
 
 
+class TaskStatusType(EnumField, models.CharField):
+    def __init__(self, *args, **kwargs):
+        roles = [
+            ('to_do', 'To Do'),
+            ('in_progress', 'In Progress'),
+            ('done', 'Done'),
+        ]
+        kwargs.setdefault('choices', roles)
+        super(TaskStatusType, self).__init__(*args, **kwargs)
+
+
 class Users(AbstractUser):
     address = models.TextField(null=True)
     avatar = models.FileField(null=True, upload_to='adminapp/static/assets/avatar/', validators=[FileExtensionValidator(allowed_extensions=['jpg','png','svg'])])
@@ -92,6 +103,7 @@ class Projects(models.Model):
     city = models.CharField(max_length=100, null=True, blank=True)
     type = models.CharField(max_length=100, null=True, blank=True)
     energetic_standard = models.CharField(max_length=100, null=True, blank=True)
+    is_complete = models.BooleanField(default=False)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     created_by = models.ForeignKey(Users, related_name='project_created_by', null=True, on_delete=models.SET_NULL)
@@ -219,6 +231,8 @@ class BuildingComponents(models.Model):
 class Tasks(models.Model):
     building_component = models.ForeignKey(BuildingComponents, on_delete=models.CASCADE)
     followers = JSONField(default=dict)
+    status = TaskStatusType(max_length=20, default="to_do")
+    due_date = models.DateField(default=None)
     created_by = models.ForeignKey(Users, related_name='task_created_by', null=True, on_delete=models.SET_NULL)
     updated_by = models.ForeignKey(Users, related_name='task_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
