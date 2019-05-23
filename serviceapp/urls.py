@@ -16,10 +16,17 @@ Including another URLconf
 from django.conf.urls import include
 from django.conf.urls import url
 from serviceapp.views.user_views import UserInfo, ResetPasswordRequestViewSet
+from rest_framework.routers import SimpleRouter
+from serviceapp.views.projects import ProjectViewSet, ProjectPlanViewSet
+
+router = SimpleRouter()
+router.register(r'projects', ProjectViewSet)
 
 urlpatterns = [
     url(r'^auth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^user-profile/', UserInfo.as_view()),
     url(r'^forget-password/', ResetPasswordRequestViewSet.forget_password),
     url(r'^change-user-password/', ResetPasswordRequestViewSet.change_user_password),
-]
+
+    url(r'^project-plans/(?P<project_id>[\w-]+)/$', ProjectPlanViewSet.as_view()),
+] + router.urls
