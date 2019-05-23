@@ -121,13 +121,26 @@
         });
         $(document).ready(function(){
 
-          // Initialize Select2
-          $('#parent').select2();
+            // Initialize Select2
+            $('#parent').select2();
 
             $('#parent').val({{ data.parent_id }});
             $('#parent').select2().trigger('change');
 
         });
+         $(document).ready(function() {
+            console.log("{{ isParent }}");
+             if({{ isParent }}){
+                $(".js-example-basic-single").prop("disabled", true);
+            }else{
+                 // Initialize Select2
+            $('#parent').select2();
+
+            $('#parent').val({{ data.parent_id }});
+            $('#parent').select2().trigger('change');
+             }
+        });
+
     </script>
     {% include "layout/datatable_footer.html" %}
 {% endblock %}

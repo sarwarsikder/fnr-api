@@ -124,6 +124,11 @@ class ComponentUpdateView(UpdateView):
                 response['isBuildingSelected'] = True
             else:
                 response['isBuildingSelected'] = False
+
+            if data[0].parent_id == None or data[0].parent_id == "":
+                response['isParent'] = 1
+            else:
+                response['isParent'] = 0
             return render(request, self.template_name, response)
 
         else:
