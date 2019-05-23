@@ -40,7 +40,7 @@
                                     <h3 class="card-title">Components</h3>
                                 </div>
                                 <div class="col-sm text-right">
-                                    <a href="add_task.php" class="btn btn-primary" data-toggle="tooltip"
+                                    <a href="{% url 'component-add' %}" class="btn btn-primary" data-toggle="tooltip"
                                        data-placement="top" title="Add Task"><i class="fa fa-plus"></i></a>
 
                                 </div>
@@ -69,19 +69,26 @@
                                                 {% if component.sub_components %}
                                                 {% for sub_component in component.sub_components %}
                                                     <div class="row">
-                                                        <a href="task-detail.php" class="task_title">
+                                                        <button type="button" class="btn open-DeleteDialog" data-toggle="modal" data-target="#exampleModalLong" data-id="{{ sub_component.id }}" style="background-color: #f7f2eb; color: #7d6e56">
+                                                          <strong>X</strong>
+                                                        </button>
+                                                        <a href="{% url 'component-update' pk=sub_component.id %}" class="task_title" >
                                                             <div class="col-md-12 task_wrap">
                                                                 {{ sub_component.name }}
                                                                 <div class="dropdown-divider"></div>
                                                                 <p>{{ sub_component.static_description }}</p>
                                                             </div>
+
                                                         </a>
 
                                                     </div>
                                                 {% endfor %}
                                                     {% else %}
                                                     <div class="row">
-                                                        <a href="task-detail.php" class="task_title">
+                                                        <button type="button" class="btn open-DeleteDialog" data-toggle="modal" data-target="#exampleModalLong" data-id="{{ sub_component.id }}" style="background-color: #f7f2eb; color: #7d6e56">
+                                                          <strong>X</strong>
+                                                        </button>
+                                                        <a href="{% url 'component-update' pk=component.id %}" class="task_title">
                                                             <div class="col-md-12 task_wrap">
                                                                 {{ component.name }}
                                                                 <div class="dropdown-divider"></div>
@@ -108,5 +115,43 @@
         <!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+
+
+    <!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are You Sure You Want To Delete The Component ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="{% url 'component-delete' %}" method="post" style="background-color: #f7f2eb">
+            {% csrf_token %}
+            <input type="hidden" name="id" id="deleteId">
+            <button type="submit" class="btn btn-danger">
+                Delete!!!
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
     {% include "layout/datatable_footer.html" %}
+    <script>
+    $(document).on("click", ".open-DeleteDialog", function () {
+        var deleteID = $(this).data('id');
+        console.log("DD" + deleteID);
+        $(".modal-body #deleteId").val( deleteID );
+        $(".modal-footer #deleteId").val( deleteID );
+    });
+</script>
 {% endblock %}
+

@@ -1,0 +1,146 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-left">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Update Component</li>
+                            </ol>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <h3 class="card-title">Update Component</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <form action="{% url 'component-update' pk=data.id %}" method="post">
+                                    {% csrf_token %}
+{#                                    {{ form }}#}
+                                        <div class="row">
+                                            <div class="col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="name">Name{{ data.id }}</label>
+                                                    <input type="text" class="form-control" name= "name" id="name" placeholder="Enter Name" value="{{ data.name }}">
+                                                    {{ form.name.errors }}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="type">Type</label>
+                                                    <input type="type" class="form-control" name="type" id="cmail" placeholder="Enter Type" value="{{ data.type }}">
+                                                    {{ form.type.errors }}
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="parent">Parent</label>
+                                                    <select class="js-example-basic-single" name="parent_id" id="parent" style="width: 350px;">
+                                                      <option value="-1"></option>
+                                                        {% for parent in parents %}
+                                                        <option value="{{ parent.id }}" >{{ parent.name }}</option>
+                                                      {% endfor %}
+                                                    </select>
+                                                    {{ form.parent.errors }}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12 inline_radio_wrap">
+                                                <div class="form-check inline_radio">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="flat" {% if isFlatSelected == True %} checked {% endif %}>
+                                                    <label for="flat" class="form-check-label">Flat</label>
+                                                    {{ form.flat.errors }}
+                                                </div>
+                                                <div class="form-check inline_radio">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="building" {% if isBuildingSelected == True %} checked {% endif %}>
+                                                    <label for="building" class="form-check-label">Buildings </label>
+                                                    {{ form.building.errors }}
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="description">Description</label>
+                                                    <textarea class="form-control" rows="3" name="static_description" placeholder="Enter Description"> {{ data.static_description }}</textarea>
+                                                    {{ form.static_description.errors }}
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12">
+                                                <button type="submit" class="btn btn-primary">Update Components</button>
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.col-lg-6 -->
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.container-fluid -->
+                    </div>
+                    <!-- /.content -->
+                </div>
+                <!-- /.content-wrapper -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+        $(document).ready(function(){
+
+            // Initialize Select2
+            $('#parent').select2();
+
+            $('#parent').val({{ data.parent_id }});
+            $('#parent').select2().trigger('change');
+
+        });
+         $(document).ready(function() {
+            console.log("{{ isParent }}");
+             if({{ isParent }}){
+                $(".js-example-basic-single").prop("disabled", true);
+            }else{
+                 // Initialize Select2
+            $('#parent').select2();
+
+            $('#parent').val({{ data.parent_id }});
+            $('#parent').select2().trigger('change');
+             }
+        });
+
+    </script>
+    {% include "layout/datatable_footer.html" %}
+{% endblock %}

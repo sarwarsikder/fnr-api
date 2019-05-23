@@ -63,6 +63,9 @@ urlpatterns = [
     url(r'^flats/qr/(?P<pk>[\w-]+)/$', flat_views.FlatsView.preview_qr, name='flats-qr'),
 
     url(r'^components/$', component_views.ComponentView.as_view(), name='components'),
+    url(r'^components/add/$', component_views.ComponentAddView.as_view(), name='component-add'),
+    url(r'^components/update/(?P<pk>[\w-]+)/$', component_views.ComponentUpdateView.as_view(), name='component-update'),
+    url(r'^components/delete$', component_views.ComponentView.delete, name='component-delete'),
 
     url(r'^qr-to-png/(?P<qr_id>[\w-]+)/$', common_views.QRResponse.as_view(), name='qr-to-png'),
 ]
