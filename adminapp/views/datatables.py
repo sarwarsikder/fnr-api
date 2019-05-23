@@ -29,8 +29,8 @@ class CompanyListView(BaseDatatableView):
 
 class ProjectListView(BaseDatatableView):
     model = Projects
-    columns = ['id', 'name', 'city', 'type', 'start_date', 'end_date', 'user_type']
-    order_columns = ['id', 'name', 'city', 'type', 'start_date', 'end_date']
+    columns = ['id', 'name', 'city', 'type', 'is_complete', 'start_date', 'end_date', 'user_type']
+    order_columns = ['id', 'name', 'city', 'type', 'is_complete', 'start_date', 'end_date']
 
     def get_initial_queryset(self):
         if self.request.user.is_superuser:

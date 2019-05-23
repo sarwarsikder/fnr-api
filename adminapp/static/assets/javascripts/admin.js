@@ -186,4 +186,34 @@ $(function () {
         });
     });
 
+    $body.on('change', '.project-status-checkbox', function () {
+        var $this = $(this);
+        var status = 1;
+        if ($this.is(':checked')) {
+            status = 0;
+        }
+        var id = $this.closest('tr').data('id'),
+            csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            url: base_url + '/change-project-status/',
+            type: 'POST',
+            data: {
+                'id': id,
+                'status': status,
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function (responseText) {
+                var response = responseText;
+                if (response.success) {
+                    $.growl.notice({message: response.message});
+                } else {
+                    $.growl.error({message: response.message});
+                }
+            },
+            error: function (e) {
+                clog(e);
+            }
+        });
+    });
+
 });

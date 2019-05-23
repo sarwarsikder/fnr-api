@@ -48,6 +48,9 @@ urlpatterns = [
     url(r'^projects/update/(?P<pk>[\w-]+)/$', project_views.ProjectUpdateView.as_view(), name='projects-update'),
     url(r'^projects/delete/$', project_views.ProjectsView.delete, name='projects-delete'),
     url(r'^project-list/$', datatables.ProjectListView.as_view(), name='projectList'),
+
+    url(r'^change-project-status/$', project_views.ProjectsView.change_project_status, name='change-project-status'),
+
     url(r'^projects/(?P<project_id>[\w-]+)/buildings/$', building_views.BuildingsView.as_view(), name='buildings'),
     url(r'^building-list/$', datatables.BuildingListView.as_view(), name='buildingList'),
     url(r'^projects/(?P<project_id>[\w-]+)/buildings/add/$', building_views.BuildingFormView.as_view(), name='buildings-add'),

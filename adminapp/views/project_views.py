@@ -49,6 +49,20 @@ class ProjectsView(generic.DetailView):
             LogHelper.efail(e)
             return True
 
+    def change_project_status(request):
+        response = {}
+        try:
+            project_id = request.POST.get('id')
+            status = request.POST.get('status')
+            Projects.objects.filter(id=project_id).update(is_complete=status)
+            response['success'] = True
+            response['message'] = "Status Changed Successfully"
+        except Exception as e:
+            LogHelper.elog(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
 
 class ProjectFormView(View):
     form_class = ProjectForm

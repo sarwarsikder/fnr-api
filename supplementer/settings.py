@@ -86,9 +86,9 @@ DATABASES = {
     'default': {
         'NAME': 'supplementer_db',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': 'Wsit_97480',
-        'HOST': 'localhost',
+        'USER': 'wsit',
+        'PASSWORD': 'wsit97480',
+        'HOST': '58.84.34.65',
         'PORT': '3306',
         'OPTIONS': {
             'autocommit': True,
