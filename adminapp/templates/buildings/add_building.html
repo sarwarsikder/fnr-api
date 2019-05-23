@@ -59,9 +59,9 @@
                                                 <div class="form-group">
                                                     <label for="{{ form.grundung.id_for_label }}">Grundung</label>
                                                     <select id="id_grundung" name="grundung" class="form-control" placeholder="Enter Grundung">
-                                                        <option value="sf">sf</option>
-                                                        <option value="sb">sb</option>
-                                                        <option value="sb_sf">sb_sf</option>
+                                                        <option value="sf">Streifenfundamente</option>
+                                                        <option value="sb">Stahlbeton</option>
+                                                        <option value="sb_sf">Stahlbeton mit streifenfundamente</option>
                                                         {{ form.grundung.errors }}
                                                     </select>
                                                 </div>
@@ -70,8 +70,8 @@
                                                 <div class="form-group">
                                                     <label for="{{ form.aussenwande_eg_og_dg.id_for_label }}">Aussenwande ab EG</label>
                                                     <select id="id_aussenwande_eg_og_dg" name="aussenwande_eg_og_dg" class="form-control" placeholder="Enter Aussenwande ab EG">
-                                                        <option value="su">su</option>
-                                                        <option value="sk">sk</option>
+                                                        <option value="su">Stahlbeton und Unipor</option>
+                                                        <option value="sk">Stahlbeton und kalksandstein</option>
                                                         {{ form.aussenwande_eg_og_dg.errors }}
                                                     </select>
                                                 </div>
@@ -82,9 +82,9 @@
                                                 <div class="form-group">
                                                     <label for="{{ form.fenster_beschattung.id_for_label }}">Fenster Beschattung</label>
                                                     <select id="id_fenster_beschattung" name="fenster_beschattung" class="form-control" placeholder="Enter Fenster Beschattung">
-                                                        <option value="nbk">nbk</option>
-                                                        <option value="aufsr">aufsr</option>
-                                                        <option value="rse">rse</option>
+                                                        <option value="nbk">Neubaukasten</option>
+                                                        <option value="aufsr">Aufsatzrollladenkasten</option>
+                                                        <option value="rse">Rafstorelement</option>
                                                         {{ form.fenster_beschattung.errors }}
                                                     </select>
                                                 </div>
@@ -93,7 +93,8 @@
                                                 <div class="form-group">
                                                     <label for="{{ form.dach.id_for_label }}">Dach</label>
                                                     <select id="id_dach" name="dach" class="form-control" placeholder="Enter Dach">
-                                                        <option value=""></option>
+                                                        <option value="zd">Zeigeldach</option>
+                                                        <option value="fs">Flachdcah aus Stahlbeton</option>
                                                         {{ form.dach.errors }}
                                                     </select>
                                                 </div>

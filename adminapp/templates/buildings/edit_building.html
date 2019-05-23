@@ -58,10 +58,10 @@
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="{{ form.grundung.id_for_label }}">Grundung</label>
-                                                    <select id="id_grundung" name="grundung" class="form-control" placeholder="Enter Grundung">
-                                                        <option value="sf" {% if form.grundung.value == 'sf' %}selected{% endif %}>sf</option>
-                                                        <option value="sb" {% if form.grundung.value == 'sb' %}selected{% endif %}>sb</option>
-                                                        <option value="sb_sf" {% if form.grundung.value == 'sb_sf' %}selected{% endif %}>sb_sf</option>
+                                                    <select id="id_grundung" name="grundung" class="form-control" placeholder="Enter Grundung" disabled>
+                                                        <option value="sf" {% if form.grundung.value == 'sf' %}selected{% endif %}>Streifenfundamente</option>
+                                                        <option value="sb" {% if form.grundung.value == 'sb' %}selected{% endif %}>Stahlbeton</option>
+                                                        <option value="sb_sf" {% if form.grundung.value == 'sb_sf' %}selected{% endif %}>Stahlbeton mit streifenfundamente</option>
                                                         {{ form.grundung.errors }}
                                                     </select>
                                                 </div>
@@ -69,9 +69,9 @@
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="{{ form.aussenwande_eg_og_dg.id_for_label }}">Aussenwande ab EG</label>
-                                                    <select id="id_aussenwande_eg_og_dg" name="aussenwande_eg_og_dg" class="form-control" placeholder="Enter Aussenwande ab EG">
-                                                        <option value="su" {% if form.aussenwande_eg_og_dg.value == 'su' %}selected{% endif %}>su</option>
-                                                        <option value="sk" {% if form.aussenwande_eg_og_dg.value == 'sk' %}selected{% endif %}>sk</option>
+                                                    <select id="id_aussenwande_eg_og_dg" name="aussenwande_eg_og_dg" class="form-control" placeholder="Enter Aussenwande ab EG" disabled>
+                                                        <option value="su" {% if form.aussenwande_eg_og_dg.value == 'su' %}selected{% endif %}>Stahlbeton und Unipor</option>
+                                                        <option value="sk" {% if form.aussenwande_eg_og_dg.value == 'sk' %}selected{% endif %}>Stahlbeton und kalksandstein</option>
                                                         {{ form.aussenwande_eg_og_dg.errors }}
                                                     </select>
                                                 </div>
@@ -81,10 +81,10 @@
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="{{ form.fenster_beschattung.id_for_label }}">Fenster Beschattung</label>
-                                                    <select id="id_fenster_beschattung" name="fenster_beschattung" class="form-control" placeholder="Enter Fenster Beschattung">
-                                                        <option value="nbk" {% if form.fenster_beschattung.value == 'nbk' %}selected{% endif %}>nbk</option>
-                                                        <option value="aufsr" {% if form.fenster_beschattung.value == 'aufsr' %}selected{% endif %}>aufsr</option>
-                                                        <option value="rse" {% if form.fenster_beschattung.value == 'rse' %}selected{% endif %}>rse</option>
+                                                    <select id="id_fenster_beschattung" name="fenster_beschattung" class="form-control" placeholder="Enter Fenster Beschattung" disabled>
+                                                        <option value="nbk" {% if form.fenster_beschattung.value == 'nbk' %}selected{% endif %}>Neubaukasten</option>
+                                                        <option value="aufsr" {% if form.fenster_beschattung.value == 'aufsr' %}selected{% endif %}>Aufsatzrollladenkasten</option>
+                                                        <option value="rse" {% if form.fenster_beschattung.value == 'rse' %}selected{% endif %}>Rafstorelement</option>
                                                         {{ form.fenster_beschattung.errors }}
                                                     </select>
                                                 </div>
@@ -92,8 +92,9 @@
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="{{ form.dach.id_for_label }}">Dach</label>
-                                                    <select id="id_dach" name="dach" class="form-control" placeholder="Enter Dach">
-                                                        <option value=""></option>
+                                                    <select id="id_dach" name="dach" class="form-control" placeholder="Enter Dach" disabled>
+                                                        <option value="zd" {% if form.dach.value == 'zd' %}selected{% endif %}>Zeigeldach</option>
+                                                        <option value="fs" {% if form.dach.value == 'fs' %}selected{% endif %}>Flachdcah aus Stahlbeton</option>
                                                         {{ form.dach.errors }}
                                                     </select>
                                                 </div>

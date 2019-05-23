@@ -22,7 +22,7 @@
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-sm-6 offset-sm-3">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row">
@@ -32,8 +32,8 @@
                                     </div>
                                 </div>
                                 <!-- /.card-header -->
-                                <div class="card-body">
-                                    <img src="{% url 'qr-to-png' qr_id=qr_info.id %}"/>
+                                <div class="card-body text-center">
+                                    <img src="{% url 'qr-to-png' qr_id=qr_info.id %}" onclick="window.print();return false;"/>
                                 <!-- /.card-body -->
                             </div>
                             <!-- /.col-lg-6 -->
