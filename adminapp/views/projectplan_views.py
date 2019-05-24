@@ -4,9 +4,8 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import UpdateView
 
-from adminapp.forms.flatplans_form import FlatPlansForm
-from adminapp.models import FlatPlans
-from adminapp.models import Users
+from adminapp.forms.projectplan_form import ProjectPlansForm
+from adminapp.models import Users, ProjectPlans
 
 import json
 
@@ -14,13 +13,13 @@ from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
 
 
-class FlatPlansView(generic.DetailView):
+class ProjectPlansView(generic.DetailView):
     def get(self, request):
         response = {}
         if request.user.is_superuser:
-            flatplans = FlatPlans.objects.all()
-            response['buildingPlans'] = flatplans
-            return render(request, 'flats/plans.html', response)
+            projectplans = ProjectPlans.objects.all()
+            response['buildingPlans'] = projectplans
+            return render(request, 'projects/plans.html', response)
         else:
             redirect('index')
 
@@ -29,19 +28,19 @@ class FlatPlansView(generic.DetailView):
         if CommonView.superuser_login(request):
             try:
                 flat_plan_id = request.POST.get('id')
-                FlatPlans.objects.get(id=flat_plan_id).delete()
+                ProjectPlans.objects.get(id=flat_plan_id).delete()
                 response['success'] = True
-                response['message'] = "Flat delete successfully"
-                return HttpResponseRedirect('/flat-plan/')
+                response['message'] = "Project delete successfully"
+                return HttpResponseRedirect('/project-plan/')
             except Exception as e:
                 LogHelper.elog(e)
                 response['success'] = False
                 response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
-class FlatPlansAddView(generic.DetailView):
-    form_class = FlatPlansForm
-    template_name = 'flats/add_plans.html'
+class ProjectPlansAddView(generic.DetailView):
+    form_class = ProjectPlansForm
+    template_name = 'projects/add_plans.html'
 
     def get(self, request):
         if request.user.is_superuser:
@@ -62,7 +61,7 @@ class FlatPlansAddView(generic.DetailView):
             try:
                 if form.is_valid():
                     form.save(request=request)
-                    return HttpResponseRedirect('/flat-plan/')
+                    return HttpResponseRedirect('/project-plan/')
                 else:
                     return render(request, self.template_name, response)
             except Exception as e:
@@ -72,16 +71,16 @@ class FlatPlansAddView(generic.DetailView):
             return redirect('index')
 
 
-class FlatPlansUpdateView(UpdateView):
-    form_class = FlatPlansForm
-    template_name = 'flats/edit_plans.html'
-    model = FlatPlans
+class ProjectPlansUpdateView(UpdateView):
+    form_class = ProjectPlansForm
+    template_name = 'projects/edit_plans.html'
+    model = ProjectPlans
 
     def get(self, request, pk):
         if request.user.is_superuser:
             response = {}
             form = self.form_class
-            data = FlatPlans.objects.filter(id=pk)
+            data = ProjectPlans.objects.filter(id=pk)
             response['data'] = data[0]
             response['form'] = form
             response['pk'] = pk
@@ -97,7 +96,7 @@ class FlatPlansUpdateView(UpdateView):
             return redirect('index')
 
     def get_success_url(self):
-        return reverse_lazy('flat-plan')
+        return reverse_lazy('project-plan')
 
     def get_context_data(self, **kwargs):
         context = super(BuildingPlansUpdateView, self).get_context_data(**kwargs)
