@@ -32,6 +32,11 @@ class ComponentView(generic.DetailView):
         if CommonView.superuser_login(request):
             try:
                 component_id = request.POST.get('id')
+                parent_check = int(component_id)
+                if 1 <= parent_check <= 20:
+                    print("Parent")
+                    return HttpResponseRedirect('/components/')
+
                 Components.objects.get(id=component_id).delete()
                 response['success'] = True
                 response['message'] = "Component delete successfully"
