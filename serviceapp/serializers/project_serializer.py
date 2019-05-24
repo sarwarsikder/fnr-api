@@ -5,8 +5,8 @@ from adminapp.views.common_views import CommonView
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    total_tasks = serializers.CharField(read_only=True)
-    tasks_done = serializers.CharField(read_only=True)
+    total_tasks = serializers.IntegerField(read_only=True)
+    tasks_done = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Projects

@@ -23,7 +23,7 @@ class BuildingViewSet(APIView):
         project_id = kwargs['project_id']
         paginator = PageNumberPagination()
         paginator.page_size = 2
-        buildings = Buildings.objects.annotate(total_tasks=Count('buildingcomponents__tasks', filter=Q(buildingcomponents__flat__isnull=True)), tasks_done=Count('buildingcomponents__tasks', filter=Q(buildingcomponents__tasks__status='done', buildingcomponents__flat__isnull=True))).filter(project_id=project_id)
+        buildings = Buildings.objects.annotate(total_flats=Count('flats', distinct=True), total_tasks=Count('buildingcomponents__tasks', filter=Q(buildingcomponents__flat__isnull=True)), tasks_done=Count('buildingcomponents__tasks', filter=Q(buildingcomponents__tasks__status='done', buildingcomponents__flat__isnull=True))).filter(project_id=project_id)
         result_page = paginator.paginate_queryset(buildings, request)
         serializer = BuildingSerializer(result_page, many=True)
         return paginator.get_paginated_response(data=serializer.data)

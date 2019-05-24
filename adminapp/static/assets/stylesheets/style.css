@@ -14,6 +14,7 @@ body{
     font-weight: bold;
     color: #7d6e56;
     display: block;
+    width: 100%;
 }
 .task_group_header {
         padding: 5px 15px !important;
@@ -524,6 +525,7 @@ span.cwp_title{
     position: fixed;
     right: 35px;
     bottom: 35px;
+        z-index: 111111111111111;
 }
 .floating_btn_wrap button i {
     transition: all 0.5s ease;
@@ -539,6 +541,7 @@ span.cwp_title{
     font-size: 20px !important;
     transition: all 0.5s ease;
 }
+
 
 #uploadPreview img{
   height: 64px;
@@ -560,6 +563,7 @@ span.cwp_title{
     display: inline-block;
     position: relative;
     margin-right: 10px;
+    margin-bottom: 10px;
 }
 .bradcrumb_container {
     padding: 20px 30px;
@@ -692,6 +696,98 @@ table{
     display: flex;
     align-items: center;
 }
+.forget_pass_link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.login_page_bl{
+    background: transparent !important;
+}
+
+.task_select {
+    display: inline-block;
+    width: 81%;
+}
+.task_select_label {
+    display: inline-block;
+    width: 14%;
+    margin-bottom: 0px;
+    margin-right: 25px;
+}
+.task_select_wrap{
+    display: flex;
+    align-items: center;
+}
+.last_comment .blockquote footer {
+    font-size: 0.7rem;
+    font-style: italic;
+    display: inline-block;
+    font-weight: 400;
+}
+.last_comment .blockquote p {
+    font-size: 0.9rem;
+    font-style: italic;
+    display: inline-block;
+}
+.last_comment .blockquote {
+    background: #e4d6c0;
+    padding: 10px;
+    border-radius: 5px;
+        line-height: 25px;
+}
+.dataTables_length {
+    padding-top: 15px;
+}
+.dataTables_filter {
+    padding-top: 20px;
+}
+
+
+@media screen and (max-width: 767px){
+    .brad_info {
+        float: none !important;
+    }
+    .brad_Wrap .breadcrumb {
+        justify-content: center;
+    }
+    .brad_Wrap {
+        float: none !important;
+    }
+    .detail_breadcrumb {
+        text-align: center;
+    }
+    .task_select_wrap {
+        display: block;
+    }
+    .task_select_label {
+        width: 100%;
+        margin: 0px;
+    }
+    .task_select {
+        display: block;
+        width: 100%;
+    }
+    .task_select_wrap {
+        text-align: center;
+    }
+    .text-xs-center{
+        text-align: center;
+    }
+    .notificaton_ul li .comment-text {
+    width: 85%;
+}
+    .navbar_select span.select2-selection.select2-selection--single {
+        width: 140px;
+    }
+    span.cwp_title{
+        display: none;
+    }
+    table .btn-lil {
+        margin-bottom: 10px;
+    }
+}
+
 .forget_pass_link {
     display: flex;
     align-items: center;

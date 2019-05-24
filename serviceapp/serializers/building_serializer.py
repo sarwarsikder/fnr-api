@@ -5,12 +5,13 @@ from adminapp.views.common_views import CommonView
 
 
 class BuildingSerializer(serializers.ModelSerializer):
-    total_tasks = serializers.CharField(read_only=True)
-    tasks_done = serializers.CharField(read_only=True)
+    total_tasks = serializers.IntegerField(read_only=True)
+    tasks_done = serializers.IntegerField(read_only=True)
+    total_flats = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Buildings
-        fields = ('id', 'hause_number', 'description', 'display_number', 'total_tasks', 'tasks_done')
+        fields = ('id', 'hause_number', 'description', 'display_number', 'total_tasks', 'tasks_done', 'total_flats')
 
 
 class PlanSerializer(serializers.ModelSerializer):
