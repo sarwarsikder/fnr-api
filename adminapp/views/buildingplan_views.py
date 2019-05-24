@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import UpdateView
 
-from adminapp.forms.buildingPlans_form import BuildingPlansForm
+from adminapp.forms.buildingplans_form import BuildingPlansForm
 from adminapp.models import BuildingPlans
 from adminapp.models import Users
 

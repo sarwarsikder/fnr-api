@@ -35,7 +35,7 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <form action="{% url 'building-plan-add' %}" method="post" enctype="multipart/form-data" id="building">
+                                    <form action="{% url 'flat-plan-add' %}" method="post" enctype="multipart/form-data" id="flat" data-parsley-validate="">
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="col-sm-3  col-xs-12 align-items-center justify-content-center chg_image_profile">
@@ -85,8 +85,8 @@
           }
           $(this).prev('label').text(file);
         });
-                $(function () {
-          $('#building').parsley().on('field:validated', function() {
+        $(function () {
+          $('#flat').parsley().on('field:validated', function() {
             var ok = $('.parsley-error').length === 0;
             $('.bs-callout-info').toggleClass('hidden', !ok);
             $('.bs-callout-warning').toggleClass('hidden', ok);
