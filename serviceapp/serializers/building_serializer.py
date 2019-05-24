@@ -1,6 +1,6 @@
 from django.conf import settings
 from rest_framework import serializers
-from adminapp.models import Buildings, BuildingPlans
+from adminapp.models import Buildings, BuildingPlans, BuildingComponents
 from adminapp.views.common_views import CommonView
 
 
@@ -27,3 +27,10 @@ class PlanSerializer(serializers.ModelSerializer):
             return CommonView.get_file_path(plan_file)
         else:
             return None
+
+
+class ComponentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BuildingComponents
+        fields = ('component_id', 'description')

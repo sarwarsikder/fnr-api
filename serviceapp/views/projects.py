@@ -18,7 +18,7 @@ class ProjectPermissions(BasePermission):
 
 # Override default pagination settings
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 2
+    page_size = 10
 
 
 class ProjectViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
@@ -43,7 +43,7 @@ class ProjectPlanViewSet(APIView):
     def get(self, request, **kwargs):
         project_id = kwargs['project_id']
         paginator = PageNumberPagination()
-        paginator.page_size = 2
+        paginator.page_size = 10
         plans = ProjectPlans.objects.filter(project_id=project_id)
         result_page = paginator.paginate_queryset(plans, request)
         serializer = PlanSerializer(result_page, many=True)
