@@ -4,19 +4,19 @@ import re
 
 
 class ComponentForm(forms.ModelForm):
-    name = forms.CharField(label='name', min_length=3 ,max_length=100)
-    static_description = forms.CharField(label='description',required=False, max_length=1000)
+    name = forms.CharField(label='name', min_length=3, max_length=100)
+    static_description = forms.CharField(label='description', required=False, max_length=1000)
     parent_id = forms.IntegerField(label='parent', required=False)
-    type = forms.CharField(label='type',required=False, max_length=255)
+    type = forms.CharField(label='type', required=False, max_length=255)
     building = forms.BooleanField(label='building', required=False)
     flat = forms.BooleanField(label='flat', required=False)
     created_by = forms.IntegerField(required=False)
     updated_by = forms.IntegerField(required=False)
     created_at = forms.DateTimeField(required=False)
-    updated_at = forms.DateTimeField( required=False)
+    updated_at = forms.DateTimeField(required=False)
 
     class Meta:
-        model=Components
+        model = Components
         db_table = "components"
         fields = ('name', 'static_description', 'parent_id', 'type', 'building', 'flat', 'created_by', 'updated_by')
 
@@ -31,7 +31,7 @@ class ComponentForm(forms.ModelForm):
         obj = super(ComponentForm, self).save(commit=False)
         obj.created_by = request.user
         obj.updated_by = request.user
-        obj.parent_id= cleaned_data.get('parent_id')
+        obj.parent_id = cleaned_data.get('parent_id')
         obj.save()
         return obj
 
@@ -45,6 +45,3 @@ class ComponentForm(forms.ModelForm):
 
     def process(self):
         cd = self.cleaned_data
-
-
-

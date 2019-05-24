@@ -39,6 +39,7 @@ class BuildingPlansView(generic.DetailView):
                 response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+
 class BuildingPlansAddView(generic.DetailView):
     form_class = BuildingPlansForm
     template_name = 'buildings/add_plans.html'
@@ -56,7 +57,7 @@ class BuildingPlansAddView(generic.DetailView):
         print(request.session['supplementer_user'])
         if CommonView.superuser_login(request):
             response = {}
-            form = self.form_class(request.POST, request.FILES )
+            form = self.form_class(request.POST, request.FILES)
             form.created_by = request.user
             response['form'] = form
             try:
@@ -76,6 +77,7 @@ class BuildingPlansUpdateView(UpdateView):
     form_class = BuildingPlansForm
     template_name = 'buildings/edit_plans.html'
     model = BuildingPlans
+
     def get(self, request, pk):
         print("Got Update!!")
         if request.user.is_superuser:
@@ -104,7 +106,3 @@ class BuildingPlansUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(BuildingPlansUpdateView, self).get_context_data(**kwargs)
         return context
-
-
-
-

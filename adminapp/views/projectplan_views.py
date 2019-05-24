@@ -38,6 +38,7 @@ class ProjectPlansView(generic.DetailView):
                 response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+
 class ProjectPlansAddView(generic.DetailView):
     form_class = ProjectPlansForm
     template_name = 'projects/add_plans.html'
@@ -99,5 +100,5 @@ class ProjectPlansUpdateView(UpdateView):
         return reverse_lazy('project-plan')
 
     def get_context_data(self, **kwargs):
-        context = super(BuildingPlansUpdateView, self).get_context_data(**kwargs)
+        context = super(ProjectPlansUpdateView, self).get_context_data(**kwargs)
         return context
