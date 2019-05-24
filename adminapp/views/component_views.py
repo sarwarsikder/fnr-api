@@ -23,7 +23,6 @@ class ComponentView(generic.DetailView):
             for component in components:
                 component.sub_components = Components.objects.filter(parent_id=component.id)
             response['components'] = components
-            # return render(request, 'components/list.html', {})
             return render(request, 'components/component.html', response)
         else:
             redirect('index')
@@ -63,24 +62,16 @@ class ComponentAddView(generic.DetailView):
         print(request.session['supplementer_user'])
         if CommonView.superuser_login(request):
             response = {}
-            print("in super user!!")
             form = self.form_class(request.POST)
             form.created_by = request.user
-
-            # parents = Components.objects.filter(parent__isnull=True)
             parents = Components.objects.filter(Q(parent__isnull=True) | Q(parent_id=0))
             response['parents'] = parents
             response['form'] = form
-            print("form posted!!")
             try:
-                print("in valid!!")
-                print(form)
                 if form.is_valid():
-                    print("form valid!!")
                     form.save(request=request)
                     return HttpResponseRedirect('/components/')
                 else:
-                    print("form not valid!!")
                     if form.data.get('flat') ==1 or form.data.get('flat') == "1" :
                         response['isFlatSelected'] = True
                     else:
@@ -93,7 +84,6 @@ class ComponentAddView(generic.DetailView):
 
                     return render(request, self.template_name, response)
             except Exception as e:
-                print(e)
                 LogHelper.efail(e)
                 return render(request, self.template_name, response)
         else:
@@ -104,12 +94,10 @@ class ComponentUpdateView(UpdateView):
     template_name = 'components/edit_component.html'
     model = Components
     def get(self, request, pk):
-        print("safasfsf")
         if request.user.is_superuser:
             response = {}
             form = self.form_class
             data = Components.objects.filter(id=pk)
-            # parents = Components.objects.filter(parent__isnull=True)
             parents = Components.objects.filter(Q(parent__isnull=True) | Q(parent_id=0))
             response['data'] = data[0]
             response['parents'] = parents

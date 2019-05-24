@@ -19,7 +19,6 @@ class ComponentForm(forms.ModelForm):
         model=Components
         db_table = "components"
         fields = ('name', 'static_description', 'parent_id', 'type', 'building', 'flat', 'created_by', 'updated_by')
-    # , 'created_by', 'updated_by', 'created_at', 'updated_at'
 
     def clean(self):
         cleaned_data = super(ComponentForm, self).clean()
@@ -32,7 +31,6 @@ class ComponentForm(forms.ModelForm):
         obj = super(ComponentForm, self).save(commit=False)
         obj.created_by = request.user
         obj.updated_by = request.user
-        print(cleaned_data)
         obj.parent_id= cleaned_data.get('parent_id')
         obj.save()
         return obj

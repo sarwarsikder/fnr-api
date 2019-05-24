@@ -36,14 +36,14 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <form action="{% url 'component-update' pk=data.id %}" method="post">
+                                    <form action="{% url 'component-update' pk=data.id %}" method="post" id="components" data-parsley-validate="">
                                     {% csrf_token %}
 {#                                    {{ form }}#}
                                         <div class="row">
                                             <div class="col-sm-12 col-xs-12">
                                                 <div class="form-group">
-                                                    <label for="name">Name{{ data.id }}</label>
-                                                    <input type="text" class="form-control" name= "name" id="name" placeholder="Enter Name" value="{{ data.name }}">
+                                                    <label for="name">Name</label>
+                                                    <input type="text" class="form-control" name= "name" id="name" placeholder="Enter Name" value="{{ data.name }}" data-parsley-trigger="change" required="">
                                                     {{ form.name.errors }}
                                                 </div>
 
@@ -54,7 +54,28 @@
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="type">Type</label>
-                                                    <input type="type" class="form-control" name="type" id="cmail" placeholder="Enter Type" value="{{ data.type }}">
+                                                    <br>
+                                                    <select class="js-example-basic-single" name="type" id="type" style="width: 350px;" required="">
+                                                        <option></option>
+                                                        <optgroup name="Grundung" label="Grundung">
+                                                            <option value="sf">Streifenfundamente</option>
+                                                            <option value="sb">Stahlbeton</option>
+                                                            <option value="sb_sf">Stahlbeton mit streifenfundamente</option>
+                                                        </optgroup>
+                                                        <optgroup name="Aussenwande ab EG" label="Aussenwande ab EG">
+                                                            <option value="su">Stahlbeton und Unipor</option>
+                                                            <option value="sk">Stahlbeton und kalksandstein</option>
+                                                        </optgroup>
+                                                        <optgroup name="Fenster Beschattung" label="Fenster Beschattung">
+                                                            <option value="nbk">Neubaukasten</option>
+                                                            <option value="aufsr">Aufsatzrollladenkasten</option>
+                                                            <option value="rse">Rafstorelement</option>
+                                                        </optgroup>
+                                                        <optgroup name="Dach" label="Dach">
+                                                            <option value="zd">Zeigeldach</option>
+                                                            <option value="fs">Flachdcah aus Stahlbeton</option>
+                                                        </optgroup>
+                                                    </select>
                                                     {{ form.type.errors }}
                                                 </div>
 
@@ -63,8 +84,9 @@
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="parent">Parent</label>
-                                                    <select class="js-example-basic-single" name="parent_id" id="parent" style="width: 350px;">
-                                                      <option value="-1"></option>
+                                                    <br>
+                                                    <select class="js-example-basic-single" name="parent_id" id="parent" style="width: 350px;" required="">
+                                                      <option></option>
                                                         {% for parent in parents %}
                                                         <option value="{{ parent.id }}" >{{ parent.name }}</option>
                                                       {% endfor %}
@@ -91,7 +113,7 @@
                                             <div class="col-sm-12 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="description">Description</label>
-                                                    <textarea class="form-control" rows="3" name="static_description" placeholder="Enter Description"> {{ data.static_description }}</textarea>
+                                                    <textarea class="form-control" rows="3" name="static_description" placeholder="Enter Description" > {{ data.static_description }}</textarea>
                                                     {{ form.static_description.errors }}
                                                 </div>
 
@@ -113,19 +135,24 @@
                     <!-- /.content -->
                 </div>
                 <!-- /.content-wrapper -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.js-example-basic-single').select2();
+            $('.js-example-basic-single').select2({
+                placeholder: "Select ....",
+                allowClear: true
+            });
         });
         $(document).ready(function(){
-
-            // Initialize Select2
             $('#parent').select2();
-
             $('#parent').val({{ data.parent_id }});
             $('#parent').select2().trigger('change');
+
+        });
+        $(document).ready(function(){
+            $('#type').select2();
+            var a = "" + {{ data.type }};
+            $('#type').val(a).trigger('change');
+            {#$('#type').select2().trigger('change');#}
 
         });
          $(document).ready(function() {
@@ -133,14 +160,21 @@
              if({{ isParent }}){
                 $(".js-example-basic-single").prop("disabled", true);
             }else{
-                 // Initialize Select2
             $('#parent').select2();
-
             $('#parent').val({{ data.parent_id }});
             $('#parent').select2().trigger('change');
              }
         });
-
+        $(function () {
+          $('#components').parsley().on('field:validated', function() {
+            var ok = $('.parsley-error').length === 0;
+            $('.bs-callout-info').toggleClass('hidden', !ok);
+            $('.bs-callout-warning').toggleClass('hidden', ok);
+          })
+          .on('form:submit', function() {
+            return true;
+          });
+        });
     </script>
     {% include "layout/datatable_footer.html" %}
 {% endblock %}

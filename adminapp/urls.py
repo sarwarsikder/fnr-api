@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.urls import path
-from adminapp.views import common_views, login_views, staff_views, company_views, project_views, building_views, flat_views, component_views, reset_password, datatables, profile_views
-
+from adminapp.views import common_views, login_views, staff_views, company_views, project_views, building_views, \
+    flat_views, buildingplan_views, flatplan_views, component_views, reset_password, datatables, profile_views, \
+    projectplan_views
+from django.conf import settings
+from django.views.static import serve
 urlpatterns = [
     url(r'^$', common_views.IndexView.as_view(), name='index'),
     url(r'^login/$', login_views.LoginView.as_view(), name='login'),
@@ -70,5 +73,20 @@ urlpatterns = [
     url(r'^components/update/(?P<pk>[\w-]+)/$', component_views.ComponentUpdateView.as_view(), name='component-update'),
     url(r'^components/delete$', component_views.ComponentView.delete, name='component-delete'),
 
+    url(r'^building-plan/$', buildingplan_views.BuildingPlansView.as_view(), name='building-plan'),
+    url(r'^building-plan/add/$', buildingplan_views.BuildingPlansAddView.as_view(), name='building-plan-add'),
+    url(r'^building-plan/update/(?P<pk>[\w-]+)/$', buildingplan_views.BuildingPlansUpdateView.as_view(), name='building-plan-update'),
+    url(r'^building-plan/delete$', buildingplan_views.BuildingPlansView.delete, name='building-plan-delete'),
+    url(r'^flat-plan/$', flatplan_views.FlatPlansView.as_view(), name='flat-plan'),
+    url(r'^flat-plan/add/$', flatplan_views.FlatPlansAddView.as_view(), name='flat-plan-add'),
+    url(r'^flat-plan/update/(?P<pk>[\w-]+)/$', flatplan_views.FlatPlansUpdateView.as_view(), name='flat-plan-update'),
+    url(r'^flat-plan/delete$', flatplan_views.FlatPlansView.delete, name='flat-plan-delete'),
+    url(r'^project-plan/$', projectplan_views.ProjectPlansView.as_view(), name='project-plan'),
+    url(r'^project-plan/add/$', projectplan_views.ProjectPlansAddView.as_view(), name='project-plan-add'),
+    url(r'^project-plan/update/(?P<pk>[\w-]+)/$', projectplan_views.ProjectPlansUpdateView.as_view(), name='project-plan-update'),
+    url(r'^project-plan/delete$', projectplan_views.ProjectPlansView.delete, name='project-plan-delete'),
+
     url(r'^qr-to-png/(?P<qr_id>[\w-]+)/$', common_views.QRResponse.as_view(), name='qr-to-png'),
+
 ]
+
