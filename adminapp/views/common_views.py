@@ -55,8 +55,8 @@ class CommonView(generic.DetailView):
         file = str(file)
         file_path = ""
         try:
-            path = file.split("adminapp/")[1]
-            file_path = settings.SITE_URL+"/"+path
+            # path = file.split("adminapp/")[1]
+            file_path = settings.MEDIA_URL+file
         except Exception as e:
             LogHelper.elog(e)
         return file_path

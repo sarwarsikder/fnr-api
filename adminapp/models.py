@@ -5,6 +5,7 @@ from django_mysql.models import JSONField
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from django.core.files.storage import FileSystemStorage
 
 # Create your models here.
 try:
@@ -77,7 +78,7 @@ class TaskStatusType(EnumField, models.CharField):
 
 class Users(AbstractUser):
     address = models.TextField(null=True)
-    avatar = models.FileField(null=True, upload_to='adminapp/static/assets/avatar/', validators=[FileExtensionValidator(allowed_extensions=['jpg','png','svg'])])
+    avatar = models.FileField(null=True, upload_to='avatar/', validators=[FileExtensionValidator(allowed_extensions=['jpg','png','svg','jpeg'])], storage=FileSystemStorage())
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     current_activity = JSONField(default=my_default)
@@ -117,7 +118,7 @@ class Projects(models.Model):
 
 class ProjectPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='adminapp/static/assets/project/plans/')
+    plan_file = models.FileField(null=True, upload_to='project/plans/', storage=FileSystemStorage())
     project = models.ForeignKey(Projects, on_delete=models.CASCADE)
     file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='project_plan_created_by', null=True, on_delete=models.SET_NULL)
@@ -157,7 +158,7 @@ class Buildings(models.Model):
 
 class BuildingPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='adminapp/static/assets/building/plans/')
+    plan_file = models.FileField(null=True, upload_to='building/plans/', storage=FileSystemStorage())
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
     file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='building_plan_created_by', null=True, on_delete=models.SET_NULL)
@@ -186,7 +187,7 @@ class Flats(models.Model):
 
 class FlatPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='adminapp/static/assets/flat/plans/')
+    plan_file = models.FileField(null=True, upload_to='flat/plans/', storage=FileSystemStorage())
     flat = models.ForeignKey(Flats, on_delete=models.CASCADE)
     file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='flat_plan_created_by', null=True, on_delete=models.SET_NULL)
