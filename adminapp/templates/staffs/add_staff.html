@@ -8,7 +8,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-left">
                         <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-                        <li class="breadcrumb-item active">Staff List</li>
+                        <li class="breadcrumb-item active">Add Staff</li>
                     </ol>
                 </div>
                 <!-- /.col -->
@@ -115,6 +115,20 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label for="{{ form.project_list.id_for_label }}">Assigned Projects</label>
+                                            <div class="has-feedback">
+                                                <select class="form-control select2" multiple
+                                                        id="id_project_list" name="project_list"
+                                                        data-placeholder="Select projects"
+                                                        style="width: 100%;">
+                                                    {% for project in projects %}
+                                                        <option value="{{ project.id }}">{{ project.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                {{ form.project_list.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="{{ form.address.id_for_label }}">Address</label>
                                             <div class="has-feedback">
                                                         <textarea id="id_address" name="address" class="form-control"
@@ -123,7 +137,6 @@
                                                 {{ form.address.errors }}
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <div class="col-sm-6 offset-sm-3 col-xs-12">
@@ -145,6 +158,7 @@
     <!-- /.content -->
     <script>
         $(function () {
+            $('#id_project_list').select2();
             $("#form-add-staff").validate({
                 ignore: '.ignore',
                 focusInvalid: true,

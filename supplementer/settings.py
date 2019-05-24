@@ -14,8 +14,6 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-MEDIA_URL = "/media/"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -86,9 +84,9 @@ DATABASES = {
     'default': {
         'NAME': 'supplementer_db',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': 'Wsit_97480',
-        'HOST': 'localhost',
+        'USER': 'wsit',
+        'PASSWORD': 'wsit97480',
+        'HOST': '58.84.34.65',
         'PORT': '3306',
         'OPTIONS': {
             'autocommit': True,
@@ -162,6 +160,9 @@ USE_TZ = False
 
 STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static')
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
+MEDIA_URL = '/media/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

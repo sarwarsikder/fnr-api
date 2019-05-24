@@ -1,7 +1,7 @@
 from django.db.models import Case, Value, When, Count
 from django.db.models.functions import Concat
 
-from adminapp.models import Users, HandWorker, Projects
+from adminapp.models import Users, HandWorker, Projects, Buildings, Flats
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.db import connection
 from django.template.loader import render_to_string
@@ -29,8 +29,8 @@ class CompanyListView(BaseDatatableView):
 
 class ProjectListView(BaseDatatableView):
     model = Projects
-    columns = ['id', 'name', 'city', 'type', 'start_date', 'end_date', 'user_type']
-    order_columns = ['id', 'name', 'city', 'type', 'start_date', 'end_date']
+    columns = ['id', 'name', 'city', 'type', 'is_complete', 'start_date', 'end_date', 'user_type']
+    order_columns = ['id', 'name', 'city', 'type', 'is_complete', 'start_date', 'end_date']
 
     def get_initial_queryset(self):
         if self.request.user.is_superuser:
@@ -38,3 +38,22 @@ class ProjectListView(BaseDatatableView):
         else:
             return Projects.objects.annotate(user_type=Case(When(projectstuff__user__is_superuser=True, then='projectstuff__user__is_superuser'), default='projectstuff__user__is_superuser')).filter(projectstuff__user_id=self.request.user.id)
 
+
+class BuildingListView(BaseDatatableView):
+    model = Buildings
+    columns = ['id', 'hause_number', 'display_number', 'description']
+    order_columns = ['id', 'hause_number', 'display_number', 'description']
+
+    def get_initial_queryset(self):
+        project_id = self.request.GET.get('project_id')
+        return Buildings.objects.filter(project_id=project_id)
+
+
+class FlatListView(BaseDatatableView):
+    model = Flats
+    columns = ['id', 'number', 'client_name', 'client_email', 'client_tel']
+    order_columns = ['id', 'number', 'client_name', 'client_email', 'client_tel']
+
+    def get_initial_queryset(self):
+        building_id = self.request.GET.get('building_id')
+        return Flats.objects.filter(building_id=building_id)

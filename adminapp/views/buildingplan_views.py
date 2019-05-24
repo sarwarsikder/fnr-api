@@ -24,20 +24,20 @@ class BuildingPlansView(generic.DetailView):
         else:
             redirect('index')
 
-    # def delete(request):
-    #     response = {}
-    #     if CommonView.superuser_login(request):
-    #         try:
-    #             building_plan_id = request.POST.get('id')
-    #             BuildingPlans.objects.get(id=building_plan_id).delete()
-    #             response['success'] = True
-    #             response['message'] = "Buildings delete successfully"
-    #             return HttpResponseRedirect('/building-plan/')
-    #         except Exception as e:
-    #             LogHelper.elog(e)
-    #             response['success'] = False
-    #             response['message'] = "Something went wrong. Please try again"
-    #     return HttpResponse(json.dumps(response), content_type='application/json')
+    def delete(request):
+        response = {}
+        if CommonView.superuser_login(request):
+            try:
+                building_plan_id = request.POST.get('id')
+                BuildingPlans.objects.get(id=building_plan_id).delete()
+                response['success'] = True
+                response['message'] = "Buildings Plan delete successfully"
+                return HttpResponseRedirect('/building-plan/')
+            except Exception as e:
+                LogHelper.elog(e)
+                response['success'] = False
+                response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
 
 class BuildingPlansAddView(generic.DetailView):
     form_class = BuildingPlansForm

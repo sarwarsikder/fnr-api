@@ -45,7 +45,7 @@
                                                             <div class=" imgUp">
                                                                 <div class="imagePreview"></div>
                                                                 <label class="btn btn-primary btn_up_image w-100">
-                                                                    Upload<input type="file" class="uploadFile img" value="Upload Photo" name="plan_file" style="width: 0px;height: 0px;overflow: hidden;">
+                                                                    Upload<input type="file" class="uploadFile img" value="Upload Photo" name="plan_file" style="width: 0px;height: 0px;overflow: hidden;" required="">
                                                                 </label>
                                                             </div><!-- col-2 -->
                                                         </div>
@@ -55,7 +55,7 @@
                                             <div class="col-sm-8 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="p_name">Plan name</label>
-                                                    <input type="text" class="form-control" id="p_name" name="title" placeholder="Enter Plan name">
+                                                    <input type="text" class="form-control" id="p_name" name="title" placeholder="Enter Plan name" data-parsley-trigger="change" required="">
                                                     {{ form.title.errors }}
                                                 </div>
                                                 <button type="submit" class="btn btn-primary">Add Plan</button>
@@ -84,6 +84,16 @@
               $('.imagePreview').attr('background-image','url(../../static/assets/images/file.png)');
           }
           $(this).prev('label').text(file);
+        });
+                $(function () {
+          $('#building').parsley().on('field:validated', function() {
+            var ok = $('.parsley-error').length === 0;
+            $('.bs-callout-info').toggleClass('hidden', !ok);
+            $('.bs-callout-warning').toggleClass('hidden', ok);
+          })
+          .on('form:submit', function() {
+            return true;
+          });
         });
     </script>
 

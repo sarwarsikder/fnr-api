@@ -32,8 +32,14 @@ $(document).ready(function () {
                 "className": "",
                 "targets": 4,
                 'render': function (data, type, full, meta) {
-                    var start_date = moment(full[4]).format("Do MMM,YYYY");
-                    return start_date;
+                    var is_checked = "";
+                    if (full[4] == "False"){
+                        is_checked = "checked";
+                    }
+                    var status = '<label class="switch" for="checkbox-'+full[0]+'">'+
+                                '<input type="checkbox" class="project-status-checkbox" id="checkbox-'+full[0]+'" '+is_checked+' />'+
+                                '<div class="slider round"></div>';
+                    return status;
                 }
             },
             {
@@ -42,7 +48,17 @@ $(document).ready(function () {
                 "className": "",
                 "targets": 5,
                 'render': function (data, type, full, meta) {
-                    var end_date = moment(full[5]).format("Do MMM,YYYY");
+                    var start_date = moment(full[5]).format("Do MMM,YYYY");
+                    return start_date;
+                }
+            },
+            {
+                "orderable": true,
+                "searchable": true,
+                "className": "",
+                "targets": 6,
+                'render': function (data, type, full, meta) {
+                    var end_date = moment(full[6]).format("Do MMM,YYYY");
                     return end_date;
                 }
             },
@@ -50,10 +66,10 @@ $(document).ready(function () {
                 "orderable": false,
                 "searchable": false,
                 "className": "",
-                "targets": 6,
+                "targets": 7,
                 'render': function (data, type, full, meta) {
                     var building_url = base_url+"/projects/"+full[0]+"/buildings/";
-                    if(full[6] == 'False'){
+                    if(full[7] == 'False'){
                         var actions = '<a href="'+building_url+'" class="btn btn-primary btn-lil project-buildings" data-toggle="tooltip" data-placement="top" title="Project Hauser"><i class="fa fa-building"></i></a>';
                         return actions;
                     }else{

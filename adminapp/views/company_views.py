@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import View, UpdateView
 from adminapp.models import Users, HandWorker
-from adminapp.forms.user_form import WorkerForm, WorkerUpdateForm
+from adminapp.forms.user_form import WorkerForm, WorkerUpdateForm, UserPasswordChangeForm
 from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
 from django.conf import settings
@@ -133,6 +133,27 @@ class CompanyUpdateView(UpdateView):
             working_types.append(value)
         context['working_type'] = working_types
         return context
+
+
+class CompanyPasswordChangeView(UpdateView):
+    model = Users
+    form_class = UserPasswordChangeForm
+    template_name = 'staffs/staff_password_change.html'
+
+    def get_success_url(self):
+        return reverse_lazy('companies')
+
+    def form_valid(self, form):
+        form.save(request=self.request)
+        mailTemplate = "mails/user_password_change.html"
+        context = {
+            "user_full_name": self.object.get_full_name(),
+            "password": self.request.POST.get('password')
+        }
+        subject = "Password Change"
+        to = self.object.email
+        CommonView.sendEmail(self.request, mailTemplate, context, subject, to, self.object.id)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 

@@ -5,6 +5,7 @@ from django_mysql.models import JSONField
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from django.core.files.storage import FileSystemStorage
 
 # Create your models here.
 try:
@@ -64,9 +65,20 @@ class NotificationType(EnumField, models.CharField):
         super(NotificationType, self).__init__(*args, **kwargs)
 
 
+class TaskStatusType(EnumField, models.CharField):
+    def __init__(self, *args, **kwargs):
+        roles = [
+            ('to_do', 'To Do'),
+            ('in_progress', 'In Progress'),
+            ('done', 'Done'),
+        ]
+        kwargs.setdefault('choices', roles)
+        super(TaskStatusType, self).__init__(*args, **kwargs)
+
+
 class Users(AbstractUser):
     address = models.TextField(null=True)
-    avatar = models.FileField(null=True, upload_to='adminapp/static/assets/avatar/', validators=[FileExtensionValidator(allowed_extensions=['jpg','png','svg'])])
+    avatar = models.FileField(null=True, upload_to='avatar/', validators=[FileExtensionValidator(allowed_extensions=['jpg','png','svg','jpeg'])], storage=FileSystemStorage())
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     current_activity = JSONField(default=my_default)
@@ -92,6 +104,7 @@ class Projects(models.Model):
     city = models.CharField(max_length=100, null=True, blank=True)
     type = models.CharField(max_length=100, null=True, blank=True)
     energetic_standard = models.CharField(max_length=100, null=True, blank=True)
+    is_complete = models.BooleanField(default=False)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     created_by = models.ForeignKey(Users, related_name='project_created_by', null=True, on_delete=models.SET_NULL)
@@ -105,7 +118,7 @@ class Projects(models.Model):
 
 class ProjectPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='static/assets/project/plans/')
+    plan_file = models.FileField(null=True, upload_to='project/plans/', storage=FileSystemStorage())
     project = models.ForeignKey(Projects, on_delete=models.CASCADE)
     file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='project_plan_created_by', null=True, on_delete=models.SET_NULL)
@@ -126,9 +139,14 @@ class ProjectStuff(models.Model):
 
 
 class Buildings(models.Model):
-    number = models.CharField(max_length=10)
+    hause_number = models.CharField(max_length=45)
+    display_number = models.CharField(max_length=45)
     description = models.TextField(null=True, blank=True)
     project = models.ForeignKey(Projects, on_delete=models.CASCADE)
+    grundung = models.CharField(max_length=45)
+    aussenwande_eg_og_dg = models.CharField(max_length=45)
+    fenster_beschattung = models.CharField(max_length=45)
+    dach = models.CharField(max_length=45, null=True, blank=True)
     created_by = models.ForeignKey(Users, related_name='building_created_by', null=True, on_delete=models.SET_NULL)
     updated_by = models.ForeignKey(Users, related_name='building_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -140,7 +158,7 @@ class Buildings(models.Model):
 
 class BuildingPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='static/assets/building/plans/')
+    plan_file = models.FileField(null=True, upload_to='building/plans/', storage=FileSystemStorage())
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
     file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='building_plan_created_by', null=True, on_delete=models.SET_NULL)
@@ -155,7 +173,7 @@ class Flats(models.Model):
     description = models.TextField(null=True, blank=True)
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
     client_name = models.CharField(max_length=100, null=True, blank=True)
-    client_address = models.CharField(max_length=150, null=True, blank=True)
+    client_address = models.TextField(null=True, blank=True)
     client_email = models.CharField(max_length=50, null=True, blank=True)
     client_tel = models.CharField(max_length=50, null=True, blank=True)
     created_by = models.ForeignKey(Users, related_name='flat_created_by', null=True, on_delete=models.SET_NULL)
@@ -169,7 +187,7 @@ class Flats(models.Model):
 
 class FlatPlans(models.Model):
     title = models.CharField(max_length=100)
-    plan_file = models.FileField(null=True, upload_to='static/assets/flat/plans/')
+    plan_file = models.FileField(null=True, upload_to='flat/plans/', storage=FileSystemStorage())
     flat = models.ForeignKey(Flats, on_delete=models.CASCADE)
     file_type = models.CharField(max_length=45)
     created_by = models.ForeignKey(Users, related_name='flat_plan_created_by', null=True, on_delete=models.SET_NULL)
@@ -214,6 +232,8 @@ class BuildingComponents(models.Model):
 class Tasks(models.Model):
     building_component = models.ForeignKey(BuildingComponents, on_delete=models.CASCADE)
     followers = JSONField(default=dict)
+    status = TaskStatusType(max_length=20, default="to_do")
+    due_date = models.DateField(default=None)
     created_by = models.ForeignKey(Users, related_name='task_created_by', null=True, on_delete=models.SET_NULL)
     updated_by = models.ForeignKey(Users, related_name='task_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -246,7 +266,7 @@ class HandWorker(models.Model):
 
 
 class QrCode(models.Model):
-    unique_key = models.CharField(max_length=50)
+    unique_key = models.CharField(max_length=50, unique=True)
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
     flat = models.ForeignKey(Flats, null=True, on_delete=models.CASCADE)
     created_by = models.ForeignKey(Users, related_name='qr_created_by', null=True, on_delete=models.SET_NULL)
