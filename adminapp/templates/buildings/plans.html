@@ -41,22 +41,24 @@
                                     <div class="row">
                                     {% for plans in buildingPlans %}
                                         <div class="col-sm-2 col-12">
-                                            <button type="button" class="btn open-DeleteDialog border-top border-left border-right" data-toggle="modal" data-target="#exampleModalLong" data-id="{{ plans.id }}" style="background-color: white;">
+                                            <div class="plan_wrap_container">
+                                                <button type="button" class="delete-building-plan btn open-DeleteDialog border-top border-left border-right" data-toggle="modal" data-target="#exampleModalLong" data-id="{{ plans.id }}" style="background-color: white;">
                                                 <strong>X</strong>
-                                            </button>
-                                            <a href="{% if plans.plan_file %}{{ plans.plan_file.url }}{% else %}#{% endif %}" target="_blank" class="plan_anc">
-                                                <div class="plan_wrap">
+                                                </button>
+                                                <a href="{% if plans.plan_file %}{{ plans.plan_file.url }}{% else %}#{% endif %}" target="_blank" class="plan_anc">
+                                                    <div class="plan_wrap">
 
-                                                    <div class="plan_pdf text-center">
-{#                                                        <img id="fileType" src="../../static/assets/images/pdf.png">#}
-                                                        <img id="fileType" src="{% if plans.file_type == "pdf" %}../../static/assets/images/pdf.png{% else %}../../static/assets/images/file.png{% endif %}">
-                                                    </div>
-                                                    <div class="plan_title">
-                                                        <p>{{ plans.title }}</p>
-                                                    </div>
+                                                        <div class="plan_pdf text-center">
+    {#                                                        <img id="fileType" src="../../static/assets/images/pdf.png">#}
+                                                            <img id="fileType" src="{% if plans.file_type == "pdf" %}../../static/assets/images/pdf.png{% else %}../../static/assets/images/file.png{% endif %}">
+                                                        </div>
+                                                        <div class="plan_title">
+                                                            <p>{{ plans.title }}</p>
+                                                        </div>
 
-                                                </div>
-                                            </a>
+                                                    </div>
+                                                </a>
+                                            </div>
                                         </div>
                                     {% endfor %}
                                     </div>

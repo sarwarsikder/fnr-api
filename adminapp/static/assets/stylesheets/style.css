@@ -461,7 +461,8 @@ span.cwp_title{
     padding: 5px 0px;
 }
 .plan_pdf img {
-    width: 60px;
+    width: auto;
+    height: 75px;
 }
 .plan_pdf  {
     padding: 20px;
@@ -835,4 +836,24 @@ label.error {
 }
 .parsley-errors-list {
     padding: 0px;
+}
+.plan_wrap_container .delete-project-plan:hover, .plan_wrap_container .delete-building-plan:hover, .plan_wrap_container .delete-flat-plan:hover {
+    opacity: 0.8;
+}
+.plan_wrap_container .delete-project-plan, .plan_wrap_container .delete-building-plan, .plan_wrap_container .delete-flat-plan {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: #7d6d57 !important;
+    border-radius: 50% !important;
+    color: #fff;
+    right: 0;
+    top: 0;
+    transition: all 0.5s ease;
+    border: 1px solid #7d6d57 !important;
+}
+
+
+.plan_wrap_container {
+    position: relative;
 }
