@@ -6,7 +6,7 @@ class FlatPlansForm(forms.ModelForm):
     title = forms.CharField(label="title", max_length=100)
     plan_file = forms.FileField(label="plan_file")
     flat = forms.IntegerField(required=False)
-    file_type = forms.CharField(max_length=45,required=False)
+    file_type = forms.CharField(max_length=45, required=False)
     created_by = forms.IntegerField(required=False)
     created_at = forms.DateTimeField(required=False)
 
@@ -41,6 +41,3 @@ class FlatPlansForm(forms.ModelForm):
 
     def process(self):
         cd = self.cleaned_data
-
-
-

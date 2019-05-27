@@ -39,6 +39,7 @@ class FlatPlansView(generic.DetailView):
                 response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+
 class FlatPlansAddView(generic.DetailView):
     form_class = FlatPlansForm
     template_name = 'flats/add_plans.html'
@@ -100,5 +101,5 @@ class FlatPlansUpdateView(UpdateView):
         return reverse_lazy('flat-plan')
 
     def get_context_data(self, **kwargs):
-        context = super(BuildingPlansUpdateView, self).get_context_data(**kwargs)
+        context = super(FlatPlansUpdateView, self).get_context_data(**kwargs)
         return context

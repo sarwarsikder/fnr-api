@@ -32,6 +32,11 @@ class ComponentView(generic.DetailView):
         if CommonView.superuser_login(request):
             try:
                 component_id = request.POST.get('id')
+                parent_check = int(component_id)
+                if 1 <= parent_check <= 20:
+                    print("Parent")
+                    return HttpResponseRedirect('/components/')
+
                 Components.objects.get(id=component_id).delete()
                 response['success'] = True
                 response['message'] = "Component delete successfully"
@@ -42,9 +47,11 @@ class ComponentView(generic.DetailView):
                 response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+
 class ComponentAddView(generic.DetailView):
     form_class = ComponentForm
     template_name = 'components/add_component.html'
+
     def get(self, request):
         if request.user.is_superuser:
             response = {}
@@ -72,12 +79,12 @@ class ComponentAddView(generic.DetailView):
                     form.save(request=request)
                     return HttpResponseRedirect('/components/')
                 else:
-                    if form.data.get('flat') ==1 or form.data.get('flat') == "1" :
+                    if form.data.get('flat') == 1 or form.data.get('flat') == "1":
                         response['isFlatSelected'] = True
                     else:
                         response['isFlatSelected'] = False
 
-                    if form.data.get('building') ==1 or form.data.get('building') == "1":
+                    if form.data.get('building') == 1 or form.data.get('building') == "1":
                         response['isBuildingSelected'] = True
                     else:
                         response['isBuildingSelected'] = False
@@ -89,10 +96,12 @@ class ComponentAddView(generic.DetailView):
         else:
             return redirect('index')
 
+
 class ComponentUpdateView(UpdateView):
     form_class = ComponentForm
     template_name = 'components/edit_component.html'
     model = Components
+
     def get(self, request, pk):
         if request.user.is_superuser:
             response = {}
@@ -135,7 +144,3 @@ class ComponentUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ComponentUpdateView, self).get_context_data(**kwargs)
         return context
-
-
-
-
