@@ -32,15 +32,16 @@ class ComponentView(generic.DetailView):
         if CommonView.superuser_login(request):
             try:
                 component_id = request.POST.get('id')
-                parent_check = int(component_id)
-                if 1 <= parent_check <= 20:
-                    print("Parent")
-                    return HttpResponseRedirect('/components/')
+                component = Components.objects.get(id=component_id)
+                if component.parent is None:
+                    response['success'] = False
+                    response['message'] = "Something went wrong. Please try again"
+                    return HttpResponse(json.dumps(response), content_type='application/json')
 
                 Components.objects.get(id=component_id).delete()
                 response['success'] = True
                 response['message'] = "Component delete successfully"
-                return HttpResponseRedirect('/components/')
+                return HttpResponse(json.dumps(response), content_type='application/json')
             except Exception as e:
                 LogHelper.elog(e)
                 response['success'] = False

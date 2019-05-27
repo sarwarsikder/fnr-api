@@ -40,7 +40,7 @@
                                     {% csrf_token %}
 {#                                    {{ form }}#}
                                         <div class="row">
-                                            <div class="col-sm-12 col-xs-12">
+                                            <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="name">Name</label>
                                                     <input type="text" class="form-control" name= "name" id="name" placeholder="Enter Name" value="{{ data.name }}" data-parsley-trigger="change" required="">
@@ -48,11 +48,24 @@
                                                 </div>
 
                                             </div>
+                                            <div class="col-sm-6 col-xs-12 inline_radio_wrap">
+                                                <div class="form-check inline_radio">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="flat" {% if isFlatSelected == True %} checked {% endif %}>
+                                                    <label for="flat" class="form-check-label">Flat</label>
+                                                    {{ form.flat.errors }}
+                                                </div>
+                                                <div class="form-check inline_radio">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="building" {% if isBuildingSelected == True %} checked {% endif %}>
+                                                    <label for="building" class="form-check-label">Buildings </label>
+                                                    {{ form.building.errors }}
+                                                </div>
+
+                                            </div>
                                         </div>
                                         <div class="row">
 
                                             <div class="col-sm-6 col-xs-12">
-                                                <div class="form-group">
+                                                <div class="form-group inform_select">
                                                     <label for="type">Type</label>
                                                     <br>
                                                     <select class="js-example-basic-single" name="type" id="type" style="width: 350px;" required="">
@@ -82,7 +95,7 @@
                                             </div>
 
                                             <div class="col-sm-6 col-xs-12">
-                                                <div class="form-group">
+                                                <div class="form-group inform_select">
                                                     <label for="parent">Parent</label>
                                                     <br>
                                                     <select class="js-example-basic-single" name="parent_id" id="parent" style="width: 350px;" required="">
@@ -94,19 +107,7 @@
                                                     {{ form.parent.errors }}
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6 col-xs-12 inline_radio_wrap">
-                                                <div class="form-check inline_radio">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="flat" {% if isFlatSelected == True %} checked {% endif %}>
-                                                    <label for="flat" class="form-check-label">Flat</label>
-                                                    {{ form.flat.errors }}
-                                                </div>
-                                                <div class="form-check inline_radio">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="building" {% if isBuildingSelected == True %} checked {% endif %}>
-                                                    <label for="building" class="form-check-label">Buildings </label>
-                                                    {{ form.building.errors }}
-                                                </div>
 
-                                            </div>
                                         </div>
 
                                         <div class="row">

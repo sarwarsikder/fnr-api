@@ -796,3 +796,43 @@ table{
 .login_page_bl{
     background: transparent !important;
 }
+.component_wrap .delete-component:hover {
+    opacity: 0.7;
+}
+.component_wrap .delete-component {
+    position: absolute;
+    z-index: 111;
+    right: 10px;
+    top: 10px;
+    width: 40px;
+    height: 40px;
+    background: #7d6e56 !important;
+    border-radius: 50% !important;
+    color: #fff !important;
+    font-size: 16px !important;
+    transition: all 0.5s ease;
+}
+
+.component_wrap {
+    width: 100%;
+    position: relative;
+}
+.inform_select span.select2.select2-container.select2-container--default {
+    width: 100% !important;
+}
+label.error {
+    display: block;
+    margin: 10px 0px;
+    color: #f95f5f;
+}
+.parsley-errors-list li {
+    list-style: none;
+    display: block;
+    margin: 10px 0px;
+    font-size: 14px !important;
+    color: #f95f5f;
+    font-weight: 700;
+}
+.parsley-errors-list {
+    padding: 0px;
+}

@@ -40,59 +40,13 @@
                                     {% csrf_token %}
 {#                                    {{ form }}#}
                                         <div class="row">
-                                            <div class="col-sm-12 col-xs-12">
+                                            <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group">
                                                     <label for="name">Name</label>
                                                     <input type="text" class="form-control" name= "name" id="name" placeholder="Enter Name" value="{{ form.data.name }}" data-parsley-trigger="change" required="">
                                                     {{ form.name.errors }}
                                                 </div>
                                                 
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            
-                                            <div class="col-sm-6 col-xs-12">
-                                                <div class="form-group">
-                                                    <label for="type">Type</label>
-                                                    <br>
-                                                    <select class="js-example-basic-single" name="type" id="type" style="width: 350px;" required="">
-                                                        <option></option>
-                                                        <optgroup name="Grundung" label="Grundung">
-                                                            <option value="sf">Streifenfundamente</option>
-                                                            <option value="sb">Stahlbeton</option>
-                                                            <option value="sb_sf">Stahlbeton mit streifenfundamente</option>
-                                                        </optgroup>
-                                                        <optgroup name="Aussenwande ab EG" label="Aussenwande ab EG">
-                                                            <option value="su">Stahlbeton und Unipor</option>
-                                                            <option value="sk">Stahlbeton und kalksandstein</option>
-                                                        </optgroup>
-                                                        <optgroup name="Fenster Beschattung" label="Fenster Beschattung">
-                                                            <option value="nbk">Neubaukasten</option>
-                                                            <option value="aufsr">Aufsatzrollladenkasten</option>
-                                                            <option value="rse">Rafstorelement</option>
-                                                        </optgroup>
-                                                        <optgroup name="Dach" label="Dach">
-                                                            <option value="zd">Zeigeldach</option>
-                                                            <option value="fs">Flachdcah aus Stahlbeton</option>
-                                                        </optgroup>
-                                                    </select>
-                                                    {{ form.type.errors }}
-                                                </div>
-                                                
-                                            </div>
-
-                                            <div class="col-sm-6 col-xs-12">
-                                                <div class="form-group">
-                                                    <label for="parent">Parent</label>
-                                                    <br>
-                                                    <select class="js-example-basic-single" name="parent_id" id="parent"  required="" style="width: 350px;">
-                                                      <option></option>
-                                                        {% for parent in parents %}
-                                                        <option value="{{ parent.id }}" >{{ parent.name }}</option>
-                                                      {% endfor %}
-                                                    </select>
-                                                    {{ form.parent.errors }}
-                                                </div>
                                             </div>
                                             <div class="col-sm-6 col-xs-12 inline_radio_wrap">
                                                 <div class="form-check inline_radio">
@@ -105,8 +59,54 @@
                                                     <label for="building" class="form-check-label">Buildings </label>
                                                     {{ form.building.errors }}
                                                 </div>
-                                                
+
                                             </div>
+
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group inform_select">
+                                                    <label for="parent">Parent</label>
+                                                    <br>
+                                                    <select class="js-example-basic-single" name="parent_id" id="parent"  required="" style="width: 350px;">
+                                                      <option></option>
+                                                        {% for parent in parents %}
+                                                        <option value="{{ parent.id }}" >{{ parent.name }}</option>
+                                                      {% endfor %}
+                                                    </select>
+                                                    {{ form.parent.errors }}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12">
+                                                    <div class="form-group inform_select">
+                                                        <label for="type">Type</label>
+                                                        <br>
+                                                        <select class="js-example-basic-single" name="type" id="type" style="width: 350px;" required="">
+                                                            <option></option>
+                                                            <optgroup name="Grundung" label="Grundung">
+                                                                <option value="sf">Streifenfundamente</option>
+                                                                <option value="sb">Stahlbeton</option>
+                                                                <option value="sb_sf">Stahlbeton mit streifenfundamente</option>
+                                                            </optgroup>
+                                                            <optgroup name="Aussenwande ab EG" label="Aussenwande ab EG">
+                                                                <option value="su">Stahlbeton und Unipor</option>
+                                                                <option value="sk">Stahlbeton und kalksandstein</option>
+                                                            </optgroup>
+                                                            <optgroup name="Fenster Beschattung" label="Fenster Beschattung">
+                                                                <option value="nbk">Neubaukasten</option>
+                                                                <option value="aufsr">Aufsatzrollladenkasten</option>
+                                                                <option value="rse">Rafstorelement</option>
+                                                            </optgroup>
+                                                            <optgroup name="Dach" label="Dach">
+                                                                <option value="zd">Zeigeldach</option>
+                                                                <option value="fs">Flachdcah aus Stahlbeton</option>
+                                                            </optgroup>
+                                                        </select>
+                                                        {{ form.type.errors }}
+                                                    </div>
+                                                </div>
+
                                         </div>
 
                                         <div class="row">

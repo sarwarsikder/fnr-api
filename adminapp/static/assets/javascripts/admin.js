@@ -63,6 +63,36 @@ $(function () {
         });
     });
 
+    $body.on('click', '.delete-component', function () {
+        var $this = $(this);
+        var id = $this.data('id'),
+            csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        bootbox.confirm("Are you sure you want to delete this Component?", function (result) {
+            if (result) {
+                $.ajax({
+                    url: base_url + '/components/delete/',
+                    type: 'POST',
+                    data: {
+                        'id': id,
+                        'csrfmiddlewaretoken': csrfToken
+                    },
+                    success: function (responseText) {
+                        var response = responseText;
+                        if (response.success) {
+                            $.growl.notice({message: response.message});
+                            $this.closest('.row').remove();
+                        } else {
+                            $.growl.error({message: response.message});
+                        }
+                    },
+                    error: function (e) {
+                        clog(e);
+                    }
+                });
+            }
+        });
+    });
+
     $body.on('click', '.delete-project', function () {
         var $this = $(this);
         var id = $this.data('id'),

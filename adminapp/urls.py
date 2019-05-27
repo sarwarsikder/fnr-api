@@ -71,7 +71,7 @@ urlpatterns = [
     url(r'^components/$', component_views.ComponentView.as_view(), name='components'),
     url(r'^components/add/$', component_views.ComponentAddView.as_view(), name='component-add'),
     url(r'^components/update/(?P<pk>[\w-]+)/$', component_views.ComponentUpdateView.as_view(), name='component-update'),
-    url(r'^components/delete$', component_views.ComponentView.delete, name='component-delete'),
+    url(r'^components/delete/$', component_views.ComponentView.delete, name='component-delete'),
 
     url(r'^building-plan/$', buildingplan_views.BuildingPlansView.as_view(), name='building-plan'),
     url(r'^building-plan/add/$', buildingplan_views.BuildingPlansAddView.as_view(), name='building-plan-add'),
