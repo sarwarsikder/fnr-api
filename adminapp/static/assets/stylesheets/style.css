@@ -826,7 +826,7 @@ label.error {
     margin: 10px 0px;
     color: #f95f5f;
 }
-.parsley-errors-list li {
+.errorlist li {
     list-style: none;
     display: block;
     margin: 10px 0px;
@@ -834,7 +834,7 @@ label.error {
     color: #f95f5f;
     font-weight: 700;
 }
-.parsley-errors-list {
+.errorlist {
     padding: 0px;
 }
 .plan_wrap_container .delete-project-plan:hover, .plan_wrap_container .delete-building-plan:hover, .plan_wrap_container .delete-flat-plan:hover {

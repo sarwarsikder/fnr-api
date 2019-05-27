@@ -36,57 +36,67 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <form action="{% url 'component-update' pk=data.id %}" method="post" id="components" data-parsley-validate="">
+                                    <form action="" method="post" id="form-edit-components">
                                     {% csrf_token %}
-{#                                    {{ form }}#}
+                                    {{ form.non_field_errors }}
                                         <div class="row">
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group">
-                                                    <label for="name">Name</label>
-                                                    <input type="text" class="form-control" name= "name" id="name" placeholder="Enter Name" value="{{ data.name }}" data-parsley-trigger="change" required="">
+                                                    <label for="{{ form.name.id_for_label }}">Name</label>
+                                                    <input type="text" class="form-control" name="name" id="id_name" placeholder="Enter Name" value="{{ form.name.value }}">
                                                     {{ form.name.errors }}
                                                 </div>
-
                                             </div>
                                             <div class="col-sm-6 col-xs-12 inline_radio_wrap">
-                                                <div class="form-check inline_radio">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="flat" {% if isFlatSelected == True %} checked {% endif %}>
-                                                    <label for="flat" class="form-check-label">Flat</label>
+                                            <div class="form-check inline_radio">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="flat" id="id_flat" {% if form.flat.value == 1 %} checked {% endif %}>
+                                                    <label for="{{ form.flat.id_for_label }}" class="form-check-label">Flat</label>
                                                     {{ form.flat.errors }}
                                                 </div>
                                                 <div class="form-check inline_radio">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="building" {% if isBuildingSelected == True %} checked {% endif %}>
-                                                    <label for="building" class="form-check-label">Buildings </label>
+                                                    <input class="form-check-input" type="checkbox" value="1" name="building" id="id_building" {% if form.building.value == 1 %} checked {% endif %}>
+                                                    <label for="{{ form.flat.id_for_label }}" class="form-check-label">Buildings </label>
                                                     {{ form.building.errors }}
                                                 </div>
-
                                             </div>
                                         </div>
                                         <div class="row">
-
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group inform_select">
-                                                    <label for="type">Type</label>
+                                                    <label for="{{ form.parent_id.id_for_label }}">Parent</label>
                                                     <br>
-                                                    <select class="js-example-basic-single" name="type" id="type" style="width: 350px;" required="">
+                                                    <select class="component-parent" name="parent_id" id="id_parent_id" {% if parent_id is None %}disabled{% endif %}>
+                                                      <option></option>
+                                                        {% for parent in parents %}
+                                                        <option value="{{ parent.id }}" {% if parent_id == parent.id %}selected{% endif %}>{{ parent.name }}</option>
+                                                      {% endfor %}
+                                                    </select>
+                                                    {{ form.parent.errors }}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-xs-12">
+                                                <div class="form-group inform_select">
+                                                    <label for="{{ form.type.id_for_label }}">Type</label>
+                                                    <br>
+                                                    <select class="component-type" name="type" id="id_type" {% if parent_id is None %}disabled{% endif %}>
                                                         <option></option>
                                                         <optgroup name="Grundung" label="Grundung">
-                                                            <option value="sf">Streifenfundamente</option>
-                                                            <option value="sb">Stahlbeton</option>
-                                                            <option value="sb_sf">Stahlbeton mit streifenfundamente</option>
+                                                            <option value="sf" {% if form.type.value == 'sf' %}selected{% endif %}>Streifenfundamente</option>
+                                                            <option value="sb" {% if form.type.value == 'sb' %}selected{% endif %}>Stahlbeton</option>
+                                                            <option value="sb_sf" {% if form.type.value == 'sb_sf' %}selected{% endif %}>Stahlbeton mit streifenfundamente</option>
                                                         </optgroup>
                                                         <optgroup name="Aussenwande ab EG" label="Aussenwande ab EG">
-                                                            <option value="su">Stahlbeton und Unipor</option>
-                                                            <option value="sk">Stahlbeton und kalksandstein</option>
+                                                            <option value="su" {% if form.type.value == 'su' %}selected{% endif %}>Stahlbeton und Unipor</option>
+                                                            <option value="sk" {% if form.type.value == 'sk' %}selected{% endif %}>Stahlbeton und kalksandstein</option>
                                                         </optgroup>
                                                         <optgroup name="Fenster Beschattung" label="Fenster Beschattung">
-                                                            <option value="nbk">Neubaukasten</option>
-                                                            <option value="aufsr">Aufsatzrollladenkasten</option>
-                                                            <option value="rse">Rafstorelement</option>
+                                                            <option value="nbk" {% if form.type.value == 'nbk' %}selected{% endif %}>Neubaukasten</option>
+                                                            <option value="aufsr" {% if form.type.value == 'aufsr' %}selected{% endif %}>Aufsatzrollladenkasten</option>
+                                                            <option value="rse" {% if form.type.value == 'rse' %}selected{% endif %}>Rafstorelement</option>
                                                         </optgroup>
                                                         <optgroup name="Dach" label="Dach">
-                                                            <option value="zd">Zeigeldach</option>
-                                                            <option value="fs">Flachdcah aus Stahlbeton</option>
+                                                            <option value="zd" {% if form.type.value == 'zd' %}selected{% endif %}>Zeigeldach</option>
+                                                            <option value="fs" {% if form.type.value == 'fs' %}selected{% endif %}>Flachdcah aus Stahlbeton</option>
                                                         </optgroup>
                                                     </select>
                                                     {{ form.type.errors }}
@@ -94,27 +104,13 @@
 
                                             </div>
 
-                                            <div class="col-sm-6 col-xs-12">
-                                                <div class="form-group inform_select">
-                                                    <label for="parent">Parent</label>
-                                                    <br>
-                                                    <select class="js-example-basic-single" name="parent_id" id="parent" style="width: 350px;" required="">
-                                                      <option></option>
-                                                        {% for parent in parents %}
-                                                        <option value="{{ parent.id }}" >{{ parent.name }}</option>
-                                                      {% endfor %}
-                                                    </select>
-                                                    {{ form.parent.errors }}
-                                                </div>
-                                            </div>
-
                                         </div>
 
                                         <div class="row">
                                             <div class="col-sm-12 col-xs-12">
                                                 <div class="form-group">
-                                                    <label for="description">Description</label>
-                                                    <textarea class="form-control" rows="3" name="static_description" placeholder="Enter Description" > {{ data.static_description }}</textarea>
+                                                    <label for="{{ form.static_description.id_for_label }}">Description</label>
+                                                    <textarea class="form-control" rows="3" name="static_description" id="id_static_description" placeholder="Enter Description" >{{ form.static_description.value|default_if_none:'' }}</textarea>
                                                     {{ form.static_description.errors }}
                                                 </div>
 
@@ -136,46 +132,51 @@
                     <!-- /.content -->
                 </div>
                 <!-- /.content-wrapper -->
+
     <script>
         $(document).ready(function() {
-            $('.js-example-basic-single').select2({
-                placeholder: "Select ....",
+            $('.component-parent').select2({
+                placeholder: "Select main Component",
+                allowClear: true
+            });
+            $('.component-type').select2({
+                placeholder: "Select Component type",
                 allowClear: true
             });
         });
-        $(document).ready(function(){
-            $('#parent').select2();
-            $('#parent').val({{ data.parent_id }});
-            $('#parent').select2().trigger('change');
-
-        });
-        $(document).ready(function(){
-            $('#type').select2();
-            var a = "" + {{ data.type }};
-            $('#type').val(a).trigger('change');
-            {#$('#type').select2().trigger('change');#}
-
-        });
-         $(document).ready(function() {
-            console.log("{{ isParent }}");
-             if({{ isParent }}){
-                $(".js-example-basic-single").prop("disabled", true);
-            }else{
-            $('#parent').select2();
-            $('#parent').val({{ data.parent_id }});
-            $('#parent').select2().trigger('change');
-             }
-        });
+    </script>
+    <script>
         $(function () {
-          $('#components').parsley().on('field:validated', function() {
-            var ok = $('.parsley-error').length === 0;
-            $('.bs-callout-info').toggleClass('hidden', !ok);
-            $('.bs-callout-warning').toggleClass('hidden', ok);
-          })
-          .on('form:submit', function() {
-            return true;
-          });
+            $("#form-edit-component").validate({
+                ignore: '.ignore',
+                focusInvalid: true,
+                rules: {
+                    'name': {
+                        required: true
+                    },
+                    'flat': {
+                        required: false
+                    },
+                    'building': {
+                        required: false
+                    },
+                    'parent_id': {
+                        required: false
+                    },
+                    'type': {
+                        required: false
+                    },
+                    'static_description': {
+                        required: false,
+                    }
+                }
+            });
+            $('#form-edit-component').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
         });
     </script>
-    {% include "layout/datatable_footer.html" %}
 {% endblock %}

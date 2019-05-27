@@ -10,15 +10,11 @@ class ComponentForm(forms.ModelForm):
     type = forms.CharField(label='type', required=False, max_length=255)
     building = forms.BooleanField(label='building', required=False)
     flat = forms.BooleanField(label='flat', required=False)
-    created_by = forms.IntegerField(required=False)
-    updated_by = forms.IntegerField(required=False)
-    created_at = forms.DateTimeField(required=False)
-    updated_at = forms.DateTimeField(required=False)
 
     class Meta:
         model = Components
         db_table = "components"
-        fields = ('name', 'static_description', 'parent_id', 'type', 'building', 'flat', 'created_by', 'updated_by')
+        fields = ('name', 'static_description', 'parent_id', 'type', 'building', 'flat')
 
     def clean(self):
         cleaned_data = super(ComponentForm, self).clean()

@@ -36,27 +36,26 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <form action="{% url 'component-add' %}" method="post" id="components" data-parsley-validate="">
+                                    <form action="{% url 'component-add' %}" method="post" id="form-add-component">
                                     {% csrf_token %}
-{#                                    {{ form }}#}
+                                    {{ form.non_field_errors }}
                                         <div class="row">
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group">
-                                                    <label for="name">Name</label>
-                                                    <input type="text" class="form-control" name= "name" id="name" placeholder="Enter Name" value="{{ form.data.name }}" data-parsley-trigger="change" required="">
+                                                    <label for="{{ form.name.id_for_label }}">Name</label>
+                                                    <input type="text" class="form-control" name="name" id="id_name" placeholder="Enter Name">
                                                     {{ form.name.errors }}
                                                 </div>
-                                                
                                             </div>
                                             <div class="col-sm-6 col-xs-12 inline_radio_wrap">
                                                 <div class="form-check inline_radio">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="flat" {% if isFlatSelected == True %} checked {% endif %}>
-                                                    <label for="flat" class="form-check-label">Flat</label>
+                                                    <input class="form-check-input" type="checkbox" value="1" name="flat" id="id_flat">
+                                                    <label for="{{ form.flat.id_for_label }}" class="form-check-label">Flat</label>
                                                     {{ form.flat.errors }}
                                                 </div>
                                                 <div class="form-check inline_radio">
-                                                    <input class="form-check-input" type="checkbox" value="1" name="building" {% if isBuildingSelected == True %} checked {% endif %}>
-                                                    <label for="building" class="form-check-label">Buildings </label>
+                                                    <input class="form-check-input" type="checkbox" value="1" name="building" id="id_building">
+                                                    <label for="{{ form.flat.id_for_label }}" class="form-check-label">Buildings </label>
                                                     {{ form.building.errors }}
                                                 </div>
 
@@ -67,9 +66,9 @@
 
                                             <div class="col-sm-6 col-xs-12">
                                                 <div class="form-group inform_select">
-                                                    <label for="parent">Parent</label>
+                                                    <label for="{{ form.parent_id.id_for_label }}">Parent</label>
                                                     <br>
-                                                    <select class="js-example-basic-single" name="parent_id" id="parent"  required="" style="width: 350px;">
+                                                    <select class="component-parent" name="parent_id" id="id_parent_id">
                                                       <option></option>
                                                         {% for parent in parents %}
                                                         <option value="{{ parent.id }}" >{{ parent.name }}</option>
@@ -80,9 +79,9 @@
                                             </div>
                                             <div class="col-sm-6 col-xs-12">
                                                     <div class="form-group inform_select">
-                                                        <label for="type">Type</label>
+                                                        <label for="{{ form.type.id_for_label }}">Type</label>
                                                         <br>
-                                                        <select class="js-example-basic-single" name="type" id="type" style="width: 350px;" required="">
+                                                        <select class="component-type" name="type" id="id_type">
                                                             <option></option>
                                                             <optgroup name="Grundung" label="Grundung">
                                                                 <option value="sf">Streifenfundamente</option>
@@ -112,8 +111,8 @@
                                         <div class="row">
                                             <div class="col-sm-12 col-xs-12">                                            
                                                 <div class="form-group">
-                                                    <label for="description">Description</label>
-                                                    <textarea class="form-control" rows="3" name="static_description" placeholder="Enter Description" > {{ form.data.static_description }}</textarea>
+                                                    <label for="{{ form.static_description.id_for_label }}">Description</label>
+                                                    <textarea class="form-control" rows="3" name="static_description" id="id_static_description" placeholder="Enter Description" ></textarea>
                                                     {{ form.static_description.errors }}
                                                 </div>
                                             
@@ -137,37 +136,48 @@
                 <!-- /.content-wrapper -->
     <script>
         $(document).ready(function() {
-            $('.js-example-basic-single').select2({
-                placeholder: "Select ....",
+            $('.component-parent').select2({
+                placeholder: "Select main Component",
+                allowClear: true
+            });
+            $('.component-type').select2({
+                placeholder: "Select Component type",
                 allowClear: true
             });
         });
-        $(document).ready(function(){
-            $('#parent').select2();
-            $('#parent').val({{ form.data.parent_id }});
-            console.log("qwqw");
-            $('#type').select2();
-            $('#type').val({{ form.data.type.toString }});
-            console.log("asas");
-            console.log({{ form.data.type }});
-            $('#type').select2().trigger('change');
-            $('#parent').select2().trigger('change');
-
-        });
-        $(document).ready(function(){
-
-
-        });
+    </script>
+    <script>
         $(function () {
-          $('#components').parsley().on('field:validated', function() {
-            var ok = $('.parsley-error').length === 0;
-            $('.bs-callout-info').toggleClass('hidden', !ok);
-            $('.bs-callout-warning').toggleClass('hidden', ok);
-          })
-          .on('form:submit', function() {
-            return true;
-          });
+            $("#form-add-component").validate({
+                ignore: '.ignore',
+                focusInvalid: true,
+                rules: {
+                    'name': {
+                        required: true
+                    },
+                    'flat': {
+                        required: false
+                    },
+                    'building': {
+                        required: false
+                    },
+                    'parent_id': {
+                        required: false
+                    },
+                    'type': {
+                        required: false
+                    },
+                    'static_description': {
+                        required: false,
+                    }
+                }
+            });
+            $('#form-add-component').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
         });
     </script>
-    {% include "layout/datatable_footer.html" %}
 {% endblock %}

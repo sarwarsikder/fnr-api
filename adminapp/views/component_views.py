@@ -60,8 +60,6 @@ class ComponentAddView(generic.DetailView):
             parents = Components.objects.filter(Q(parent__isnull=True) | Q(parent_id=0))
             response['parents'] = parents
             response['form'] = form
-            response['isFlatSelected'] = False
-            response['isBuildingSelected'] = False
             return render(request, self.template_name, response)
         else:
             redirect('index')
@@ -79,18 +77,6 @@ class ComponentAddView(generic.DetailView):
                 if form.is_valid():
                     form.save(request=request)
                     return HttpResponseRedirect('/components/')
-                else:
-                    if form.data.get('flat') == 1 or form.data.get('flat') == "1":
-                        response['isFlatSelected'] = True
-                    else:
-                        response['isFlatSelected'] = False
-
-                    if form.data.get('building') == 1 or form.data.get('building') == "1":
-                        response['isBuildingSelected'] = True
-                    else:
-                        response['isBuildingSelected'] = False
-
-                    return render(request, self.template_name, response)
             except Exception as e:
                 LogHelper.efail(e)
                 return render(request, self.template_name, response)
@@ -102,35 +88,6 @@ class ComponentUpdateView(UpdateView):
     form_class = ComponentForm
     template_name = 'components/edit_component.html'
     model = Components
-
-    def get(self, request, pk):
-        if request.user.is_superuser:
-            response = {}
-            form = self.form_class
-            data = Components.objects.filter(id=pk)
-            parents = Components.objects.filter(Q(parent__isnull=True) | Q(parent_id=0))
-            response['data'] = data[0]
-            response['parents'] = parents
-            response['form'] = form
-            response['postID'] = pk
-            if data[0].flat == 1 or data[0].flat == "1":
-                response['isFlatSelected'] = True
-            else:
-                response['isFlatSelected'] = False
-
-            if data[0].building == 1 or data[0].building == "1":
-                response['isBuildingSelected'] = True
-            else:
-                response['isBuildingSelected'] = False
-
-            if data[0].parent_id == None or data[0].parent_id == "":
-                response['isParent'] = 1
-            else:
-                response['isParent'] = 0
-            return render(request, self.template_name, response)
-
-        else:
-            redirect('index')
 
     def form_valid(self, form):
         if CommonView.superuser_login(self.request):
@@ -144,4 +101,7 @@ class ComponentUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(ComponentUpdateView, self).get_context_data(**kwargs)
+        parents = Components.objects.filter(Q(parent__isnull=True) | Q(parent_id=0))
+        context['parents'] = parents
+        context['parent_id'] = self.object.parent_id
         return context
