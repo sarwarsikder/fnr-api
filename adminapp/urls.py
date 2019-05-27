@@ -88,5 +88,8 @@ urlpatterns = [
 
     url(r'^qr-to-png/(?P<qr_id>[\w-]+)/$', common_views.QRResponse.as_view(), name='qr-to-png'),
 
+    url(r'^current-buildings/$', common_views.CurrentProjects.get_all_current_buildings, name='current-buildings'),
+    url(r'^current-flats/$', common_views.CurrentProjects.get_all_current_flats, name='current-flats'),
+
 ]
 

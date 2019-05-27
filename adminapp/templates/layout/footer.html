@@ -11,6 +11,13 @@
     <!-- Default to the left -->
     <strong>Copyright &copy; 2019 <a href="{% url 'index' %}">F&R Projectbau GmbH</a>.</strong> All rights reserved.
 </footer>
+<input type="hidden" id="active-project" value="{{ request.session.active_project }}">
+<script>
+    $(function () {
+       $('#current-project').select2();
+       $('#current-project').select2('val',$("#active-project").val());
+    });
+</script>
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
@@ -28,9 +35,9 @@
 <script src="{% static 'assets/javascripts/common.js' %}"></script>
 <script src="{% static 'assets/javascripts/admin.js' %}"></script>
 <script src="{% static 'assets/javascripts/libraries/bootstrap3-wysihtml5.all.min.js' %}"></script>
+
 <script>
     $(function () {
-        $('#current-project').select2();
         $('.edit_des').on('click', function () {
             var text = $('.des_text').text();
             $('.edit_des').css("display", "none");

@@ -1,5 +1,7 @@
 $(function () {
     var $body = $('body');
+    getAllCurrentBuildingsByProject($("#current-project"));
+    getAllCurrentFlatsByBuilding();
 
     $body.on('click', '.delete-staff', function () {
         var $this = $(this);
@@ -246,4 +248,71 @@ $(function () {
         });
     });
 
+    $body.on('change', '#current-project', function () {
+        var $this = $(this);
+        getAllCurrentBuildingsByProject($this);
+    });
+
 });
+
+function getAllCurrentBuildingsByProject($this) {
+    var project_id = $this.val(),
+        csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+    $.ajax({
+        url: base_url + '/current-buildings/',
+        type: 'POST',
+        data: {
+            'project_id': project_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        success: function (responseText) {
+            var response = responseText;
+            if (response.success) {
+                var current_buildings = "";
+                $.map(response.current_buildings, function (elementArray, indexArray) {
+                    var elem = '<li class="nav-item">' +
+                        '<a href=\"tasks.php\" class=\"nav-link\">' +
+                        '<i class=\"fa fa-chevron-right nav-icon\"></i>' +
+                        '<p>' + elementArray.number + '</p>' +
+                        '</a>' +
+                        '</li>';
+                    current_buildings += elem;
+                });
+                $("#current-buildings").html(current_buildings);
+            }
+        },
+        error: function (e) {
+            clog(e);
+        }
+    });
+}
+
+function getAllCurrentFlatsByBuilding() {
+    var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+    $.ajax({
+        url: base_url + '/current-flats/',
+        type: 'POST',
+        data: {
+            'csrfmiddlewaretoken': csrfToken
+        },
+        success: function (responseText) {
+            var response = responseText;
+            if (response.success) {
+                var current_flats = "";
+                $.map(response.current_flats, function (elementArray, indexArray) {
+                    var elem = '<li class="nav-item">' +
+                        '<a href=\"tasks.php\" class=\"nav-link\">' +
+                        '<i class=\"fa fa-chevron-right nav-icon\"></i>' +
+                        '<p>' + elementArray.number + '</p>' +
+                        '</a>' +
+                        '</li>';
+                    current_flats += elem;
+                });
+                $("#current-flats").html(current_flats);
+            }
+        },
+        error: function (e) {
+            clog(e);
+        }
+    });
+}

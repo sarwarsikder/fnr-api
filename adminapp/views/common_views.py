@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from adminapp.views.mail import MailHelper
 from adminapp.views.helper import LogHelper
-from adminapp.models import Components, Projects, BuildingComponents, Tasks, QrCode
+from adminapp.models import Components, Projects, BuildingComponents, Tasks, QrCode, Buildings, Flats
 from django.db.models import Q
 import qrcode
 import io
@@ -174,6 +174,63 @@ class QRResponse(generic.View):
             LogHelper.efail(e)
             return HttpResponse("", content_type="image/png")
 
+
+class CurrentProjects(generic.DetailView):
+    def get_all_current_buildings(request):
+        response = {}
+        try:
+            project_id = request.POST.get('project_id')
+            CurrentProjects.change_active_project(request, project_id)
+            buildings = Buildings.objects.filter(project_id=project_id)
+            current_buildings = []
+            for building in buildings:
+                current_buildings.append({'id': building.id, 'number': building.display_number})
+            response['success'] = True
+            response['current_buildings'] = current_buildings
+        except Exception as e:
+            LogHelper.elog(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+    def get_all_current_flats(request):
+        response = {}
+        try:
+            building_id = request.session["active_building"]
+            flats = Flats.objects.filter(building_id=building_id)
+            current_flats = []
+            for flat in flats:
+                current_flats.append({'id': flat.id, 'number': flat.number})
+            response['success'] = True
+            response['current_flats'] = current_flats
+        except Exception as e:
+            LogHelper.elog(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+    def change_active_project(request, project_id):
+        request.session['active_project'] = project_id
+        request.session.modified = True
+        CurrentProjects.change_active_building(request, project_id)
+        return True
+
+    def change_active_building(request, project_id):
+        try:
+            request.session["active_building"] = Buildings.objects.filter(project_id=project_id).first().id
+            request.session.modified = True
+            CurrentProjects.change_active_flat(request, request.session["active_building"])
+        except Exception as e:
+            LogHelper.efail(e)
+        return True
+
+    def change_active_flat(request, building_id):
+        try:
+            request.session["active_flat"] = Flats.objects.filter(building_id=building_id).first().id
+            request.session.modified = True
+        except Exception as e:
+            LogHelper.efail(e)
+        return True
 
 
 

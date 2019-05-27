@@ -2,7 +2,7 @@ import json
 
 import requests
 from django.views import generic
-from adminapp.models import Users
+from adminapp.models import Users, Projects, Buildings, Flats
 from adminapp.views.common_views import CommonView
 import os.path
 from django.conf import settings
@@ -23,6 +23,7 @@ class UserLoginMiddleware(generic.DetailView):
         #     login(request, user)
         # request.user = Users.objects.get(id=1)
         if path == '' or path != 'api':
+            print(request.is_ajax())
             if request.is_ajax() == False:
                 settings.USE_TZ = False
                 browser_current_url = resolve(request.path_info).url_name
@@ -31,6 +32,21 @@ class UserLoginMiddleware(generic.DetailView):
                 if browser_current_url != 'login' and browser_current_url != 'forget-password' and browser_current_url != 'reset-password':
                     if not request.user.is_authenticated:
                         return redirect('login')
+                    current_projects = list(Projects.objects.filter(is_complete=False).order_by('-id').values('id', 'name'))
+                    request.session["current_projects"] = current_projects
+                    if 'active_project' not in request.session:
+                        request.session["active_project"] = current_projects[0]['id']
+                    if 'active_building' not in request.session:
+                        try:
+                            request.session["active_building"] = Buildings.objects.filter(project_id=request.session["active_project"]).first().id
+                        except Exception as e:
+                            print(e)
+                    if 'active_flat' not in request.session:
+                        try:
+                            request.session["active_flat"] = Flats.objects.filter(building_id=request.session["active_building"]).first().id
+                        except Exception as e:
+                            print(e)
+                    request.session.modified = True
         # elif path != 'api':
         #     if request.is_ajax() == False:
         #         if 'user_bikeshare_settings' not in request.session:

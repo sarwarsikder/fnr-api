@@ -14,13 +14,9 @@
                         <div class="form-group navbar_select_wrap">
                             <select class="form-control select2" id="current-project"
                                         data-placeholder="Select a Project" style="width: 100%;">
-                                <option>Alabama</option>
-                                <option>Alaska</option>
-                                <option>California</option>
-                                <option>Delaware</option>
-                                <option>Tennessee</option>
-                                <option>Texas</option>
-                                <option>Washington</option>
+                                {% for project in request.session.current_projects %}
+                                    <option value="{{ project.id }}">{{ project.name|title }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
