@@ -39,7 +39,7 @@ $(document).ready(function () {
                                   '<a href="'+flat_url+'" class="btn btn-primary btn-lil building-flats" data-toggle="tooltip" data-placement="top" title="Hause Whonung"><i class="fas fa-door-closed"></i></a>'+
                                   '<a href="tasks-building.php" class="btn btn-info btn-lil" data-toggle="tooltip" data-placement="top" title="Tasks"><i class="fa fa-list"></i></a>'+
                                   '<a href="'+qr_url+'" class="btn btn-primary btn-lil building-qr" data-toggle="tooltip" data-placement="top" title="Preview QR" data-original-title="Edit"><i class="fa fa-qrcode"></i></a>'+
-                                  '<button class="btn btn-danger btn-lil delete-building" data-id="'+full[0]+'" data-toggle="tooltip" data-placement="top" title="Delete Hause" data-original-title="Delete"><i class="fa fa-times-circle"></i></button>';
+                                  '<button class="btn btn-danger btn-lil delete-building" disabled data-id="'+full[0]+'" data-toggle="tooltip" data-placement="top" title="Delete Hause" data-original-title="Delete"><i class="fa fa-times-circle"></i></button>';
                     return actions;
                 }
             }

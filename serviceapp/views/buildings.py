@@ -1,14 +1,14 @@
-from django.db.models import Count, Q
+from django.db.models import Count, Q, F
 from rest_framework.permissions import BasePermission
 from rest_framework import viewsets, mixins
 from rest_framework.views import APIView
 
 from adminapp.models import Buildings, BuildingPlans, BuildingComponents
 from rest_framework.pagination import PageNumberPagination
-from serviceapp.serializers.building_serializer import BuildingSerializer, PlanSerializer, ComponentSerializer
+from serviceapp.serializers.building_serializer import BuildingSerializer, BuildingPlanSerializer, ComponentSerializer
 
 
-class StaffPermissions(BasePermission):
+class BuildingPermissions(BasePermission):
 
     def has_permission(self, request, view):
         if request.user.is_authenticated and request.user.is_staff and request.method == 'GET':
@@ -17,7 +17,7 @@ class StaffPermissions(BasePermission):
 
 
 class BuildingViewSet(APIView):
-    permission_classes = (StaffPermissions,)
+    permission_classes = (BuildingPermissions,)
 
     def get(self, request, **kwargs):
         project_id = kwargs['project_id']
@@ -30,20 +30,20 @@ class BuildingViewSet(APIView):
 
 
 class BuildingComponentViewSet(APIView):
-    permission_classes = (StaffPermissions,)
+    permission_classes = (BuildingPermissions,)
 
     def get(self, request, **kwargs):
         building_id = kwargs['building_id']
         paginator = PageNumberPagination()
         paginator.page_size = 10
-        components = BuildingComponents.objects.filter(building_id=building_id, flat__isnull=True, component__parent__isnull=True)
+        components = BuildingComponents.objects.annotate(name=F('component__name')).filter(building_id=building_id, flat__isnull=True, component__parent__isnull=True)
         result_page = paginator.paginate_queryset(components, request)
         serializer = ComponentSerializer(result_page, many=True)
         return paginator.get_paginated_response(data=serializer.data)
 
 
 class BuildingPlanViewSet(APIView):
-    permission_classes = (StaffPermissions, )
+    permission_classes = (BuildingPermissions, )
 
     def get(self, request, **kwargs):
         building_id = kwargs['building_id']
@@ -51,5 +51,5 @@ class BuildingPlanViewSet(APIView):
         paginator.page_size = 10
         plans = BuildingPlans.objects.filter(building_id=building_id)
         result_page = paginator.paginate_queryset(plans, request)
-        serializer = PlanSerializer(result_page, many=True)
+        serializer = BuildingPlanSerializer(result_page, many=True)
         return paginator.get_paginated_response(data=serializer.data)

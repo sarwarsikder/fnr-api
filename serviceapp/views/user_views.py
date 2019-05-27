@@ -37,7 +37,7 @@ class UserInfo(APIView):
     permission_classes = (UserProfilePermissions, )
 
     def get(self, request):
-        request.user.avatar = CommonView.get_file_path(request.user.avatar)
+        request.user.avatar = request.user.avatar.url
         if not request.user.is_staff:
             request.user.telephone = request.user.handworker.telephone
             request.user.company_name = request.user.handworker.company_name

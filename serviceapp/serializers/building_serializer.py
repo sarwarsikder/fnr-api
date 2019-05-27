@@ -1,7 +1,6 @@
 from django.conf import settings
 from rest_framework import serializers
 from adminapp.models import Buildings, BuildingPlans, BuildingComponents
-from adminapp.views.common_views import CommonView
 
 
 class BuildingSerializer(serializers.ModelSerializer):
@@ -14,7 +13,7 @@ class BuildingSerializer(serializers.ModelSerializer):
         fields = ('id', 'hause_number', 'description', 'display_number', 'total_tasks', 'tasks_done', 'total_flats')
 
 
-class PlanSerializer(serializers.ModelSerializer):
+class BuildingPlanSerializer(serializers.ModelSerializer):
     plan_file = serializers.SerializerMethodField()
 
     class Meta:
@@ -24,13 +23,14 @@ class PlanSerializer(serializers.ModelSerializer):
     def get_plan_file(self, plan):
         if plan.plan_file and hasattr(plan.plan_file, 'url'):
             plan_file = plan.plan_file.url
-            return CommonView.get_file_path(plan_file)
+            return plan_file
         else:
             return None
 
 
 class ComponentSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=100, read_only=True)
 
     class Meta:
         model = BuildingComponents
-        fields = ('component_id', 'description')
+        fields = ('component_id', 'name', 'description')

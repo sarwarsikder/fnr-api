@@ -23,7 +23,7 @@ class ProfileUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileUpdateView, self).get_context_data(**kwargs)
-        context['avatar'] = CommonView.get_file_path(self.object.avatar)
+        context['avatar'] = self.object.avatar.url
         return context
 
 

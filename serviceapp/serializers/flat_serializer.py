@@ -1,22 +1,22 @@
 from django.conf import settings
 from rest_framework import serializers
-from adminapp.models import Projects, ProjectPlans
+from adminapp.models import Flats, FlatPlans
 
 
-class ProjectSerializer(serializers.ModelSerializer):
+class FlatSerializer(serializers.ModelSerializer):
     total_tasks = serializers.IntegerField(read_only=True)
     tasks_done = serializers.IntegerField(read_only=True)
 
     class Meta:
-        model = Projects
-        fields = ('id', 'address', 'description', 'city', 'type', 'energetic_standard', 'total_tasks', 'tasks_done')
+        model = Flats
+        fields = ('id', 'number', 'description', 'client_name', 'client_address', 'client_email', 'client_tel', 'total_tasks', 'tasks_done')
 
 
-class PlanSerializer(serializers.ModelSerializer):
+class FlatPlanSerializer(serializers.ModelSerializer):
     plan_file = serializers.SerializerMethodField()
 
     class Meta:
-        model = ProjectPlans
+        model = FlatPlans
         fields = ('id', 'title', 'plan_file', 'file_type')
 
     def get_plan_file(self, plan):

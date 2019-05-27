@@ -76,7 +76,7 @@ $(document).ready(function () {
                         var updateUrl = base_url+"/projects/update/"+full[0]+"/";
                         var actions = '<a href="'+updateUrl+'" class="btn btn-primary btn-lil project-info" data-toggle="tooltip" data-placement="top" title="Edit Project" data-original-title="Edit"><i class="fa fa-edit"></i></a>'+
                                       '<a href="'+building_url+'" class="btn btn-primary btn-lil project-buildings" data-toggle="tooltip" data-placement="top" title="Project Hauser"><i class="fa fa-building"></i></a>'+
-                                      '<button class="btn btn-danger btn-lil delete-project" data-id="'+full[0]+'" data-toggle="tooltip" data-placement="top" title="Delete Project" data-original-title="Delete"><i class="fa fa-times-circle"></i></button>';
+                                      '<button class="btn btn-danger btn-lil delete-project" disabled data-id="'+full[0]+'" data-toggle="tooltip" data-placement="top" title="Delete Project" data-original-title="Delete"><i class="fa fa-times-circle"></i></button>';
                         return actions;
                     }
                 }
