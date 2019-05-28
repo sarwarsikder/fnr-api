@@ -3,6 +3,10 @@
 <!-- Main Footer -->
 
 </div>
+<div class="floating_btn_wrap">
+    <button id="current-project-buildings" class="btn btn-info"><i class="fa fa-building"></i></button>
+    <button id="current-project-flats" class="btn btn-danger"><i class="fas fa-door-closed"></i></button>
+</div>
 <footer class="main-footer">
     <!-- To the right -->
     <div class="float-right d-none d-sm-block-down">
@@ -11,7 +15,7 @@
     <!-- Default to the left -->
     <strong>Copyright &copy; 2019 <a href="{% url 'index' %}">F&R Projectbau GmbH</a>.</strong> All rights reserved.
 </footer>
-<input type="hidden" id="active-project" value="{{ request.session.active_project }}">
+<input type="hidden" id="active-project" value="{{ request.session.active_project.id }}">
 <script>
     $(function () {
        $('#current-project').select2();

@@ -21,7 +21,6 @@ $(document).ready(function () {
             [10, 25, 50, 100]
         ],
         "iDisplayLength": show_entries,
-        "sDom": '<"dt_top" <"dt_left"f><"dt_right"l><"clear">>rt<"dt_bottom" <"dt_left"i><"dt_right"p><"clear">>',
         "createdRow": function (row, data, index) {
             $(row).attr('data-id', data[0]);
         },

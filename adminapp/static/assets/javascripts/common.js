@@ -1,5 +1,5 @@
-var base_url = "http://127.0.0.1:8000";
-// var base_url = "http://192.168.1.10:8080";
+// var base_url = "http://127.0.0.1:8000";
+var base_url = "http://192.168.1.10:8080";
 $(function () {
     $( "#id_start_date" ).datepicker({
         uiLibrary: 'bootstrap4',

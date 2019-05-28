@@ -250,7 +250,69 @@ $(function () {
 
     $body.on('change', '#current-project', function () {
         var $this = $(this);
-        getAllCurrentBuildingsByProject($this);
+        var project_id = $this.val(),
+            csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            url: base_url + '/current-buildings/',
+            type: 'POST',
+            data: {
+                'project_id': project_id,
+                'change_project': true,
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function (responseText) {
+                var response = responseText;
+                if (response.success) {
+                    var current_buildings = "";
+                    current_buildings = addSidebarBuildingOrFlats(response.current_buildings, 'building', current_buildings);
+                    $("#current-buildings").html(current_buildings);
+                    $(".content-wrapper").html(response.building_list_tab);
+                }
+            },
+            error: function (e) {
+                clog(e);
+            }
+        });
+    });
+
+    $body.on('click', '#current-project-buildings', function () {
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            url: base_url + '/current-project-buildings/',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function (responseText) {
+                var response = responseText;
+                if (response.success) {
+                    $(".content-wrapper").html(response.building_list_tab);
+                }
+            },
+            error: function (e) {
+                clog(e);
+            }
+        });
+    });
+
+    $body.on('click', '#current-project-flats', function () {
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            url: base_url + '/current-project-flats/',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function (responseText) {
+                var response = responseText;
+                if (response.success) {
+                    $(".content-wrapper").html(response.flat_list_tab);
+                }
+            },
+            error: function (e) {
+                clog(e);
+            }
+        });
     });
 
 });
@@ -263,21 +325,14 @@ function getAllCurrentBuildingsByProject($this) {
         type: 'POST',
         data: {
             'project_id': project_id,
+            'change_project': false,
             'csrfmiddlewaretoken': csrfToken
         },
         success: function (responseText) {
             var response = responseText;
             if (response.success) {
                 var current_buildings = "";
-                $.map(response.current_buildings, function (elementArray, indexArray) {
-                    var elem = '<li class="nav-item">' +
-                        '<a href=\"tasks.php\" class=\"nav-link\">' +
-                        '<i class=\"fa fa-chevron-right nav-icon\"></i>' +
-                        '<p>' + elementArray.number + '</p>' +
-                        '</a>' +
-                        '</li>';
-                    current_buildings += elem;
-                });
+                current_buildings = addSidebarBuildingOrFlats(response.current_buildings, 'building', current_buildings);
                 $("#current-buildings").html(current_buildings);
             }
         },
@@ -299,15 +354,7 @@ function getAllCurrentFlatsByBuilding() {
             var response = responseText;
             if (response.success) {
                 var current_flats = "";
-                $.map(response.current_flats, function (elementArray, indexArray) {
-                    var elem = '<li class="nav-item">' +
-                        '<a href=\"tasks.php\" class=\"nav-link\">' +
-                        '<i class=\"fa fa-chevron-right nav-icon\"></i>' +
-                        '<p>' + elementArray.number + '</p>' +
-                        '</a>' +
-                        '</li>';
-                    current_flats += elem;
-                });
+                current_flats = addSidebarBuildingOrFlats(response.current_flats, 'flat', current_flats);
                 $("#current-flats").html(current_flats);
             }
         },
@@ -315,4 +362,17 @@ function getAllCurrentFlatsByBuilding() {
             clog(e);
         }
     });
+}
+
+function addSidebarBuildingOrFlats(data, type, sidebarElem) {
+    $.map(data, function (elementArray, indexArray) {
+        var elem = '<li class="nav-item">' +
+            '<a href=\"tasks.php\" class=\"nav-link\">' +
+            '<i class=\"fa fa-chevron-right nav-icon\"></i>' +
+            '<p>' + elementArray.number + '</p>' +
+            '</a>' +
+            '</li>';
+        sidebarElem += elem;
+    });
+    return sidebarElem;
 }

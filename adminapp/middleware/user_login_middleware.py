@@ -23,7 +23,6 @@ class UserLoginMiddleware(generic.DetailView):
         #     login(request, user)
         # request.user = Users.objects.get(id=1)
         if path == '' or path != 'api':
-            print(request.is_ajax())
             if request.is_ajax() == False:
                 settings.USE_TZ = False
                 browser_current_url = resolve(request.path_info).url_name
@@ -34,19 +33,58 @@ class UserLoginMiddleware(generic.DetailView):
                         return redirect('login')
                     current_projects = list(Projects.objects.filter(is_complete=False).order_by('-id').values('id', 'name'))
                     request.session["current_projects"] = current_projects
+                    if request.user.current_activity:
+                        current_activity = json.loads(request.user.current_activity)
+                        if 'project_id' in current_activity:
+                            request.session["active_project"] = {
+                                'id': current_activity['project_id'],
+                                'name': current_activity['project_name']
+                            }
+                        if 'building_id' in current_activity:
+                            request.session["active_building"] = {
+                                'id': current_activity['building_id'],
+                                'number': current_activity['building_number']
+                            }
+                        if 'flat_id' in current_activity:
+                            request.session["active_flat"] = {
+                                'id': current_activity['flat_id'],
+                                'number': current_activity['flat_number']
+                            }
                     if 'active_project' not in request.session:
-                        request.session["active_project"] = current_projects[0]['id']
+                        request.session["active_project"] = {
+                            'id': current_projects[0]['id'],
+                            'name': current_projects[0]['name']
+                        }
                     if 'active_building' not in request.session:
                         try:
-                            request.session["active_building"] = Buildings.objects.filter(project_id=request.session["active_project"]).first().id
+                            current_building = Buildings.objects.filter(project_id=request.session["active_project"]).first()
+                            request.session["active_building"] = {
+                                'id': current_building.id,
+                                'number': current_building.display_number
+                            }
                         except Exception as e:
                             print(e)
+                            request.session["active_building"] = {
+                                'id': '',
+                                'number': ''
+                            }
                     if 'active_flat' not in request.session:
                         try:
-                            request.session["active_flat"] = Flats.objects.filter(building_id=request.session["active_building"]).first().id
+                            current_flat = Flats.objects.filter(building_id=request.session["active_building"]).first()
+                            request.session["active_flat"] = {
+                                'id': current_flat.id,
+                                'number': current_flat.number
+                            }
                         except Exception as e:
                             print(e)
+                            request.session["active_flat"] = {
+                                'id': '',
+                                'number': ''
+                            }
                     request.session.modified = True
+                    print(request.session["active_project"])
+                    print(request.session["active_building"])
+                    print(request.session["active_flat"])
         # elif path != 'api':
         #     if request.is_ajax() == False:
         #         if 'user_bikeshare_settings' not in request.session:

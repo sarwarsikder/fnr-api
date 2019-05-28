@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from adminapp.views.mail import MailHelper
 from adminapp.views.helper import LogHelper
 from adminapp.models import Components, Projects, BuildingComponents, Tasks, QrCode, Buildings, Flats
-from django.db.models import Q
+from django.db.models import Q, Count
 import qrcode
 import io
 
@@ -180,8 +180,12 @@ class CurrentProjects(generic.DetailView):
         response = {}
         try:
             project_id = request.POST.get('project_id')
+            change_project = request.POST.get('change_project')
             CurrentProjects.change_active_project(request, project_id)
-            buildings = Buildings.objects.filter(project_id=project_id)
+            buildings = Buildings.objects.annotate(total_flats=Count('flats')).filter(project_id=project_id)
+            if change_project == 'true':
+                building_list_tab = render_to_string('profiles/buildings.html', {"buildings": buildings, "request": request})
+                response['building_list_tab'] = building_list_tab
             current_buildings = []
             for building in buildings:
                 current_buildings.append({'id': building.id, 'number': building.display_number})
@@ -196,7 +200,7 @@ class CurrentProjects(generic.DetailView):
     def get_all_current_flats(request):
         response = {}
         try:
-            building_id = request.session["active_building"]
+            building_id = request.session["active_building"]['id']
             flats = Flats.objects.filter(building_id=building_id)
             current_flats = []
             for flat in flats:
@@ -210,27 +214,124 @@ class CurrentProjects(generic.DetailView):
         return HttpResponse(json.dumps(response), content_type='application/json')
 
     def change_active_project(request, project_id):
-        request.session['active_project'] = project_id
-        request.session.modified = True
-        CurrentProjects.change_active_building(request, project_id)
-        return True
-
-    def change_active_building(request, project_id):
         try:
-            request.session["active_building"] = Buildings.objects.filter(project_id=project_id).first().id
+            request.session['active_project']['id'] = project_id
+            request.session['active_project']['name'] = Projects.objects.get(id=project_id).name
             request.session.modified = True
-            CurrentProjects.change_active_flat(request, request.session["active_building"])
+            CurrentProjects.change_active_building(request, project_id, True)
+            if request.user.current_activity:
+                current_activity = json.loads(request.user.current_activity)
+                current_activity['project_id'] = request.session['active_project']['id']
+                current_activity['project_name'] = request.session['active_project']['name']
+                current_activity['building_id'] = request.session['active_building']['id']
+                current_activity['building_number'] = request.session['active_building']['number']
+                current_activity['flat_id'] = request.session['active_flat']['id']
+                current_activity['flat_number'] = request.session['active_flat']['number']
+                request.user.current_activity = json.dumps(current_activity)
+                request.user.save()
+            else:
+                current_activity = {
+                    'project_id': request.session['active_project']['id'],
+                    'project_name': request.session['active_project']['name'],
+                    'building_id': request.session['active_building']['id'],
+                    'building_number': request.session['active_building']['number'],
+                    'flat_id': request.session['active_flat']['id'],
+                    'flat_number': request.session['active_flat']['number']
+                }
+                request.user.current_activity = json.dumps(current_activity)
+                request.user.save()
         except Exception as e:
             LogHelper.efail(e)
         return True
 
-    def change_active_flat(request, building_id):
+    def change_active_building(request, project_id, change_project=False):
         try:
-            request.session["active_flat"] = Flats.objects.filter(building_id=building_id).first().id
-            request.session.modified = True
+            if project_id:
+                current_building = Buildings.objects.filter(project_id=project_id).first()
+                request.session["active_building"]['id'] = current_building.id
+                request.session["active_building"]['number'] = current_building.display_number
+                request.session.modified = True
+                if not change_project:
+                    if request.user.current_activity:
+                        current_activity = json.loads(request.user.current_activity)
+                        current_activity['building_id'] = request.session['active_building']['id']
+                        current_activity['building_number'] = request.session['active_building']['number']
+                        request.user.current_activity = json.dumps(current_activity)
+                        request.user.save()
+                    else:
+                        current_activity = {
+                            'building_id': request.session['active_building']['id'],
+                            'building_number': request.session['active_building']['number']
+                        }
+                        request.user.current_activity = json.dumps(current_activity)
+                        request.user.save()
+                CurrentProjects.change_active_flat(request, request.session["active_building"]['id'], True)
         except Exception as e:
             LogHelper.efail(e)
+            request.session["active_building"]['id'] = ''
+            request.session["active_building"]['number'] = ''
+            request.session.modified = True
         return True
+
+    def change_active_flat(request, building_id, change_building=False):
+        try:
+            if building_id:
+                current_flat = Flats.objects.filter(building_id=building_id).first()
+                request.session["active_flat"]['id'] = current_flat.id
+                request.session["active_flat"]['number'] = current_flat.number
+                request.session.modified = True
+                if not change_building:
+                    if request.user.current_activity:
+                        current_activity = json.loads(request.user.current_activity)
+                        current_activity['flat_id'] = request.session['active_flat']['id']
+                        current_activity['flat_number'] = request.session['active_flat']['number']
+                        request.user.current_activity = json.dumps(current_activity)
+                        request.user.save()
+                    else:
+                        current_activity = {
+                            'flat_id': request.session['active_flat']['id'],
+                            'flat_number': request.session['active_flat']['number']
+                        }
+                        request.user.current_activity = json.dumps(current_activity)
+                        request.user.save()
+            else:
+                request.session["active_flat"]['id'] = ''
+                request.session["active_flat"]['number'] = ''
+                request.session.modified = True
+        except Exception as e:
+            LogHelper.efail(e)
+            request.session["active_flat"]['id'] = ''
+            request.session["active_flat"]['number'] = ''
+            request.session.modified = True
+        return True
+
+    def get_all_buildings_by_active_project(request):
+        response = {}
+        try:
+            project_id = request.session['active_project']['id']
+            buildings = Buildings.objects.annotate(total_flats=Count('flats')).filter(project_id=project_id)
+            building_list_tab = render_to_string('profiles/buildings.html', {"buildings": buildings, "request": request})
+            response['building_list_tab'] = building_list_tab
+            response['success'] = True
+        except Exception as e:
+            LogHelper.elog(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+    def get_all_flats_by_active_building(request):
+        response = {}
+        try:
+            building_id = request.session['active_building']['id']
+            flats = Flats.objects.annotate(total_tasks=Count('buildingcomponents__tasks')).filter(building_id=building_id)
+            flat_list_tab = render_to_string('profiles/flats.html', {"flats": flats, "request": request})
+            response['flat_list_tab'] = flat_list_tab
+            response['success'] = True
+        except Exception as e:
+            LogHelper.elog(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
 
 
 

@@ -81,7 +81,7 @@ class Users(AbstractUser):
     avatar = models.FileField(null=True, upload_to='avatar/', validators=[FileExtensionValidator(allowed_extensions=['jpg','png','svg','jpeg'])], storage=FileSystemStorage())
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    current_activity = JSONField(default=my_default)
+    current_activity = JSONField(null=True, blank=True)
 
     # USERNAME_FIELD = 'email'
 
@@ -231,7 +231,7 @@ class BuildingComponents(models.Model):
 
 class Tasks(models.Model):
     building_component = models.ForeignKey(BuildingComponents, on_delete=models.CASCADE)
-    followers = JSONField(default=dict)
+    followers = JSONField(null=True, blank=True)
     status = TaskStatusType(max_length=20, default="to_do")
     due_date = models.DateField(default=None)
     created_by = models.ForeignKey(Users, related_name='task_created_by', null=True, on_delete=models.SET_NULL)
@@ -246,7 +246,7 @@ class Tasks(models.Model):
 class Comments(models.Model):
     text = models.TextField()
     type = CommentType(max_length=10, default="text")
-    file_type = JSONField(default="[]")
+    file_type = JSONField(null=True, blank=True)
     task = models.ForeignKey(Tasks, on_delete=models.CASCADE)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -259,7 +259,7 @@ class HandWorker(models.Model):
     company_name = models.CharField(max_length=100)
     telephone = models.CharField(max_length=50, null=True, blank=True)
     user = models.OneToOneField(Users, on_delete=models.CASCADE)
-    working_type = JSONField(default="[]")
+    working_type = JSONField(null=True, blank=True)
 
     class Meta:
         db_table = "handworker"

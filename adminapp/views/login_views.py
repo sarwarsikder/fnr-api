@@ -34,8 +34,6 @@ class LoginView(generic.DetailView):
 
 class LogoutView(generic.DetailView):
     def get(self, request):
-        del request.session['supplementer_user']
-        del request.session['is_logged_in']
         logout(request)
         return redirect('login')
 
