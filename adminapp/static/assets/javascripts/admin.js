@@ -315,6 +315,27 @@ $(function () {
         });
     });
 
+    $body.on('click', '#current-project-plan-list', function () {
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            url: base_url + '/project-plans/',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function (responseText) {
+                var response = responseText;
+                if (response.success) {
+                    clog(response.plan_list_tab)
+                    $("#current-plan-list-tab").html(response.plan_list_tab);
+                }
+            },
+            error: function (e) {
+                clog(e);
+            }
+        });
+    });
+
 });
 
 function getAllCurrentBuildingsByProject($this) {

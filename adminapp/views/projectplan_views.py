@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import UpdateView
@@ -14,14 +15,22 @@ from adminapp.views.helper import LogHelper
 
 
 class ProjectPlansView(generic.DetailView):
-    def get(self, request):
+
+    def get_all_plans_by_active_project(request):
         response = {}
-        if request.user.is_superuser:
-            projectplans = ProjectPlans.objects.all()
-            response['buildingPlans'] = projectplans
-            return render(request, 'projects/plans.html', response)
-        else:
-            redirect('index')
+        try:
+            project_id = request.session['active_project']['id']
+            if 'project_id' in request.POST:
+                project_id = request.POST.get('project-id')
+            plans = ProjectPlans.objects.filter(project_id=project_id)
+            plan_list_tab = render_to_string('projects/plan.html', {"plans": plans})
+            response['plan_list_tab'] = plan_list_tab
+            response['success'] = True
+        except Exception as e:
+            LogHelper.efail(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
 
     def delete(request):
         response = {}
