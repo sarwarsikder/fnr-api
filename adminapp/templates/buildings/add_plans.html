@@ -35,8 +35,9 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <form action="{% url 'building-plan-add' %}" method="post" enctype="multipart/form-data" id="building">
+                                    <form action="{% url 'building-plan-add' building_id=building_id %}" method="post" enctype="multipart/form-data" id="form-add-building-plans">
                                         {% csrf_token %}
+                                        {{ form.non_field_errors }}
                                         <div class="row">
                                             <div class="col-sm-3  col-xs-12 align-items-center justify-content-center chg_image_profile">
                                                 <div class="row">
@@ -45,8 +46,9 @@
                                                             <div class=" imgUp">
                                                                 <div class="imagePreview"></div>
                                                                 <label class="btn btn-primary btn_up_image w-100">
-                                                                    Upload<input type="file" class="uploadFile img" value="Upload Photo" name="plan_file" style="width: 0px;height: 0px;overflow: hidden;" required="">
+                                                                    Upload<input type="file" class="uploadFile img" value="Upload Photo" name="plan_file" style="width: 0px;height: 0px;overflow: hidden;">
                                                                 </label>
+                                                                {{ form.plan_file.errors }}
                                                             </div><!-- col-2 -->
                                                         </div>
                                                     </div>
@@ -54,13 +56,11 @@
                                             </div>
                                             <div class="col-sm-8 col-xs-12">
                                                 <div class="form-group">
-                                                    <label for="p_name">Plan name</label>
-                                                    <input type="text" class="form-control" id="p_name" name="title" placeholder="Enter Plan name" data-parsley-trigger="change" required="">
+                                                    <label for="{{ form.title.id_for_label }}">Plan name</label>
+                                                    <input type="text" class="form-control" id="id_title" name="title" placeholder="Enter Plan name" data-parsley-trigger="change">
                                                     {{ form.title.errors }}
                                                 </div>
                                                 <button type="submit" class="btn btn-primary">Add Plan</button>
-
-
                                             </div>
                                         </div>
                                     </form>
@@ -76,27 +76,34 @@
                     <!-- /.content -->
             </div>
     <script type="text/javascript">
-        $('.uploadFile').change(function() {
-          var file = $('.uploadFile')[0].files[0].name.split('.');
-          file = file[file.length-1];
+        $('.uploadFile').change(function () {
+            var file = $('.uploadFile')[0].files[0].name.split('.');
+            file = file[file.length - 1];
 
-          if(file != 'pdf'){
-              $('.imagePreview').attr('background-image','url(../../static/assets/images/file.png)');
-          }
-          $(this).prev('label').text(file);
+            if (file != 'pdf') {
+                $('.imagePreview').attr('background-image', 'url(../../static/assets/images/file.png)');
+            }
+            $(this).prev('label').text(file);
         });
-                $(function () {
-          $('#building').parsley().on('field:validated', function() {
-            var ok = $('.parsley-error').length === 0;
-            $('.bs-callout-info').toggleClass('hidden', !ok);
-            $('.bs-callout-warning').toggleClass('hidden', ok);
-          })
-          .on('form:submit', function() {
-            return true;
-          });
+        $(function () {
+            $("#form-add-building-plans").validate({
+                ignore: '.ignore',
+                focusInvalid: true,
+                rules: {
+                    'title': {
+                        required: true
+                    },
+                    'plan_file': {
+                        required: true
+                    }
+                }
+            });
+            $('#form-add-building-plans').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
         });
     </script>
-
-                <!-- /.content-wrapper -->
-    {% include "layout/datatable_footer.html" %}
 {% endblock %}

@@ -263,10 +263,11 @@ $(function () {
             success: function (responseText) {
                 var response = responseText;
                 if (response.success) {
-                    var current_buildings = "";
-                    current_buildings = addSidebarBuildingOrFlats(response.current_buildings, 'building', current_buildings);
-                    $("#current-buildings").html(current_buildings);
-                    $(".content-wrapper").html(response.building_list_tab);
+                    window.location.href  = base_url + '/current-project-buildings/';
+                    // var current_buildings = "";
+                    // current_buildings = addSidebarBuildingOrFlats(response.current_buildings, 'building', current_buildings);
+                    // $("#current-buildings").html(current_buildings);
+                    // $(".content-wrapper").html(response.building_list_tab);
                 }
             },
             error: function (e) {
@@ -276,43 +277,11 @@ $(function () {
     });
 
     $body.on('click', '#current-project-buildings', function () {
-        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
-        $.ajax({
-            url: base_url + '/current-project-buildings/',
-            type: 'POST',
-            data: {
-                'csrfmiddlewaretoken': csrfToken
-            },
-            success: function (responseText) {
-                var response = responseText;
-                if (response.success) {
-                    $(".content-wrapper").html(response.building_list_tab);
-                }
-            },
-            error: function (e) {
-                clog(e);
-            }
-        });
+        window.location.href  = base_url + '/current-project-buildings/';
     });
 
     $body.on('click', '#current-project-flats', function () {
-        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
-        $.ajax({
-            url: base_url + '/current-project-flats/',
-            type: 'POST',
-            data: {
-                'csrfmiddlewaretoken': csrfToken
-            },
-            success: function (responseText) {
-                var response = responseText;
-                if (response.success) {
-                    $(".content-wrapper").html(response.flat_list_tab);
-                }
-            },
-            error: function (e) {
-                clog(e);
-            }
-        });
+        window.location.href  = base_url + '/current-project-flats/';
     });
 
     $body.on('click', '#current-project-plan-list', function () {
@@ -332,6 +301,117 @@ $(function () {
             },
             error: function (e) {
                 clog(e);
+            }
+        });
+    });
+
+    $body.on('click', '#current-building-plan-list', function () {
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            url: base_url + '/building-plans/',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function (responseText) {
+                var response = responseText;
+                if (response.success) {
+                    clog(response.plan_list_tab)
+                    $("#current-plan-list-tab").html(response.plan_list_tab);
+                }
+            },
+            error: function (e) {
+                clog(e);
+            }
+        });
+    });
+
+    $body.on('click', '.delete-project-plan', function () {
+        var $this = $(this);
+        var id = $this.data('id'),
+            csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        bootbox.confirm("Are you sure you want to delete this Plan?", function (result) {
+            if (result) {
+                $.ajax({
+                    url: base_url + '/project-plan/delete/',
+                    type: 'POST',
+                    data: {
+                        'id': id,
+                        'csrfmiddlewaretoken': csrfToken
+                    },
+                    success: function (responseText) {
+                        var response = responseText;
+                        if (response.success) {
+                            $.growl.notice({message: response.message});
+                            $this.closest('.plan-div').remove();
+                        } else {
+                            $.growl.error({message: response.message});
+                        }
+                    },
+                    error: function (e) {
+                        clog(e);
+                    }
+                });
+            }
+        });
+    });
+
+    $body.on('click', '.delete-building-plan', function () {
+        var $this = $(this);
+        var id = $this.data('id'),
+            csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        bootbox.confirm("Are you sure you want to delete this Plan?", function (result) {
+            if (result) {
+                $.ajax({
+                    url: base_url + '/building-plan/delete/',
+                    type: 'POST',
+                    data: {
+                        'id': id,
+                        'csrfmiddlewaretoken': csrfToken
+                    },
+                    success: function (responseText) {
+                        var response = responseText;
+                        if (response.success) {
+                            $.growl.notice({message: response.message});
+                            $this.closest('.plan-div').remove();
+                        } else {
+                            $.growl.error({message: response.message});
+                        }
+                    },
+                    error: function (e) {
+                        clog(e);
+                    }
+                });
+            }
+        });
+    });
+
+    $body.on('click', '.delete-flat-plan', function () {
+        var $this = $(this);
+        var id = $this.data('id'),
+            csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        bootbox.confirm("Are you sure you want to delete this Plan?", function (result) {
+            if (result) {
+                $.ajax({
+                    url: base_url + '/flat-plan/delete/',
+                    type: 'POST',
+                    data: {
+                        'id': id,
+                        'csrfmiddlewaretoken': csrfToken
+                    },
+                    success: function (responseText) {
+                        var response = responseText;
+                        if (response.success) {
+                            $.growl.notice({message: response.message});
+                            $this.closest('.plan-div').remove();
+                        } else {
+                            $.growl.error({message: response.message});
+                        }
+                    },
+                    error: function (e) {
+                        clog(e);
+                    }
+                });
             }
         });
     });

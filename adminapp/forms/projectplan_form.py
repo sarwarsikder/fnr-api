@@ -5,15 +5,11 @@ from adminapp.models import ProjectPlans
 class ProjectPlansForm(forms.ModelForm):
     title = forms.CharField(label="title", max_length=100)
     plan_file = forms.FileField(label="plan_file")
-    project = forms.IntegerField(required=False)
     file_type = forms.CharField(max_length=45, required=False)
-    created_by = forms.IntegerField(required=False)
-    created_at = forms.DateTimeField(required=False)
 
     class Meta:
         model = ProjectPlans
-        db_table = "project_plans"
-        fields = ('title', 'plan_file', 'project', 'file_type', 'created_by')
+        fields = ('title', 'plan_file', 'file_type')
 
     def clean(self):
         cleaned_data = super(ProjectPlansForm, self).clean()
@@ -26,18 +22,18 @@ class ProjectPlansForm(forms.ModelForm):
         obj = super(ProjectPlansForm, self).save(commit=False)
         obj.created_by = request.user
         obj.file_type = cleaned_data.get('plan_file').name.split('.')[-1]
-        obj.project_id = 1
+        obj.project_id = request.project_id
         obj.save()
         return obj
 
-    def update(self, request, commit=True):
-        cleaned_data = super(ProjectPlansForm, self).clean()
-        obj = super(ProjectPlansForm, self).save(commit=False)
-        obj.created_by = request.user
-        obj.file_type = cleaned_data.get('plan_file').name.split('.')[-1]
-        obj.project_id = 1
-        obj.save()
-        return obj
+    # def update(self, request, commit=True):
+    #     cleaned_data = super(ProjectPlansForm, self).clean()
+    #     obj = super(ProjectPlansForm, self).save(commit=False)
+    #     obj.created_by = request.user
+    #     obj.file_type = cleaned_data.get('plan_file').name.split('.')[-1]
+    #     obj.project_id = 1
+    #     obj.save()
+    #     return obj
 
     def process(self):
         cd = self.cleaned_data

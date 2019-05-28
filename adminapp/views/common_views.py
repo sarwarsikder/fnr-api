@@ -306,33 +306,22 @@ class CurrentProjects(generic.DetailView):
         return True
 
     def get_all_buildings_by_active_project(request):
-        response = {}
         try:
             project_id = request.session['active_project']['id']
             buildings = Buildings.objects.annotate(total_flats=Count('flats')).filter(project_id=project_id)
-            building_list_tab = render_to_string('profiles/buildings.html', {"buildings": buildings, "request": request})
-            response['building_list_tab'] = building_list_tab
-            response['success'] = True
+            return render(request, 'profiles/buildings.html', {"buildings": buildings})
         except Exception as e:
             LogHelper.elog(e)
-            response['success'] = False
-            response['message'] = "Something went wrong. Please try again"
-        return HttpResponse(json.dumps(response), content_type='application/json')
+            return redirect('index')
 
     def get_all_flats_by_active_building(request):
-        response = {}
         try:
             building_id = request.session['active_building']['id']
             flats = Flats.objects.annotate(total_tasks=Count('buildingcomponents__tasks')).filter(building_id=building_id)
-            flat_list_tab = render_to_string('profiles/flats.html', {"flats": flats, "request": request})
-            response['flat_list_tab'] = flat_list_tab
-            response['success'] = True
+            return render(request, 'profiles/flats.html', {"flats": flats})
         except Exception as e:
             LogHelper.elog(e)
-            response['success'] = False
-            response['message'] = "Something went wrong. Please try again"
-        return HttpResponse(json.dumps(response), content_type='application/json')
-
+            return redirect('index')
 
 
 

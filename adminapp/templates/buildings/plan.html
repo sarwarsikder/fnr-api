@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <div class="col-sm text-right">
-    <a href="{% url 'project-plan-add' project_id=project_id %}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+    <a href="{% url 'building-plan-add' building_id=building_id %}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
        title="Add Plans"><i class="fa fa-plus"></i></a>
 </div>
 <div class="row">
@@ -8,7 +8,7 @@
         <div class="col-sm-2 col-12 plan-div">
             <div class="plan_wrap_container">
                 <button type="button" data-toggle="tooltip" data-placement="top" title="Delete Plan"
-                        class="btn delete-project-plan"
+                        class="btn delete-building-plan"
                         data-id="{{ plan.id }}" style="background-color: white;">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
