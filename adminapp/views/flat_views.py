@@ -60,9 +60,9 @@ class FlatFormView(View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        building_id = kwargs['building_id']
         try:
             if form.is_valid():
-                building_id = kwargs['building_id']
                 request.building_id = building_id
                 obj = form.save(request=request)
                 default_components = CommonView.create_default_flat_components(request, obj)
@@ -73,7 +73,7 @@ class FlatFormView(View):
                 return HttpResponseRedirect('/buildings/'+str(obj.building_id)+'/flats/')
         except Exception as e:
             LogHelper.efail(e)
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form, 'building_id': building_id})
 
 
 class FlatUpdateView(UpdateView):

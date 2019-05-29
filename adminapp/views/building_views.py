@@ -62,9 +62,9 @@ class BuildingFormView(View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        project_id = kwargs['project_id']
         try:
             if form.is_valid():
-                project_id = kwargs['project_id']
                 request.project_id = project_id
                 obj = form.save(request=request)
                 default_components = CommonView.create_default_building_components(request, obj)
@@ -75,7 +75,7 @@ class BuildingFormView(View):
                 return HttpResponseRedirect('/projects/'+str(obj.project_id)+'/buildings/')
         except Exception as e:
             LogHelper.efail(e)
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form, 'project_id': project_id})
 
 
 class BuildingUpdateView(UpdateView):

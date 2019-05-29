@@ -584,7 +584,7 @@ span.cwp_title{
     content: unset;
 }
 .detail_breadcrumb li:after {
-    content: '/';
+    content: '-';
     position: absolute;
     right: -14px;
     color: #5f533f;
@@ -868,4 +868,20 @@ label.error {
 .add_plan_wrap .plan_title {
     border-top: 2px dashed #4c4c4c;
 
+}
+
+.detail_breadcrumb li:first-child {
+    color: #21b6A8;
+}
+.detail_breadcrumb li:nth-child(2) {
+    color: #0ec7de;
+}
+.detail_breadcrumb li:nth-child(3) {
+    color: #7F1917;
+}
+.detail_breadcrumb li:nth-child(4) {
+    color: #c07a52;
+}
+.bradcrumb_container .breadcrumb {
+    display: none;
 }

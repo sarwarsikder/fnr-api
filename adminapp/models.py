@@ -169,7 +169,7 @@ class BuildingPlans(models.Model):
 
 
 class Flats(models.Model):
-    number = models.CharField(max_length=10)
+    number = models.CharField(max_length=45)
     description = models.TextField(null=True, blank=True)
     building = models.ForeignKey(Buildings, on_delete=models.CASCADE)
     client_name = models.CharField(max_length=100, null=True, blank=True)
