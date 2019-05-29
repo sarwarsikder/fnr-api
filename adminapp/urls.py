@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.urls import path
 from adminapp.views import common_views, login_views, staff_views, company_views, project_views, building_views, \
     flat_views, buildingplan_views, flatplan_views, component_views, reset_password, datatables, profile_views, \
-    projectplan_views
+    projectplan_views, task_views
 from django.conf import settings
 from django.views.static import serve
 urlpatterns = [
@@ -60,6 +60,7 @@ urlpatterns = [
     url(r'^buildings/update/(?P<pk>[\w-]+)/$', building_views.BuildingUpdateView.as_view(), name='buildings-update'),
     url(r'^buildings/delete/$', building_views.BuildingsView.delete, name='buildings-delete'),
     url(r'^buildings/qr/(?P<pk>[\w-]+)/$', building_views.BuildingsView.preview_qr, name='buildings-qr'),
+    url(r'^buildings/(?P<building_id>[\w-]+)/tasks/$', task_views.TasksView.get_all_building_tasks, name='building-tasks'),
 
     url(r'^buildings/(?P<building_id>[\w-]+)/flats/$', flat_views.FlatsView.as_view(), name='flats'),
     url(r'^flats-list/$', datatables.FlatListView.as_view(), name='flatList'),

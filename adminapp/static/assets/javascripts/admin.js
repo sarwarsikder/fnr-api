@@ -467,9 +467,13 @@ function getAllCurrentFlatsByBuilding() {
 
 function addSidebarBuildingOrFlats(data, type, sidebarElem) {
     $.map(data, function (elementArray, indexArray) {
+        var task_url = base_url+"/buildings/"+elementArray.id+"/tasks/";
+        if(type == "flat"){
+            task_url = base_url+"/flats/"+elementArray.id+"/tasks/";
+        }
         var elem = '<li class="nav-item">' +
-            '<a href=\"tasks.php\" class=\"nav-link\">' +
-            '<i class=\"fa fa-chevron-right nav-icon\"></i>' +
+            '<a href="'+task_url+'" class="nav-link">' +
+            '<i class="fa fa-chevron-right nav-icon"></i>' +
             '<p>' + elementArray.number + '</p>' +
             '</a>' +
             '</li>';
