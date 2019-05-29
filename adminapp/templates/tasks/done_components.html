@@ -1,0 +1,42 @@
+<div id="accordion">
+    {% for component in components %}
+        <div class="card">
+            <div class="card-header task_group_header done-component-accordion"  data-id="{{ component.component.id }}" id="heading-done-component-{{ component.component.id }}">
+                <div class="row">
+                    <div class="col-sm-8 col-12" data-toggle="collapse" data-target="#done-component-{{ component.component.id }}"
+                         aria-expanded="true" aria-controls="done-component-{{ component.component.id }}">
+                        <h5 class="mb-0 text-xs-center">
+                            <button class="btn btn-link">
+                                {{ component.component.name|title }}
+                            </button>
+                        </h5>
+                    </div>
+                    <div class="col-sm-4 col-12">
+                        <div class="form-group mb-0 task_select_wrap">
+                            <label class="task_select_label">Handwerker</label>
+                            <div class="task_select">
+                                <select class="form-control handwerker-select2" id="done-component-{{ component.component.id }}-handwerker"
+                                        data-placeholder="Select Handwerker " style="width: 100%;">
+                                    <option>Alabama</option>
+                                    <option>Alaska</option>
+                                    <option>California</option>
+                                    <option>Delaware</option>
+                                    <option>Tennessee</option>
+                                    <option>Texas</option>
+                                    <option>Washington</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="done-component-{{ component.component.id }}" class="collapse" data-type="" aria-labelledby="heading-done-component-{{ component.component.id }}" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="row task-list">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

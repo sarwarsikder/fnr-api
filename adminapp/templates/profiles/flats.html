@@ -57,7 +57,7 @@
                                        {% for flat in flats %}
                                            <div class="col-md-3">
                                                <div class="building_wrap">
-                                                   <a href="tasks-flat.php">
+                                                   <a href="{% url 'flat-tasks' flat_id=flat.id %}">
                                                        <div class="card building_list_card">
                                                            <div class="card-body">
                                                                <div class="icon_wrap">

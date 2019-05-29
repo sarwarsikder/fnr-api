@@ -68,6 +68,7 @@ urlpatterns = [
     url(r'^flats/update/(?P<pk>[\w-]+)/$', flat_views.FlatUpdateView.as_view(), name='flats-update'),
     url(r'^flats/delete/$', flat_views.FlatsView.delete, name='flats-delete'),
     url(r'^flats/qr/(?P<pk>[\w-]+)/$', flat_views.FlatsView.preview_qr, name='flats-qr'),
+    url(r'^flats/(?P<flat_id>[\w-]+)/tasks/$', task_views.TasksView.get_all_flat_tasks, name='flat-tasks'),
 
     url(r'^components/$', component_views.ComponentView.as_view(), name='components'),
     url(r'^components/add/$', component_views.ComponentAddView.as_view(), name='component-add'),
@@ -79,7 +80,7 @@ urlpatterns = [
     # url(r'^building-plan/update/(?P<pk>[\w-]+)/$', buildingplan_views.BuildingPlansUpdateView.as_view(), name='building-plan-update'),
     url(r'^building-plan/delete/$', buildingplan_views.BuildingPlansView.delete, name='building-plan-delete'),
 
-    url(r'^flat-plan/$', flatplan_views.FlatPlansView.as_view(), name='flat-plan'),
+    url(r'^flat-plans/$', flatplan_views.FlatPlansView.get_all_plans_by_active_flat, name='flat-plans'),
     url(r'^flat/(?P<flat_id>[\w-]+)/plan/add/$', flatplan_views.FlatPlansAddView.as_view(), name='flat-plan-add'),
     # url(r'^flat-plan/update/(?P<pk>[\w-]+)/$', flatplan_views.FlatPlansUpdateView.as_view(), name='flat-plan-update'),
     url(r'^flat-plan/delete/$', flatplan_views.FlatPlansView.delete, name='flat-plan-delete'),
@@ -96,7 +97,11 @@ urlpatterns = [
     url(r'^current-project-flats/$', common_views.CurrentProjects.get_all_flats_by_active_building, name='current-project-flats'),
     url(r'^current-flats/$', common_views.CurrentProjects.get_all_current_flats, name='current-flats'),
 
-    url(r'^get-active-tasks/$', task_views.TasksView.get_active_tasks, name='get-active-tasks'),
+    url(r'^get-pending-components/$', task_views.TasksView.get_pending_components, name='get-pending-components'),
+    url(r'^get-done-components/$', task_views.TasksView.get_done_components, name='get-done-components'),
+    url(r'^get-all-components/$', task_views.TasksView.get_all_components, name='get-all-components'),
+    url(r'^get-component-tasks/$', task_views.TasksView.get_component_tasks, name='get-component-tasks'),
+    # url(r'^get-active-tasks/$', task_views.TasksView.get_active_tasks, name='get-active-tasks'),
 
 
 ]

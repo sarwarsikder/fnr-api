@@ -326,6 +326,54 @@ $(function () {
         });
     });
 
+    $body.on('click', '#nav-building-plan-list-tab', function () {
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        var url = window.location.pathname.split("/");
+        var building_id = url[2];
+        $.ajax({
+            url: base_url + '/building-plans/',
+            type: 'POST',
+            data: {
+                'building_id': building_id,
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function (responseText) {
+                var response = responseText;
+                if (response.success) {
+                    clog(response.plan_list_tab)
+                    $("#current-plan-list-tab").html(response.plan_list_tab);
+                }
+            },
+            error: function (e) {
+                clog(e);
+            }
+        });
+    });
+
+    $body.on('click', '#nav-flat-plan-list-tab', function () {
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        var url = window.location.pathname.split("/");
+        var flat_id = url[2];
+        $.ajax({
+            url: base_url + '/flat-plans/',
+            type: 'POST',
+            data: {
+                'flat_id': flat_id,
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function (responseText) {
+                var response = responseText;
+                if (response.success) {
+                    clog(response.plan_list_tab)
+                    $("#current-plan-list-tab").html(response.plan_list_tab);
+                }
+            },
+            error: function (e) {
+                clog(e);
+            }
+        });
+    });
+
     $body.on('click', '.delete-project-plan', function () {
         var $this = $(this);
         var id = $this.data('id'),
