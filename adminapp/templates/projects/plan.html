@@ -1,9 +1,20 @@
 {% load staticfiles %}
-<div class="col-sm text-right">
-    <a href="{% url 'project-plan-add' project_id=project_id %}" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
-       title="Add Plans"><i class="fa fa-plus"></i></a>
-</div>
 <div class="row">
+    <div class="col-sm-2 col-12 plan-div">
+        <div class="plan_wrap_container">
+            <a href="{% url 'project-plan-add' project_id=project_id %}" target="_blank"
+               class="plan_anc">
+                <div class="plan_wrap add_plan_wrap">
+                    <div class="plan_pdf text-center">
+                        <img src="{% static 'assets/images/add_plan.png' %}">
+                    </div>
+                    <div class="plan_title">
+                        <p>Add Plan</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
     {% for plan in plans %}
         <div class="col-sm-2 col-12 plan-div">
             <div class="plan_wrap_container">
@@ -22,7 +33,6 @@
                         <div class="plan_title">
                             <p>{{ plan.title|title }}</p>
                         </div>
-
                     </div>
                 </a>
             </div>
