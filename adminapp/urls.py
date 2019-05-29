@@ -96,6 +96,8 @@ urlpatterns = [
     url(r'^current-project-flats/$', common_views.CurrentProjects.get_all_flats_by_active_building, name='current-project-flats'),
     url(r'^current-flats/$', common_views.CurrentProjects.get_all_current_flats, name='current-flats'),
 
+    url(r'^get-active-tasks/$', task_views.TasksView.get_active_tasks, name='get-active-tasks'),
+
 
 ]
 
