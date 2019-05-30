@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'supplementer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'supplementer_live',
+        'NAME': 'supplementer_db',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'wsit',
         'PASSWORD': 'wsit97480',
