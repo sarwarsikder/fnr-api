@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'supplementer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'supplementer_db',
+        'NAME': 'supplementer_live',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'wsit',
         'PASSWORD': 'wsit97480',
@@ -167,10 +167,11 @@ MEDIA_URL = '/media/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-if os.environ['ENVIRONMENT_TYPE'] == 'master':
-    SITE_URL = 'http://192.168.1.10:8080'
-else:
-    SITE_URL = 'http://192.168.1.10:8080'
+# if os.environ['ENVIRONMENT_TYPE'] == 'master':
+#     SITE_URL = 'http://192.168.1.10:8080'
+# else:
+#     SITE_URL = 'http://192.168.1.10:8080'
+SITE_URL = 'http://127.0.0.1:8000'
 
 LOGGING = {
     'version': 1,
