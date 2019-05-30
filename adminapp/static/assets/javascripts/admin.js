@@ -496,6 +496,7 @@ function getAllCurrentBuildingsByProject($this) {
                 var current_buildings = "";
                 current_buildings = addSidebarBuildingOrFlats(response.current_buildings, 'building', current_buildings);
                 $("#current-buildings").html(current_buildings);
+                activeSubMenu();
             }
             $('.loader').hide();
         },
@@ -521,6 +522,7 @@ function getAllCurrentFlatsByBuilding() {
                 var current_flats = "";
                 current_flats = addSidebarBuildingOrFlats(response.current_flats, 'flat', current_flats);
                 $("#current-flats").html(current_flats);
+                activeSubMenu();
             }
             $('.loader').hide();
         },
@@ -546,4 +548,12 @@ function addSidebarBuildingOrFlats(data, type, sidebarElem) {
         sidebarElem += elem;
     });
     return sidebarElem;
+}
+
+function activeSubMenu() {
+    var url = window.location.pathname;
+    $('.has-treeview').removeClass('menu-open');
+    $("a[href$='" + url + "']").closest('li.has-treeview').addClass("menu-open");
+    $('.has-treeview').find("a[href$='" + url + "']").addClass("active");
+
 }
