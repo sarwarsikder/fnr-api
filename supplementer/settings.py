@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'serviceapp',
     'oauth2_provider',
     'django_mysql',
-    'rest_framework'
+    'rest_framework',
+    'pushnotificationapp',
+    # 'channels'
 ]
 
 MIDDLEWARE = [

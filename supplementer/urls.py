@@ -20,6 +20,7 @@ from django.urls import path
 urlpatterns = [
     path('', include('adminapp.urls')),
     path('api/', include('serviceapp.urls')),
+    path('api/', include('pushnotificationapp.urls')),
 ]
 
 from django.conf.urls.static import static
