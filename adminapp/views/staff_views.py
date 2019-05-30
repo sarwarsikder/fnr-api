@@ -94,7 +94,7 @@ class StaffUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(StaffUpdateView, self).get_context_data(**kwargs)
         context['projects'] = CommonView.get_all_projects(self.request)
-        context['avatar'] = self.object.avatar.url
+        context['avatar'] = self.object.avatar.url if self.object.avatar else ''
         context['project_list'] = list(ProjectStuff.objects.filter(user_id=self.object.id).values_list('project_id', flat=True))
         return context
 

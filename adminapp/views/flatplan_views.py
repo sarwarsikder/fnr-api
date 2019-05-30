@@ -66,7 +66,7 @@ class FlatPlansAddView(generic.DetailView):
         try:
             if form.is_valid():
                 form.save(request=request)
-                return HttpResponseRedirect('/flat-plan/')
+                return HttpResponseRedirect('/flats/'+str(flat_id)+'/tasks/#plans')
             else:
                 return render(request, self.template_name, response)
         except Exception as e:

@@ -66,7 +66,7 @@ class BuildingPlansAddView(generic.DetailView):
         try:
             if form.is_valid():
                 form.save(request=request)
-                return HttpResponseRedirect('/current-project-flats/')
+                return HttpResponseRedirect('/buildings/'+str(building_id)+'/tasks/#plans')
             else:
                 return render(request, self.template_name, response)
         except Exception as e:
