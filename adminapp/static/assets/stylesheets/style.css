@@ -888,11 +888,29 @@ label.error {
 
 .loader {
     display: none;
-    position: absolute;
+    position: fixed;
     margin: auto;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
     z-index: 9999;
+}
+.brand-text {
+    font-size: 25px;
+    margin: 0px !important;
+}
+.login-logo {
+    margin: 0px;
+}
+.login_page_bl img, .login_page_bl span {
+    float: none;
+    color: #fff;
+}
+.login-page, .register-page {
+    background: #d2b27f;
+}
+
+.project-info, .building-info, .flat-info {
+    font-size: 20px;
 }
