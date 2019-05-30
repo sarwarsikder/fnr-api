@@ -13,6 +13,7 @@ $(function () {
         } else {
             data['flat_id'] = url[2];
         }
+        $('.loader').show();
         $.ajax({
             url: base_url + '/get-done-components/',
             type: 'POST',
@@ -21,9 +22,11 @@ $(function () {
                 if (response.success) {
                     $("#nav-done-task").html(response.components_list);
                 }
+                $('.loader').hide();
             },
             error: function (e) {
                 clog(e);
+                $('.loader').hide();
             }
         });
     });
@@ -39,6 +42,7 @@ $(function () {
         } else {
             data['flat_id'] = url[2];
         }
+        $('.loader').show();
         $.ajax({
             url: base_url + '/get-all-components/',
             type: 'POST',
@@ -47,9 +51,11 @@ $(function () {
                 if (response.success) {
                     $("#nav-all-task").html(response.components_list);
                 }
+                $('.loader').hide();
             },
             error: function (e) {
                 clog(e);
+                $('.loader').hide();
             }
         });
     });
@@ -71,6 +77,7 @@ $(function () {
             data['flat_id'] = url[2];
         }
         if ($('#pending-component-' + id).find('.task-list').find('a').length == 0) {
+            $('.loader').show();
             $.ajax({
                 url: base_url + '/get-component-tasks/',
                 type: 'POST',
@@ -79,9 +86,11 @@ $(function () {
                     if (response.success) {
                         $('#pending-component-' + id).find('.task-list').html(response.tasks_list);
                     }
+                    $('.loader').hide();
                 },
                 error: function (e) {
                     clog(e);
+                    $('.loader').hide();
                 }
             });
         }
@@ -104,6 +113,7 @@ $(function () {
             data['flat_id'] = url[2];
         }
         if ($('#done-component-' + id).find('.task-list').find('a').length == 0) {
+            $('.loader').show();
             $.ajax({
                 url: base_url + '/get-component-tasks/',
                 type: 'POST',
@@ -112,9 +122,11 @@ $(function () {
                     if (response.success) {
                         $('#done-component-' + id).find('.task-list').html(response.tasks_list);
                     }
+                    $('.loader').hide();
                 },
                 error: function (e) {
                     clog(e);
+                    $('.loader').hide();
                 }
             });
         }
@@ -137,6 +149,7 @@ $(function () {
             data['flat_id'] = url[2];
         }
         if ($('#all-component-' + id).find('.task-list').find('a').length == 0) {
+            $('.loader').show();
             $.ajax({
                 url: base_url + '/get-component-tasks/',
                 type: 'POST',
@@ -145,9 +158,11 @@ $(function () {
                     if (response.success) {
                         $('#all-component-' + id).find('.task-list').html(response.tasks_list);
                     }
+                    $('.loader').hide();
                 },
                 error: function (e) {
                     clog(e);
+                    $('.loader').hide();
                 }
             });
         }
@@ -165,6 +180,7 @@ function getPendingComponents() {
     } else {
         data['flat_id'] = url[2];
     }
+    $('.loader').show();
     $.ajax({
         url: base_url + '/get-pending-components/',
         type: 'POST',
@@ -173,9 +189,11 @@ function getPendingComponents() {
             if (response.success) {
                 $("#nav-pending-task").html(response.components_list);
             }
+            $('.loader').hide();
         },
         error: function (e) {
             clog(e);
+            $('.loader').hide();
         }
     });
 }

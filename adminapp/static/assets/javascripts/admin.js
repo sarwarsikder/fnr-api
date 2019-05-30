@@ -286,6 +286,7 @@ $(function () {
 
     $body.on('click', '#current-project-plan-list', function () {
         var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $('.loader').show();
         $.ajax({
             url: base_url + '/project-plans/',
             type: 'POST',
@@ -298,15 +299,18 @@ $(function () {
                     clog(response.plan_list_tab)
                     $("#current-plan-list-tab").html(response.plan_list_tab);
                 }
+                $('.loader').hide();
             },
             error: function (e) {
                 clog(e);
+                $('.loader').hide();
             }
         });
     });
 
     $body.on('click', '#current-building-plan-list', function () {
         var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $('.loader').show();
         $.ajax({
             url: base_url + '/building-plans/',
             type: 'POST',
@@ -319,9 +323,11 @@ $(function () {
                     clog(response.plan_list_tab)
                     $("#current-plan-list-tab").html(response.plan_list_tab);
                 }
+                $('.loader').hide();
             },
             error: function (e) {
                 clog(e);
+                $('.loader').hide();
             }
         });
     });
@@ -330,6 +336,7 @@ $(function () {
         var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
         var url = window.location.pathname.split("/");
         var building_id = url[2];
+        $('.loader').show();
         $.ajax({
             url: base_url + '/building-plans/',
             type: 'POST',
@@ -343,9 +350,11 @@ $(function () {
                     clog(response.plan_list_tab)
                     $("#current-plan-list-tab").html(response.plan_list_tab);
                 }
+                $('.loader').hide();
             },
             error: function (e) {
                 clog(e);
+                $('.loader').hide();
             }
         });
     });
@@ -354,6 +363,7 @@ $(function () {
         var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
         var url = window.location.pathname.split("/");
         var flat_id = url[2];
+        $('.loader').show();
         $.ajax({
             url: base_url + '/flat-plans/',
             type: 'POST',
@@ -367,9 +377,11 @@ $(function () {
                     clog(response.plan_list_tab)
                     $("#current-plan-list-tab").html(response.plan_list_tab);
                 }
+                $('.loader').hide();
             },
             error: function (e) {
                 clog(e);
+                $('.loader').hide();
             }
         });
     });
@@ -469,6 +481,7 @@ $(function () {
 function getAllCurrentBuildingsByProject($this) {
     var project_id = $this.val(),
         csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+    $('.loader').show();
     $.ajax({
         url: base_url + '/current-buildings/',
         type: 'POST',
@@ -484,15 +497,18 @@ function getAllCurrentBuildingsByProject($this) {
                 current_buildings = addSidebarBuildingOrFlats(response.current_buildings, 'building', current_buildings);
                 $("#current-buildings").html(current_buildings);
             }
+            $('.loader').hide();
         },
         error: function (e) {
             clog(e);
+            $('.loader').hide();
         }
     });
 }
 
 function getAllCurrentFlatsByBuilding() {
     var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+    $('.loader').show();
     $.ajax({
         url: base_url + '/current-flats/',
         type: 'POST',
@@ -506,9 +522,11 @@ function getAllCurrentFlatsByBuilding() {
                 current_flats = addSidebarBuildingOrFlats(response.current_flats, 'flat', current_flats);
                 $("#current-flats").html(current_flats);
             }
+            $('.loader').hide();
         },
         error: function (e) {
             clog(e);
+            $('.loader').hide();
         }
     });
 }
