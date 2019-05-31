@@ -16,7 +16,7 @@ import io
 
 class IndexView(generic.DetailView):
     def get(self, request):
-        return render(request, 'dashboard/index.html', {})
+        return render(request, 'dashboard/index.html', {'user_id': request.user.id})
 
 
 class CommonView(generic.DetailView):

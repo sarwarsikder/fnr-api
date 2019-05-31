@@ -1,7 +1,8 @@
 from django.db import models
 from django.db.models import CASCADE
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
+
 
 class Subscribers(models.Model):
     endpoint = models.TextField(max_length=2000)
@@ -9,10 +10,11 @@ class Subscribers(models.Model):
     # p256dh = models.TextField(max_length=2000)
     # auth = models.TextField(max_length=500)
     keys = models.TextField(max_length=2000)
+    user_id = models.IntegerField(null=False)
 
 
 class PushNotification(models.Model):
-    recipient = models.ForeignKey(Subscribers, on_delete=CASCADE)
+    recipient = models.IntegerField(null=False)
     title = models.CharField(max_length=512, null=True, blank=True)
     message = models.TextField()
     status = models.CharField(max_length=10, default='unread')

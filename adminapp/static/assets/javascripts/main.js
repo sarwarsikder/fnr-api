@@ -139,7 +139,8 @@ function updateSubscriptionOnServer(subscription) {
       data: {
           'endpoint': endpoint,
           'expirationTime': expirationTime,
-          'keys': keys
+          'keys': keys,
+          'users': '{{ request.user }}'
       },
       success: function (responseText) {
           var response = responseText;
