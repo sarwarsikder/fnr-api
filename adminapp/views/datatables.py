@@ -1,12 +1,7 @@
-from django.db.models import Case, Value, When, Count
+from django.db.models import Case, Value, When
 from django.db.models.functions import Concat
-
 from adminapp.models import Users, HandWorker, Projects, Buildings, Flats
 from django_datatables_view.base_datatable_view import BaseDatatableView
-from django.db import connection
-from django.template.loader import render_to_string
-from datetime import datetime, timedelta, date
-from django.db.models import Q
 
 
 class StaffListView(BaseDatatableView):

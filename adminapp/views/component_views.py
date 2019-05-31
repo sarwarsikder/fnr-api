@@ -4,11 +4,8 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import UpdateView
 from django.db.models import Q
-
 from adminapp.forms.component_form import ComponentForm
 from adminapp.models import Components
-from adminapp.models import Users
-
 import json
 
 from adminapp.views.common_views import CommonView
@@ -25,7 +22,7 @@ class ComponentView(generic.DetailView):
             response['components'] = components
             return render(request, 'components/component.html', response)
         else:
-            redirect('index')
+            return redirect('index')
 
     def delete(request):
         response = {}
@@ -62,10 +59,9 @@ class ComponentAddView(generic.DetailView):
             response['form'] = form
             return render(request, self.template_name, response)
         else:
-            redirect('index')
+            return redirect('index')
 
     def post(self, request, *args, **kwargs):
-        print(request.session['supplementer_user'])
         if CommonView.superuser_login(request):
             response = {}
             form = self.form_class(request.POST)

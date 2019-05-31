@@ -45,14 +45,6 @@
 
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="plans.php" class="nav-link">
-                                <i class="nav-icon fa fa-feed"></i>
-                                <p>
-                                    Planen
-                                </p>
-                            </a>
-                        </li>
                         {% if request.user.is_superuser %}
                             <li class="nav-item">
                                 <a href="{% url 'staffs' %}" class="nav-link">

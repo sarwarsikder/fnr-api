@@ -1,18 +1,13 @@
 import json
-
-import qrcode
 from django.views import generic
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import View, UpdateView
-from adminapp.models import Buildings, BuildingComponents, Components, Projects, QrCode
+from adminapp.models import Buildings, BuildingComponents, Projects, QrCode
 from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
 from adminapp.forms.building_form import BuildingForm
-from django.conf import settings
-import io
-
 
 class BuildingsView(generic.DetailView):
     def get(self, request, *args, **kwargs):

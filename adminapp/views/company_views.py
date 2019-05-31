@@ -1,5 +1,4 @@
 import json
-
 from django.views import generic
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
@@ -9,7 +8,6 @@ from adminapp.models import Users, HandWorker
 from adminapp.forms.user_form import WorkerForm, WorkerUpdateForm, UserPasswordChangeForm
 from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
-from django.conf import settings
 
 
 class CompaniesView(generic.DetailView):

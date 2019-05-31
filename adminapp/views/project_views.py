@@ -5,11 +5,10 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import View, UpdateView
-from adminapp.models import Projects, ProjectStuff, Buildings
+from adminapp.models import Projects, ProjectStuff
 from adminapp.forms.project_form import ProjectForm
 from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
-from django.conf import settings
 
 
 class ProjectsView(generic.DetailView):
