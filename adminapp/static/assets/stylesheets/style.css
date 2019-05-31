@@ -649,10 +649,10 @@ span.cwp_title{
 }
 .bd_cardfooter p{
     margin-bottom: 0px;
-    text-align: right;
+    text-align: center;
 }
 .bd_cardfooter{
-    width: 50%;
+    width: 100%;
 }
 .building_list_card:hover {
     box-shadow: 0px 0px 15px 4px #e8e8e8;
@@ -672,9 +672,9 @@ table{
     border-spacing: 0px;
 }
 .card-body.progress_card {
-    height: 225px;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    /*height: 225px;*/
+    /*overflow-y: scroll;*/
+    /*overflow-x: hidden;*/
     padding-bottom: 20px;
 }
 .task_detail_description {
@@ -913,4 +913,50 @@ label.error {
 
 .project-info, .building-info, .flat-info {
     font-size: 20px;
+}
+.task-card .nav-tabs .nav-link.active {
+    color: #ffffff;
+    background-color: #7d6e57;
+    border-color: #ceb593 #ceb592 #fff;
+}
+
+.task-card .nav-fill .nav-item {
+    background: #dcdcdc;
+    border-right: 1px solid #fff !important;
+    color: #5f5340;
+    font-size: 16px;
+}
+
+.floating_btn_wrap button {
+    display: inline-block;
+    height: 45px;
+    width: 45px;
+    border-radius: 50% !important;
+    font-size: 12px !important;
+    transition: all 0.5s ease;
+    border: 2px solid #fff;
+    box-shadow: 2px 1px 3px -1px #000000;
+}
+
+
+.edit_assign_task a{
+    color: #7d6d57;
+    transition: all 0.5s ease;
+}
+.edit_assign_task{
+    padding-left: 10px;
+
+}
+button.btn.btn-primary.submit_modal_assignee{
+    color: #fff;
+}
+.bd_card_footer_text{
+    width: 100% !important;
+}
+.bd_card_footer_text p{
+    text-align: center !important;
+}
+.task_assigned_label {
+    margin: 0pc;
+    padding-right: 12px;
 }
