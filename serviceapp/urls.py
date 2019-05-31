@@ -20,6 +20,7 @@ from rest_framework.routers import SimpleRouter
 from serviceapp.views.projects import ProjectViewSet, ProjectPlanViewSet
 from serviceapp.views.buildings import BuildingViewSet, BuildingPlanViewSet, BuildingComponentViewSet
 from serviceapp.views.flats import FlatViewSet, FlatPlanViewSet, FlatComponentViewSet
+from serviceapp.views.tasks import BuildingTasksViewSet, FlatTasksViewSet
 
 router = SimpleRouter()
 router.register(r'projects', ProjectViewSet)
@@ -34,7 +35,9 @@ urlpatterns = [
     url(r'^project/(?P<project_id>[\w-]+)/buildings/$', BuildingViewSet.as_view()),
     url(r'^building/(?P<building_id>[\w-]+)/plans/$', BuildingPlanViewSet.as_view()),
     url(r'^building/(?P<building_id>[\w-]+)/components/$', BuildingComponentViewSet.as_view()),
+    url(r'^building/(?P<building_id>[\w-]+)/component/(?P<component_id>[\w-]+)/tasks/$', BuildingTasksViewSet.as_view()),
     url(r'^building/(?P<building_id>[\w-]+)/flats/$', FlatViewSet.as_view()),
     url(r'^flat/(?P<flat_id>[\w-]+)/plans/$', FlatPlanViewSet.as_view()),
     url(r'^flat/(?P<flat_id>[\w-]+)/components/$', FlatComponentViewSet.as_view()),
+    url(r'^flat/(?P<flat_id>[\w-]+)/component/(?P<component_id>[\w-]+)/tasks/$', FlatTasksViewSet.as_view()),
 ] + router.urls
