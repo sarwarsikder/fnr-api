@@ -552,8 +552,10 @@ function addSidebarBuildingOrFlats(data, type, sidebarElem) {
 
 function activeSubMenu() {
     var url = window.location.pathname;
-    $('.has-treeview').removeClass('menu-open');
-    $("a[href$='" + url + "']").closest('li.has-treeview').addClass("menu-open");
-    $('.has-treeview').find("a[href$='" + url + "']").addClass("active");
+    if(url != "/") {
+        $('.has-treeview').removeClass('menu-open');
+        $("a[href$='" + url + "']").closest('li.has-treeview').addClass("menu-open");
+        $('.has-treeview').find("a[href$='" + url + "']").addClass("active");
+    }
 
 }
