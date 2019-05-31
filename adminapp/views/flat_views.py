@@ -9,7 +9,6 @@ from adminapp.models import Buildings, BuildingComponents, Flats, QrCode
 from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
 from adminapp.forms.flat_form import FlatForm
-from django.conf import settings
 
 
 class FlatsView(generic.DetailView):

@@ -1,12 +1,9 @@
 import json
-
-import qrcode
 from django.db.models import Q
 from django.template.loader import render_to_string
 from django.views import generic
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
 from adminapp.models import Tasks, BuildingComponents, Buildings, Flats
 from adminapp.views.helper import LogHelper
 from adminapp.views.common_views import CurrentProjects

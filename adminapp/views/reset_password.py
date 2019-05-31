@@ -1,7 +1,4 @@
-import random
-import string
-import hashlib
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
@@ -9,9 +6,7 @@ from django.views.generic import TemplateView
 from django.http import Http404
 from django.shortcuts import redirect
 from django.contrib import messages
-from django.conf import settings
 from adminapp.models import ResetPassword
-from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
 
 

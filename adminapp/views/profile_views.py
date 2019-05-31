@@ -5,7 +5,6 @@ from adminapp.forms.user_form import ProfileForm
 from django.shortcuts import render, redirect
 from django.views import generic
 from adminapp.views.helper import LogHelper
-from adminapp.views.common_views import CommonView
 from django.contrib.auth import update_session_auth_hash
 
 
