@@ -296,7 +296,6 @@ $(function () {
             success: function (responseText) {
                 var response = responseText;
                 if (response.success) {
-                    clog(response.plan_list_tab)
                     $("#current-plan-list-tab").html(response.plan_list_tab);
                 }
                 $('.loader').hide();
@@ -496,6 +495,7 @@ function getAllCurrentBuildingsByProject($this) {
                 var current_buildings = "";
                 current_buildings = addSidebarBuildingOrFlats(response.current_buildings, 'building', current_buildings);
                 $("#current-buildings").html(current_buildings);
+                activePlanTab();
                 activeSubMenu();
             }
             $('.loader').hide();
@@ -557,5 +557,12 @@ function activeSubMenu() {
         $("a[href$='" + url + "']").closest('li.has-treeview').addClass("menu-open");
         $('.has-treeview').find("a[href$='" + url + "']").addClass("active");
     }
+}
 
+function activePlanTab(){
+    var current_url = window.location.href;
+    var activeTab = current_url.substring(current_url.indexOf("#") + 1);
+    if (activeTab == "plans") {
+        $('a[href="#current-plan-list-tab"]').trigger('click');
+    }
 }
