@@ -17,17 +17,10 @@ class UserLoginMiddleware(generic.DetailView):
 
     def __call__(self, request):
         path = request.path.split('/')[1]
-        # user = authenticate(username='admin', password='wsit97480')
-        # logout(request)
-        # if user is not None:
-        #     login(request, user)
-        # request.user = Users.objects.get(id=1)
         if path == '' or path != 'api':
             if request.is_ajax() == False:
                 settings.USE_TZ = False
                 browser_current_url = resolve(request.path_info).url_name
-                # if 'bikeshare_settings' not in request.session:
-                #     request.session["bikeshare_settings"] = CommonView.getCommonSettings(request)
                 if browser_current_url != 'login' and browser_current_url != 'forget-password' and browser_current_url != 'reset-password':
                     if not request.user.is_authenticated:
                         return redirect('login')
@@ -52,35 +45,19 @@ class UserLoginMiddleware(generic.DetailView):
                             }
                     if 'active_project' not in request.session:
                         request.session["active_project"] = {
-                            'id': current_projects[0]['id'],
-                            'name': current_projects[0]['name']
+                            'id': '',
+                            'name': ''
                         }
                     if 'active_building' not in request.session:
-                        try:
-                            current_building = Buildings.objects.filter(project_id=request.session["active_project"]).first()
-                            request.session["active_building"] = {
-                                'id': current_building.id,
-                                'number': current_building.display_number
-                            }
-                        except Exception as e:
-                            print(e)
-                            request.session["active_building"] = {
-                                'id': '',
-                                'number': ''
-                            }
+                        request.session["active_building"] = {
+                            'id': '',
+                            'number': ''
+                        }
                     if 'active_flat' not in request.session:
-                        try:
-                            current_flat = Flats.objects.filter(building_id=request.session["active_building"]).first()
-                            request.session["active_flat"] = {
-                                'id': current_flat.id,
-                                'number': current_flat.number
-                            }
-                        except Exception as e:
-                            print(e)
-                            request.session["active_flat"] = {
-                                'id': '',
-                                'number': ''
-                            }
+                        request.session["active_flat"] = {
+                            'id': '',
+                            'number': ''
+                        }
                     request.session.modified = True
                     print(request.session["active_project"])
                     print(request.session["active_building"])

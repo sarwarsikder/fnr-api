@@ -37,7 +37,7 @@ class UserInfo(APIView):
     permission_classes = (UserProfilePermissions, )
 
     def get(self, request):
-        request.user.avatar = request.user.avatar.url
+        request.user.avatar = request.user.avatar.url if request.user.avatar else ''
         if request.user.current_activity:
             request.user.current_activity = json.loads(request.user.current_activity)
         if not request.user.is_staff:

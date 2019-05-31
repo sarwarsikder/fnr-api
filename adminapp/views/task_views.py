@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from adminapp.models import Tasks, BuildingComponents, Buildings, Flats
 from adminapp.views.helper import LogHelper
+from adminapp.views.common_views import CurrentProjects
 
 
 class TasksView(generic.DetailView):
@@ -16,6 +17,8 @@ class TasksView(generic.DetailView):
         try:
             building_id = kwargs['building_id']
             building = Buildings.objects.get(id=building_id)
+            if str(building.project_id) == request.session['active_project']['id']:
+                CurrentProjects.change_active_building(request, building_id)
             return render(request, 'tasks/task_list.html', {'building': building})
         except Exception as e:
             LogHelper.efail(e)
@@ -25,6 +28,8 @@ class TasksView(generic.DetailView):
         try:
             flat_id = kwargs['flat_id']
             flat = Flats.objects.get(id=flat_id)
+            if str(flat.building_id) == request.session['active_building']['id']:
+                CurrentProjects.change_active_flat(request, flat_id)
             return render(request, 'tasks/task_list.html', {'flat': flat})
         except Exception as e:
             LogHelper.efail(e)

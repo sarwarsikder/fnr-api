@@ -23,7 +23,7 @@ class ProfileUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileUpdateView, self).get_context_data(**kwargs)
-        context['avatar'] = self.object.avatar.url
+        context['avatar'] = self.object.avatar.url if self.object.avatar else ''
         return context
 
 

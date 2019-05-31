@@ -85,6 +85,7 @@ $(function () {
                 success: function (response) {
                     if (response.success) {
                         $('#pending-component-' + id).find('.task-list').html(response.tasks_list);
+                        activePlanTab();
                     }
                     $('.loader').hide();
                 },
