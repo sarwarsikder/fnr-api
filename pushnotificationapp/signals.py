@@ -42,6 +42,7 @@ from django.dispatch import receiver
 from pushnotificationapp.models import PushNotification, Subscribers
 import json
 import os
+import datetime
 
 @receiver(post_save, sender=PushNotification)
 def send_notification(sender, **kwargs):
@@ -63,12 +64,17 @@ def notification_sender(subscription_info, data):
     # WEBPUSH_VAPID_PRIVATE_KEY = '8KWSbR9D9vWmEjVIdZDBqttPu9cUDNIDAo95xKAXE6I'
 
     count = 0
-    DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH = os.path.abspath('private_key.txt')
-    DER_BASE64_ENCODED_PUBLIC_KEY_FILE_PATH = os.path.abspath('public_key.txt')
-    VAPID_PRIVATE_KEY = open(DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH, "r+").readline().strip("\n")
+    # DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH = os.path.abspath('private_key.txt')
+    # DER_BASE64_ENCODED_PUBLIC_KEY_FILE_PATH = os.path.abspath('public_key.txt')
+    DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH = os.path.abspath('vapid_private.pem')
+    DER_BASE64_ENCODED_PUBLIC_KEY_FILE_PATH = os.path.abspath('vapid_public.pem')
+    VAPID_PRIVATE_KEY = open(DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH, "r+").read().strip("\n")
     VAPID_PUBLIC_KEY = open(DER_BASE64_ENCODED_PUBLIC_KEY_FILE_PATH, "r+").read().strip("\n")
     VAPID_CLAIMS = {
-        "sub": "mailto:iftekhar@workspaceit.com",
+        # "aud": "https://houze.com",
+        # "exp":  json.dumps((datetime.datetime.now() + datetime.timedelta(hours=24)), default = myconverter),
+        "exp":  1212121212,
+        "sub": "mailto:iftekhar@workspaceit.com"
     }
 
     # subscription_info = {"endpoint":"https://fcm.googleapis.com/fcm/send/fsjbvwa06ik:APA91bFmUDOncHeDAY7tTSnd4QxatnnTqJXkrv8sB0r2LnPekNrRmMtAaEockO5XqEaQKUBipGpphQxRFkdfYVf38gy8fjcra7x2-M5eO0wfwWE2yEFJl0iuBpIiXdaCP_KsVh1lz3rY","expirationTime":None,"keys":{"p256dh":"BNDo7RaVN_DDd5tb-Yr-FU21hH-G8kNs_h1cOWGjp_I6um0dGoImR_m8mI7MXn8jqFowReDqD_5m3Pa8P3CmHIw","auth":"AMoKHDep1LCZeFfU2OS0Sw"}}
@@ -77,9 +83,14 @@ def notification_sender(subscription_info, data):
         webpush(
             subscription_info=subscription_info,
             data=data,
-            vapid_private_key=VAPID_PRIVATE_KEY,
-            vapid_claims=VAPID_CLAIMS
+            vapid_private_key="bF0oatL1tc0-vPr_9Lx8VMUmXA4Fgp_dJaQMpZk25ag",
+            vapid_claims = VAPID_CLAIMS
         )
         count += 1
     except WebPushException as e:
         logging.exception("webpush fail")
+
+
+def myconverter(o):
+    if isinstance(o, datetime.datetime):
+        return o.__str__()
