@@ -75,7 +75,8 @@ class CompanyFormView(View):
             data = {
                 "company_name": request.POST.get('company_name'),
                 "telephone": request.POST.get('telephone'),
-                "working_type": json.dumps(working_types),
+                # "working_type": json.dumps(working_types),
+                "working_type": working_types,
                 "user_id": obj.id,
             }
             CompaniesView.create_worker(request, data)
@@ -110,7 +111,8 @@ class CompanyUpdateView(UpdateView):
         data = {
             "company_name": self.request.POST.get('company_name'),
             "telephone": self.request.POST.get('telephone'),
-            "working_type": json.dumps(working_types),
+            # "working_type": json.dumps(working_types),
+            "working_type": working_types,
         }
         CompaniesView.update_worker(self.request, data, self.object.id)
         return HttpResponseRedirect(self.get_success_url())
@@ -124,11 +126,13 @@ class CompanyUpdateView(UpdateView):
         context['avatar'] = self.object.avatar.url if self.object.avatar else ''
         context['company_name'] = self.object.handworker.company_name
         context['telephone'] = self.object.handworker.telephone
-        working_components = json.loads(self.object.handworker.working_type)
+        # working_components = json.loads(self.object.handworker.working_type)
+        working_components = self.object.handworker.working_type
         working_types = []
-        for component in working_components:
-            value = component['id']+"-"+component['component']
-            working_types.append(value)
+        if working_components:
+            for component in working_components:
+                value = component['id']+"-"+component['component']
+                working_types.append(value)
         context['working_type'] = working_types
         return context
 

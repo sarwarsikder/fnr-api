@@ -101,6 +101,8 @@ urlpatterns = [
     url(r'^get-done-components/$', task_views.TasksView.get_done_components, name='get-done-components'),
     url(r'^get-all-components/$', task_views.TasksView.get_all_components, name='get-all-components'),
     url(r'^get-component-tasks/$', task_views.TasksView.get_component_tasks, name='get-component-tasks'),
+    url(r'^get-handworker-list/$', task_views.TasksView.get_handwerker_list, name='get-handworker-list'),
+    url(r'^assign-handworker/$', task_views.TasksView.assign_handwerker, name='assign-handworker'),
     # url(r'^get-active-tasks/$', task_views.TasksView.get_active_tasks, name='get-active-tasks'),
 
 

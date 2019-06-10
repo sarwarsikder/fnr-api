@@ -168,6 +168,72 @@ $(function () {
             });
         }
     });
+
+    $body.on('click', '.edit_assign_task', function () {
+        var component_id = $(this).attr('data-component-id');
+        var handworker_id = $(this).attr('data-handworker-id');
+        var building_component_id = $(this).attr('data-id');
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        var data = {
+            'component_id': component_id,
+            'csrfmiddlewaretoken': csrfToken
+        };
+        var $button = $("#submit-handworker-assign");
+        $button.prop("disabled", true);
+        $('.loader').show();
+        $.ajax({
+            url: base_url + '/get-handworker-list/',
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                if (response.success) {
+                    $("#component-assigned-handwerker").html('').select2({data: response.handworkers});
+                    if(isNotEmpty(handworker_id)){
+                        $("#component-assigned-handwerker").select2("val", handworker_id);
+                    }
+                    $button.prop("disabled", false);
+                    $button.attr("data-id", building_component_id);
+                }
+                $('.loader').hide();
+            },
+            error: function (e) {
+                clog(e);
+                $('.loader').hide();
+            }
+        });
+    });
+
+    $body.on('click', '#submit-handworker-assign', function () {
+        var component_id = $(this).attr('data-id');
+        var user_id = $("#component-assigned-handwerker").val();
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        var data = {
+            'component_id': component_id,
+            'user_id': user_id,
+            'csrfmiddlewaretoken': csrfToken
+        };
+        $('.loader').show();
+        $.ajax({
+            url: base_url + '/assign-handworker/',
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                if (response.success) {
+                    var $elem = $(".edit_assign_task[data-id="+component_id+"]").closest(".td_assign_to");
+                    if(response.handworker.avatar){
+                        $elem.find(".assignee-handwerker-image").attr("src", response.handworker.avatar);
+                    }
+                    $elem.find(".assignee-handwerker-name").html(response.handworker.fullname);
+                    $("#assignee-handwerker-modal").modal('hide');
+                }
+                $('.loader').hide();
+            },
+            error: function (e) {
+                clog(e);
+                $('.loader').hide();
+            }
+        });
+    });
 });
 
 function getPendingComponents() {

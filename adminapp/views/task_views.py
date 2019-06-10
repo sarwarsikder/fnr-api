@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from django.views import generic
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from adminapp.models import Tasks, BuildingComponents, Buildings, Flats
+from adminapp.models import Tasks, BuildingComponents, Buildings, Flats, HandWorker, Users
 from adminapp.views.helper import LogHelper
 from adminapp.views.common_views import CurrentProjects
 
@@ -145,6 +145,46 @@ class TasksView(generic.DetailView):
             active_tasks = render_to_string('tasks/task.html', {"components": components, "request": request})
             response['success'] = True
             response['active_tasks'] = active_tasks
+        except Exception as e:
+            LogHelper.efail(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+    def get_handwerker_list(request):
+        response = {}
+        try:
+            component_id = request.POST.get('component_id')
+            handworker_list = []
+            handworkers = HandWorker.objects.values('user__avatar','user__first_name', 'user__last_name', 'user_id').filter(user__is_active=True, working_type__contains={"id":component_id})
+            for handworker in handworkers:
+                data = {
+                    # "avatar": handworker['user__avatar'],
+                    "text": handworker['user__first_name'] + " " +handworker['user__last_name'],
+                    "id": handworker['user_id'],
+                }
+                handworker_list.append(data)
+            response['success'] = True
+            response['handworkers'] = handworker_list
+        except Exception as e:
+            LogHelper.efail(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+    def assign_handwerker(request):
+        response = {}
+        try:
+            component_id = request.POST.get('component_id')
+            user_id = request.POST.get('user_id')
+            BuildingComponents.objects.filter(id=component_id).update(assign_to_id=user_id, assigned_by=request.user)
+            handworker = Users.objects.get(id=user_id)
+            handworker_info = {
+                "fullname": handworker.get_full_name(),
+                "avatar": handworker.avatar.url if handworker.avatar else ''
+            }
+            response['success'] = True
+            response['handworker'] = handworker_info
         except Exception as e:
             LogHelper.efail(e)
             response['success'] = False
