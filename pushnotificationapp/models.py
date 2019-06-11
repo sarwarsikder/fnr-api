@@ -6,7 +6,7 @@ class Subscribers(models.Model):
     expirationTime = models.DateTimeField(null=True)
     keys = models.TextField(max_length=2000)
     user_id = models.IntegerField(null=False)
-
+    device  = models.CharField(max_length=512)
 
 class PushNotification(models.Model):
     recipient = models.IntegerField(null=False)

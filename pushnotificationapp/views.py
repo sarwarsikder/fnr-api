@@ -21,8 +21,9 @@ class SubscriberViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['DELETE'], name='delete')
     def destroy_by_user(self, request, *args, **kwargs):
         user_id = request.POST['user_id']
+        device = request.POST['device']
         if user_id:
-            queryset = Subscribers.objects.filter(user_id=user_id)
+            queryset = Subscribers.objects.filter(user_id=user_id) & Subscribers.objects.filter(device=device)
             self.perform_destroy(queryset)
         return Response(status=status.HTTP_204_NO_CONTENT)
 

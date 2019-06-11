@@ -269,7 +269,16 @@ function unsubscribeUser() {
 
 function updateSubscriptionOnServer(subscription) {
 
-    console.log(subscription)
+    console.log(subscription);
+    var ua = navigator.userAgent.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i),
+      browser;
+    if (navigator.userAgent.match(/Edge/i) || navigator.userAgent.match(/Trident.*rv[ :]*11\./i)) {
+    browser = "msie";
+    }
+    else {
+    browser = ua[1].toLowerCase();
+    }
+    console.log(browser);
   if (subscription && !isSubscribed) {
     var data = $.parseJSON(JSON.stringify(subscription));
     var endpoint = data['endpoint'].toString();
@@ -283,7 +292,8 @@ function updateSubscriptionOnServer(subscription) {
           'endpoint': endpoint,
           'expirationTime': expirationTime,
           'keys': keys,
-          'user_id': user_id
+          'user_id': user_id,
+          'device': browser
       },
       success: function (responseText) {
           var response = responseText;
@@ -307,7 +317,8 @@ function updateSubscriptionOnServer(subscription) {
       url: "/api/subscribe/destroy_by_user/",
       type: 'DELETE',
       data: {
-          'user_id': user_id
+          'user_id': user_id,
+          'device': browser
       }
     });
 
@@ -324,8 +335,6 @@ navigator.serviceWorker.register('sw.js')
 
 
 </script>
-
-
 
 </body>
 
