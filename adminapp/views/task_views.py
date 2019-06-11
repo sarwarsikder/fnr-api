@@ -192,6 +192,56 @@ class TasksView(generic.DetailView):
         return HttpResponse(json.dumps(response), content_type='application/json')
 
 
+class TaskDetailsView(generic.DetailView):
+    def get(self, request, *args, **kwargs):
+        try:
+            task_id = kwargs['task_id']
+            task = Tasks.objects.get(id=task_id)
+            assign_to_user = BuildingComponents.objects.filter(component_id=task.building_component.component.parent_id, building_id=task.building_component.building_id, flat_id=task.building_component.flat_id).first()
+            if assign_to_user.assign_to:
+                assign_to = {
+                    "fullname": assign_to_user.assign_to.get_full_name(),
+                    "avatar": assign_to_user.assign_to.avatar.url
+                }
+            else:
+                assign_to = None
+            return render(request, 'tasks/task_details.html', {'task': task, 'assign_to': assign_to})
+        except Exception as e:
+            LogHelper.efail(e)
+            return redirect('index')
+
+    def save_task_description(request):
+        response = {}
+        try:
+            task_id = request.POST.get('task_id')
+            description = request.POST.get('description')
+            task = Tasks.objects.get(id=task_id)
+            task.building_component.description = description
+            task.building_component.save()
+            response['success'] = True
+            response['message'] = "Description Update successfully"
+        except Exception as e:
+            LogHelper.efail(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+    def change_task_status(request):
+        response = {}
+        try:
+            task_id = request.POST.get('task_id')
+            status = request.POST.get('status')
+            Tasks.objects.filter(id=task_id).update(status=status)
+            response['success'] = True
+            response['message'] = "Status Update successfully"
+        except Exception as e:
+            LogHelper.efail(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+
+
 
 
 

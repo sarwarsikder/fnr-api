@@ -19,7 +19,6 @@ class CompaniesView(generic.DetailView):
         response = {}
         try:
             userId = request.POST.get('id')
-            # Users.objects.filter(id=userId).update(is_active='0')
             Users.objects.get(id=userId).delete()
             response['success'] = True
             response['message'] = "Worker delete successfully"
@@ -75,7 +74,6 @@ class CompanyFormView(View):
             data = {
                 "company_name": request.POST.get('company_name'),
                 "telephone": request.POST.get('telephone'),
-                # "working_type": json.dumps(working_types),
                 "working_type": working_types,
                 "user_id": obj.id,
             }
@@ -111,7 +109,6 @@ class CompanyUpdateView(UpdateView):
         data = {
             "company_name": self.request.POST.get('company_name'),
             "telephone": self.request.POST.get('telephone'),
-            # "working_type": json.dumps(working_types),
             "working_type": working_types,
         }
         CompaniesView.update_worker(self.request, data, self.object.id)
@@ -126,7 +123,6 @@ class CompanyUpdateView(UpdateView):
         context['avatar'] = self.object.avatar.url if self.object.avatar else ''
         context['company_name'] = self.object.handworker.company_name
         context['telephone'] = self.object.handworker.telephone
-        # working_components = json.loads(self.object.handworker.working_type)
         working_components = self.object.handworker.working_type
         working_types = []
         if working_components:

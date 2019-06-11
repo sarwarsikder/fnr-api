@@ -1,5 +1,5 @@
 {% for task in tasks %}
-    <a href="task-detail.php" class="task_title">
+    <a href="{% url 'task-details' task_id=task.id %}" class="task_title">
         <div class="col-md-12 task_wrap">
             {{ task.building_component.component.name|title }}
             <div class="dropdown-divider"></div>

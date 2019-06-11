@@ -39,10 +39,10 @@
 </div>
 <div class="floating_btn_wrap">
     {% if request.session.active_project.id %}
-        <button id="current-project-buildings" class="btn btn-info"><i class="fa fa-building"></i></button>
+        <button id="current-project-buildings" class="btn btn-info" title="Hauser"><i class="fa fa-building"></i></button>
     {% endif %}
     {% if request.session.active_building.id %}
-        <button id="current-project-flats" class="btn btn-danger"><i class="fas fa-door-closed"></i></button>
+        <button id="current-project-flats" class="btn btn-danger" title="Wohnungen"><i class="fas fa-door-closed"></i></button>
     {% endif %}
 </div>
 <footer class="main-footer">

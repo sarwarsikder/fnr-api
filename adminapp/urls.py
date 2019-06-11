@@ -105,6 +105,10 @@ urlpatterns = [
     url(r'^assign-handworker/$', task_views.TasksView.assign_handwerker, name='assign-handworker'),
     # url(r'^get-active-tasks/$', task_views.TasksView.get_active_tasks, name='get-active-tasks'),
 
+    url(r'^tasks/(?P<task_id>[\w-]+)/$', task_views.TaskDetailsView.as_view(), name='task-details'),
+    url(r'^save-task-description/$', task_views.TaskDetailsView.save_task_description, name='save-task-description'),
+    url(r'^change-task-status/$', task_views.TaskDetailsView.change_task_status, name='change-task-status'),
+
 
 ]
 
