@@ -257,7 +257,8 @@ class Comments(models.Model):
 
 class HandWorker(models.Model):
     company_name = models.CharField(max_length=100)
-    telephone = models.CharField(max_length=50, null=True, blank=True)
+    telephone_office = models.CharField(max_length=50, null=True, blank=True)
+    telephone_mobile = models.CharField(max_length=50, null=True, blank=True)
     user = models.OneToOneField(Users, on_delete=models.CASCADE)
     working_type = JSONField(null=True, blank=True)
 

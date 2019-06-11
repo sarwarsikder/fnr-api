@@ -15,8 +15,8 @@ class StaffListView(BaseDatatableView):
 
 class CompanyListView(BaseDatatableView):
     model = HandWorker
-    columns = ['user.id', 'company_name', 'user.username', 'full_name', 'user.email', 'user.is_active', 'telephone']
-    order_columns = ['user.id', 'company_name', 'user.username', 'full_name', 'user.email', 'user.is_active', 'telephone']
+    columns = ['user.id', 'company_name', 'user.username', 'full_name', 'user.email', 'user.is_active', 'telephone_office']
+    order_columns = ['user.id', 'company_name', 'user.username', 'full_name', 'user.email', 'user.is_active', 'telephone_office']
 
     def get_initial_queryset(self):
         return HandWorker.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name')).all()

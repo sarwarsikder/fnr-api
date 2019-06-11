@@ -92,22 +92,22 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="{{ form.company_name.id_for_label }}">Company
-                                                        name</label>
+                                                    <label for="{{ form.telephone_office.id_for_label }}">Phone Office</label>
                                                     <div class="has-feedback">
-                                                        <input type="text" class="form-control"
-                                                               id="id_company_name" name="company_name"
-                                                               placeholder="Enter Company name" value="{{ company_name }}">
-                                                        {{ form.company_name.errors }}
+                                                        <input type="text" class="form-control" id="id_telephone_office"
+                                                               name="telephone_office"
+                                                               placeholder="Enter Office Phone number" value="{{ telephone_office }}">
+                                                        {{ form.telephone_office.errors }}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="{{ form.telephone.id_for_label }}">Phone</label>
+                                                    <label for="{{ form.address.id_for_label }}">Address</label>
                                                     <div class="has-feedback">
-                                                        <input type="text" class="form-control" id="id_telephone"
-                                                               name="telephone"
-                                                               placeholder="Enter Phone number" value="{{ telephone }}">
-                                                        {{ form.telephone.errors }}
+                                                            <textarea id="id_address" name="address"
+                                                                      class="form-control"
+                                                                      placeholder="Enter staff address"
+                                                                      style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ form.address.value|default_if_none:"" }}</textarea>
+                                                        {{ form.address.errors }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -129,6 +129,16 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="{{ form.company_name.id_for_label }}">Company
+                                                        name</label>
+                                                    <div class="has-feedback">
+                                                        <input type="text" class="form-control"
+                                                               id="id_company_name" name="company_name"
+                                                               placeholder="Enter Company name" value="{{ company_name }}">
+                                                        {{ form.company_name.errors }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="{{ form.email.id_for_label }}">Email
                                                         address</label>
                                                     <div class="has-feedback">
@@ -138,13 +148,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="{{ form.address.id_for_label }}">Address</label>
+                                                    <label for="{{ form.telephone_mobile.id_for_label }}">Phone Mobile</label>
                                                     <div class="has-feedback">
-                                                            <textarea id="id_address" name="address"
-                                                                      class="form-control"
-                                                                      placeholder="Enter staff address"
-                                                                      style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ form.address.value|default_if_none:"" }}</textarea>
-                                                        {{ form.address.errors }}
+                                                        <input type="text" class="form-control" id="id_telephone_mobile"
+                                                               name="telephone_mobile"
+                                                               placeholder="Enter Personal Phone number" value="{{ telephone_mobile }}">
+                                                        {{ form.telephone_mobile.errors }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -184,6 +193,12 @@
                     },
                     'email': {
                         required: true
+                    },
+                    'telephone_office': {
+                        required: false
+                    },
+                    'telephone_mobile': {
+                        required: false
                     },
                     'working_type': {
                         required: false

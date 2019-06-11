@@ -32,7 +32,8 @@ class CompaniesView(generic.DetailView):
         try:
             form_data = {
                 'company_name': data['company_name'],
-                'telephone': data['telephone'],
+                'telephone_office': data['telephone_office'],
+                'telephone_mobile': data['telephone_mobile'],
                 'user_id': data['user_id'],
                 'working_type': data['working_type'],
             }
@@ -73,7 +74,8 @@ class CompanyFormView(View):
             obj = form.save(self, request)
             data = {
                 "company_name": request.POST.get('company_name'),
-                "telephone": request.POST.get('telephone'),
+                "telephone_office": request.POST.get('telephone_office'),
+                "telephone_mobile": request.POST.get('telephone_mobile'),
                 "working_type": working_types,
                 "user_id": obj.id,
             }
@@ -108,7 +110,8 @@ class CompanyUpdateView(UpdateView):
             working_types.append({'id': component_id, 'component': component_name})
         data = {
             "company_name": self.request.POST.get('company_name'),
-            "telephone": self.request.POST.get('telephone'),
+            "telephone_office": self.request.POST.get('telephone_office'),
+            "telephone_mobile": self.request.POST.get('telephone_mobile'),
             "working_type": working_types,
         }
         CompaniesView.update_worker(self.request, data, self.object.id)
@@ -122,7 +125,8 @@ class CompanyUpdateView(UpdateView):
         context['components'] = CommonView.get_all_main_component(self.request)
         context['avatar'] = self.object.avatar.url if self.object.avatar else ''
         context['company_name'] = self.object.handworker.company_name
-        context['telephone'] = self.object.handworker.telephone
+        context['telephone_office'] = self.object.handworker.telephone_office
+        context['telephone_mobile'] = self.object.handworker.telephone_mobile
         working_components = self.object.handworker.working_type
         working_types = []
         if working_components:
