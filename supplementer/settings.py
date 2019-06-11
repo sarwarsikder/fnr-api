@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django_mysql',
     'rest_framework',
     'pushnotificationapp',
-    # 'channels'
+    'notifications'
 ]
 
 MIDDLEWARE = [
