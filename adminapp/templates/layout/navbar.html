@@ -37,24 +37,13 @@
                         <i class="fa fa-bell-o"></i>
                         <span class="badge badge-warning navbar-badge">{% live_notify_badge %}</span>
                     </a>
+
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <span class="dropdown-item dropdown-header">{% live_notify_badge %} Notifications</span>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            {% live_notify_list %}
-                        </a>
-{#                        <div class="dropdown-divider"></div>#}
-{#                        <a href="#" class="dropdown-item">#}
-{#                            <i class="fa fa-users mr-2"></i> 8 friend requests#}
-{#                            <span class="float-right text-muted text-sm">12 hours</span>#}
-{#                        </a>#}
-{#                        <div class="dropdown-divider"></div>#}
-{#                        <a href="#" class="dropdown-item">#}
-{#                            <i class="fa fa-file mr-2"></i> {% live_notify_list %}#}
-{#                            <span class="float-right text-muted text-sm">2 days</span>#}
-{#                        </a>#}
+                        {% live_notify_list %}
                         <div class="dropdown-divider"></div>
-                        <a href="notification.php" class="dropdown-item dropdown-footer">See All Notifications</a>
+                        <a href="/inbox/notifications/" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
