@@ -1,9 +1,42 @@
 $(function () {
     var $body = $('body');
     getPendingComponents();
+
     $("#task-due-date").datepicker({
         uiLibrary: 'bootstrap4',
-        format: 'yyyy-mm-dd'
+        format: 'yyyy-mm-dd',
+        autoclose: true
+    }).on("change", function (e) {
+        var url = window.location.pathname.split("/");
+        var task_id = url[2];
+        var due_date = $(this).val();
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        var data = {
+            'task_id': task_id,
+            'due_date': due_date,
+            'csrfmiddlewaretoken': csrfToken
+        };
+        $('.loader').show();
+        $.ajax({
+            url: base_url + '/change-task-deadline/',
+            type: 'POST',
+            data: data,
+            success: function (responseText) {
+                var response = responseText;
+                $('.loader').hide();
+                if (response.success) {
+                    if(response.message){
+                        $.growl.notice({message: response.message});
+                    }
+                } else {
+                    $.growl.error({message: response.message});
+                }
+            },
+            error: function (e) {
+                clog(e);
+                $('.loader').hide();
+            }
+        });
     });
 
     $body.on('click', '#nav-done-task-tab', function () {

@@ -70,7 +70,7 @@
                                         <div class="col-sm col-12">
                                             <div class="form-group">
                                                 <label for="stn">Deadline</label>
-                                                <input id="task-due-date" width="100%" placeholder="yyyy-mm-dd"/>
+                                                <input id="task-due-date" width="100%" placeholder="yyyy-mm-dd" value="{{ task.due_date|date:"Y-m-d" }}"/>
                                             </div>
                                         </div>
                                     </div>

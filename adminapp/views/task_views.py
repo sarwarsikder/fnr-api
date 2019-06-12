@@ -240,6 +240,23 @@ class TaskDetailsView(generic.DetailView):
             response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+    def change_task_deadline(request):
+        response = {}
+        try:
+            task_id = request.POST.get('task_id')
+            due_date = request.POST.get('due_date')
+            task = Tasks.objects.get(id=task_id)
+            if str(task.due_date) != str(due_date):
+                task.due_date = due_date
+                task.save()
+                response['message'] = "Deadline Update successfully"
+            response['success'] = True
+        except Exception as e:
+            LogHelper.efail(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
 
 
 
