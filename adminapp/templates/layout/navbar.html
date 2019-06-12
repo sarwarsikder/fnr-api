@@ -39,11 +39,15 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">{% live_notify_badge %} Notifications</span>
+                        <span class="dropdown-item dropdown-header">{% live_notify_badge %} Notifications </span>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item">
+                            <button class="btn btn-primary btn-lg btn-block" style="text-align: center; size: 200px;" id="markread">Mark All As Read</button>
+                        </div>
                         <div class="dropdown-divider"></div>
                         {% live_notify_list %}
                         <div class="dropdown-divider"></div>
-                        <a href="/inbox/notifications/" class="dropdown-item dropdown-footer">See All Notifications</a>
+                        <a href={% url 'notifications:all' %} class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
