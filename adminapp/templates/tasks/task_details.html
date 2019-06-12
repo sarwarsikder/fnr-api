@@ -40,7 +40,9 @@
                             <div class="row">
                                 <div class="col-sm col-12">
                                     <h5><strong>{{ task.building_component.component.name|title }}</strong></h5>
-                                    <p><strong>Created By: </strong> {{ task.created_by.first_name }} {{ task.created_by.last_name }}</p>
+                                    <p><strong>Created
+                                        By: </strong> {{ task.created_by.first_name }} {{ task.created_by.last_name }}
+                                    </p>
 
                                     <div class="row align-items-center">
                                         <div class="col-sm col-12">
@@ -59,18 +61,27 @@
                                         <div class="col-sm col-12">
                                             <div class="form-group">
                                                 <label>Status</label>
-                                                <select class="form-control" id="task-status" data-placeholder="Select Status"
+                                                <select class="form-control" id="task-status"
+                                                        data-placeholder="Select Status"
                                                         style="width: 100%;">
-                                                    <option value="to_do" {% if task.status == 'to_do' %}selected{% endif %}>To Do</option>
-                                                    <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>In Progress</option>
-                                                    <option value="done" {% if task.status == 'done' %}selected{% endif %}>Done</option>
+                                                    <option value="to_do"
+                                                            {% if task.status == 'to_do' %}selected{% endif %}>To Do
+                                                    </option>
+                                                    <option value="in_progress"
+                                                            {% if task.status == 'in_progress' %}selected{% endif %}>In
+                                                        Progress
+                                                    </option>
+                                                    <option value="done"
+                                                            {% if task.status == 'done' %}selected{% endif %}>Done
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-sm col-12">
                                             <div class="form-group">
                                                 <label for="stn">Deadline</label>
-                                                <input id="task-due-date" width="100%" placeholder="yyyy-mm-dd" value="{{ task.due_date|date:"Y-m-d" }}"/>
+                                                <input id="task-due-date" width="100%" placeholder="yyyy-mm-dd"
+                                                       value="{{ task.due_date|date:"Y-m-d" }}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -83,29 +94,30 @@
                                                 <button class="btn btn-primary edit_des" data-toggle="tooltip"
                                                         data-placement="top" title="Edit Description"><i
                                                         class="fas fa-pencil-alt"></i></button>
-                                                <button class="btn btn-primary done_des" id="save-task-description" data-toggle="tooltip"
+                                                <button class="btn btn-primary done_des" id="save-task-description"
+                                                        data-toggle="tooltip"
                                                         data-placement="top" title="Save Description"><i
                                                         class="fa fa-check"></i></button>
                                             </h3>
-                                            <p class="text-justify des_text" id="task-description-text">{{ task.building_component.description|default_if_none:'' }}
+                                            <p class="text-justify des_text"
+                                               id="task-description-text">{{ task.building_component.description|default_if_none:'' }}
                                             </p>
-                                            <textarea class="textarea task_des_area" id="task-description" placeholder="Place some text here"
+                                            <textarea class="textarea task_des_area" id="task-description"
+                                                      placeholder="Place some text here"
                                                       style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12 col-12">
                                             <h5><strong>Comments </strong></h5>
-                                            <form>
-
+                                            <form class="task-comment-form" action="{% url 'add-new-comment' task_id=task.id %}" method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
                                                 <div class="row">
-
                                                     <div class="col-sm-12">
-                                                                <textarea class="textarea"
+                                                                <textarea class="textarea task-comment-text" name="task_comment_text"
                                                                           placeholder="Place some text here"
                                                                           style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                                                     </div>
-
                                                     <div class="col-sm-12">
                                                         <div class="image_wrap">
                                                             <div id="uploadPreview"></div>
@@ -116,15 +128,12 @@
                                                 </div>
                                                 <div class="yes">
                                                             <span class="btn_upload btn btn-primary">
-                                                            <input type="file" id="choose" multiple="multiple"/>
+                                                            <input type="file" id="task_comment_files" name="task_comment_files" multiple="multiple"/>
                                                             Choose Image
                                                             </span>
-
-
                                                 </div>
-                                                <button href="add_task.html" class="btn btn-primary" vlaue>Add Comment
+                                                <button type="submit" class="btn btn-primary">Add Comment
                                                 </button>
-
                                             </form>
                                         </div>
                                     </div>
@@ -138,61 +147,17 @@
                                             <div class="card card-widget">
                                                 <!-- /.card-header -->
                                                 <!-- /.card-body -->
-                                                <div class="card-footer card-comments">
-                                                    <div class="card-comment">
-                                                        <!-- User image -->
-                                                        <img class="img-circle img-sm" src="dist/img/user3-128x128.jpg"
-                                                             alt="User Image">
-
-                                                        <div class="comment-text">
-                                                            <div class="row">
-                                                                <div class="col-sm-12 mb-2">
-                                                                                <span class="username">
-                                                                                    Maria Gonzales
-                                                                                    <span class="text-muted float-right">8:03 PM Today</span>
-                                                                                </span><!-- /.username -->
-                                                                    It is a long established fact that a reader will be
-                                                                    distracted
-                                                                    by the readable content of a page when looking at
-                                                                    its layout.
-                                                                </div>
-                                                                <div class="col-sm-12 comment_img">
-                                                                    <a id="single_image" href="dist/img/photo1.png"><img
-                                                                            src="dist/img/photo1.png" alt=""/></a>
-                                                                    <a id="single_image" href="dist/img/photo2.png"><img
-                                                                            src="dist/img/photo2.png" alt=""/></a>
-                                                                    <a id="single_image" href="dist/img/photo3.jpg"><img
-                                                                            src="dist/img/photo3.jpg" alt=""/></a>
-                                                                    <a id="single_image" href="dist/img/photo4.jpg"><img
-                                                                            src="dist/img/photo4.jpg" alt=""/></a>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.comment-text -->
-                                                    </div>
-                                                    <!-- /.card-comment -->
-                                                    <div class="card-comment">
-                                                        <!-- User image -->
-                                                        <img class="img-circle img-sm" src="dist/img/user5-128x128.jpg"
-                                                             alt="User Image">
-
-                                                        <div class="comment-text">
-                                                                        <span class="username">
-                                                                            Nora Havisham
-                                                                            <span class="text-muted float-right">8:03 PM Today</span>
-                                                                        </span><!-- /.username -->
-                                                            The point of using Lorem Ipsum is that it has a more-or-less
-                                                            normal distribution of letters, as opposed to using
-                                                            'Content here, content here', making it look like readable
-                                                            English.
-                                                        </div>
-                                                        <!-- /.comment-text -->
-                                                    </div>
-                                                    <!-- /.card-comment -->
+                                                <div class="card-footer card-comments" id="comments-list">
+                                                    {% include 'tasks/comments.html' %}
                                                 </div>
                                                 <!-- /.card-footer -->
                                             </div>
+                                            {% if more_comments %}
+                                                <div class="col-md-12 text-center">
+                                                    <button id="show-more-comments" class="btn btn-send"
+                                                            data-page-number="2">More Comments</button>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
 
@@ -209,5 +174,45 @@
         </div>
         <!-- /.content -->
     </div>
+    <script>
+        $(function () {
+            $("#task-due-date").datepicker({
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy-mm-dd',
+                autoclose: true
+            }).on("change", function (e) {
+                var url = window.location.pathname.split("/");
+                var task_id = url[2];
+                var due_date = $(this).val();
+                var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+                var data = {
+                    'task_id': task_id,
+                    'due_date': due_date,
+                    'csrfmiddlewaretoken': csrfToken
+                };
+                $('.loader').show();
+                $.ajax({
+                    url: base_url + '/change-task-deadline/',
+                    type: 'POST',
+                    data: data,
+                    success: function (responseText) {
+                        var response = responseText;
+                        $('.loader').hide();
+                        if (response.success) {
+                            if (response.message) {
+                                $.growl.notice({message: response.message});
+                            }
+                        } else {
+                            $.growl.error({message: response.message});
+                        }
+                    },
+                    error: function (e) {
+                        clog(e);
+                        $('.loader').hide();
+                    }
+                });
+            });
+        });
+    </script>
     <script src="{% static 'assets/javascripts/task.js' %}"></script>
 {% endblock %}

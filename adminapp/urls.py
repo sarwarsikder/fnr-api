@@ -109,6 +109,8 @@ urlpatterns = [
     url(r'^save-task-description/$', task_views.TaskDetailsView.save_task_description, name='save-task-description'),
     url(r'^change-task-status/$', task_views.TaskDetailsView.change_task_status, name='change-task-status'),
     url(r'^change-task-deadline/$', task_views.TaskDetailsView.change_task_deadline, name='change-task-deadline'),
+    url(r'^add-new-comment/(?P<task_id>[\w-]+)/$', task_views.TaskDetailsView.add_new_comment, name='add-new-comment'),
+    url(r'^get-more-comments/$', task_views.TaskDetailsView.get_more_comments, name='get-more-comments'),
 
 
 ]

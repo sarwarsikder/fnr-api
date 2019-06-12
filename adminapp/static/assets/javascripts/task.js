@@ -2,43 +2,6 @@ $(function () {
     var $body = $('body');
     getPendingComponents();
 
-    $("#task-due-date").datepicker({
-        uiLibrary: 'bootstrap4',
-        format: 'yyyy-mm-dd',
-        autoclose: true
-    }).on("change", function (e) {
-        var url = window.location.pathname.split("/");
-        var task_id = url[2];
-        var due_date = $(this).val();
-        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
-        var data = {
-            'task_id': task_id,
-            'due_date': due_date,
-            'csrfmiddlewaretoken': csrfToken
-        };
-        $('.loader').show();
-        $.ajax({
-            url: base_url + '/change-task-deadline/',
-            type: 'POST',
-            data: data,
-            success: function (responseText) {
-                var response = responseText;
-                $('.loader').hide();
-                if (response.success) {
-                    if(response.message){
-                        $.growl.notice({message: response.message});
-                    }
-                } else {
-                    $.growl.error({message: response.message});
-                }
-            },
-            error: function (e) {
-                clog(e);
-                $('.loader').hide();
-            }
-        });
-    });
-
     $body.on('click', '#nav-done-task-tab', function () {
         var url = window.location.pathname.split("/");
         var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
@@ -343,6 +306,43 @@ $(function () {
         }
     });
     // });
+
+    $('body').on('click', '#show-more-comments', function () {
+        var page_number = $(this).attr('data-page-number');
+        var url = window.location.pathname.split("/");
+        var task_id = url[2];
+        var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+        $('.loader').show();
+        var $this_button = $(this);
+        $this_button.attr('disabled', true);
+        $.ajax({
+            url: base_url + '/get-more-comments/',
+            type: "POST",
+            data: {
+                page_number: page_number,
+                task_id: task_id,
+                csrfmiddlewaretoken: csrf_token
+            },
+            success: function (result) {
+                $this_button.attr('disabled', false);
+                $('.loader').hide();
+                if (result.success) {
+                    $('.loader').hide();
+                    if (result.total_comments > 0) {
+                        $('#show-more-comments').attr('data-page-number', result.next_page_number);
+                        $('#comments-list').append(result.new_lists);
+                    }
+                    if (!result.more_btn_visible) {
+                        $this_button.hide();
+                    }
+                }
+            },
+            error: function (e) {
+                $this_button.attr('disabled', false);
+                $('.loader').hide();
+            }
+        });
+    });
 });
 
 function getPendingComponents() {

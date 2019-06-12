@@ -1,12 +1,19 @@
+from datetime import datetime
 import json
+import math
+import os
+import random
+import string
+
+from django.conf import settings
 from django.db.models import Q
 from django.template.loader import render_to_string
 from django.views import generic
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from adminapp.models import Tasks, BuildingComponents, Buildings, Flats, HandWorker, Users
+from adminapp.models import Tasks, BuildingComponents, Buildings, Flats, HandWorker, Users, Comments
 from adminapp.views.helper import LogHelper
-from adminapp.views.common_views import CurrentProjects
+from adminapp.views.common_views import CurrentProjects, CommonView
 
 
 class TasksView(generic.DetailView):
@@ -195,6 +202,7 @@ class TasksView(generic.DetailView):
 class TaskDetailsView(generic.DetailView):
     def get(self, request, *args, **kwargs):
         try:
+            response = {}
             task_id = kwargs['task_id']
             task = Tasks.objects.get(id=task_id)
             assign_to_user = BuildingComponents.objects.filter(component_id=task.building_component.component.parent_id, building_id=task.building_component.building_id, flat_id=task.building_component.flat_id).first()
@@ -205,10 +213,58 @@ class TaskDetailsView(generic.DetailView):
                 }
             else:
                 assign_to = None
-            return render(request, 'tasks/task_details.html', {'task': task, 'assign_to': assign_to})
+            response['task'] = task
+            response['assign_to'] = assign_to
+            comments = Comments.objects.filter(task_id=task_id).order_by('-created_at')
+            response['more_comments'] = False
+            if comments.count() > 1:
+                response['more_comments'] = True
+            comments_list = comments[:1]
+            response['comments_list'] = comments_list
+            response['today'] = datetime.today().strftime('%Y-%m-%d')
+            return render(request, 'tasks/task_details.html', response)
         except Exception as e:
             LogHelper.efail(e)
             return redirect('index')
+
+    def get_more_comments(request):
+        response_data = {}
+        try:
+            response = {}
+            page_num = int(request.POST.get('page_number'))
+            task_id = request.POST.get('task_id')
+            comments = Comments.objects.filter(task_id=task_id).order_by('-created_at')
+            total = len(comments)
+            limit = 1
+            more_btn_visible = True
+            if total > limit:
+                offset = (page_num - 1) * limit
+                highest = (offset + limit)
+                no_of_pages = math.ceil(total / limit)
+                pages = range(1, no_of_pages + 1)
+                if page_num in pages:
+                    next_page_number = page_num + 1
+                    last_page_no = pages[-1]
+                    if page_num == last_page_no:
+                        more_btn_visible = False
+                    comments_list = comments[offset:highest]
+                    response['comments_list'] = comments_list
+                    response['today'] = datetime.today().strftime('%Y-%m-%d')
+                    response['request'] = request
+                    all_list = render_to_string('tasks/comments.html', response)
+                    response_data['new_lists'] = all_list
+                    response_data['success'] = True
+                    response_data['total_comments'] = len(comments_list)
+                    response_data['next_page_number'] = next_page_number
+                    response_data['more_btn_visible'] = more_btn_visible
+                else:
+                    response_data['success'] = False
+            else:
+                response_data['success'] = False
+        except Exception as e:
+            LogHelper.elog(e)
+            response_data['success'] = False
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     def save_task_description(request):
         response = {}
@@ -257,6 +313,32 @@ class TaskDetailsView(generic.DetailView):
             response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+    def add_new_comment(request, *args, **kwargs):
+        task_id = kwargs['task_id']
+        try:
+            comment = request.POST.get('task_comment_text')
+            files = request.FILES.getlist('task_comment_files')
+            file_list = []
+            dir = os.path.join(settings.MEDIA_ROOT, "comments")
+            if not os.path.exists(dir):
+                os.makedirs(dir)
+            for file in files:
+                uploaded_file = CommonView.handle_uploaded_file(file)
+                if uploaded_file != "":
+                    file_list.append(uploaded_file)
+            if comment != '' or len(file_list) > 0:
+                comment_form = {
+                    "text": comment,
+                    "file_type": file_list,
+                    "task_id": task_id,
+                    "user": request.user,
+                    "type": "text"
+                }
+                new_comment = Comments(**comment_form)
+                new_comment.save()
+        except Exception as e:
+            LogHelper.efail(e)
+        return HttpResponseRedirect('/tasks/'+str(task_id)+'/')
 
 
 
