@@ -55,7 +55,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <div class="image top_bar_image">
-                            <img src="{% static "assets/images/avatar5.png" %}" class="img-circle elevation-2" alt="User Image">
+                            <img src="{% if request.user.avatar %}{{ request.user.avatar.url }}{% else %}{% static "assets/images/avatar5.png" %}{% endif %}" class="img-circle elevation-2" alt="User Image">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">

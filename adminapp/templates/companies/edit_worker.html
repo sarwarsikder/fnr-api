@@ -34,7 +34,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <form id="form-edit-companies" action="" method="post" enctype="multipart/form-data">
+                            <form id="form-edit-worker" action="" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{ form.non_field_errors }}
                                 <div class="row">
@@ -178,7 +178,7 @@
     <script>
         $(function () {
             $('#id_working_type').select2();
-            $("#form-edit-staff").validate({
+            $("#form-edit-worker").validate({
                 ignore: '.ignore',
                 focusInvalid: true,
                 rules: {
@@ -195,10 +195,12 @@
                         required: true
                     },
                     'telephone_office': {
-                        required: false
+                        required: false,
+                        phonevalidate: true
                     },
                     'telephone_mobile': {
-                        required: false
+                        required: false,
+                        phonevalidate: true
                     },
                     'working_type': {
                         required: false
@@ -211,7 +213,7 @@
                     }
                 }
             });
-            $('#form-edit-staff').on('submit', function () {
+            $('#form-edit-worker').on('submit', function () {
                 if ($(this).valid()) {
                     return true;
                 }

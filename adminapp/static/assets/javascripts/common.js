@@ -2,24 +2,27 @@
 // var base_url = "http://192.168.1.10:8080";
 var base_url = window.location.origin;
 $(function () {
-    $( "#id_start_date" ).datepicker({
+    $("#id_start_date").datepicker({
         uiLibrary: 'bootstrap4',
         format: 'yyyy-mm-dd'
     });
-    $( "#id_end_date" ).datepicker({
+    $("#id_end_date").datepicker({
         uiLibrary: 'bootstrap4',
         format: 'yyyy-mm-dd'
     });
     $('body').on("change", "#id_avatar", function () {
         if ($('#id_avatar').val() != "") {
             $('#temp_image').show('slow');
-        }
-        else {
+        } else {
             $('#temp_image').hide('slow');
         }
         readURL(this);
     });
 
+    $.validator.addMethod("phonevalidate", function (phone, element) {
+        var re = /^[0-9+-\\(\\) ]*$/;
+        return re.test(phone);
+    }, "Please specify a valid phone number");
 });
 
 function readURL(input) {
@@ -59,6 +62,6 @@ function isNotEmpty(value) {
     return false;
 }
 
-function capitalize(text){
+function capitalize(text) {
     return text.charAt(0).toUpperCase() + text.slice(1);
 }

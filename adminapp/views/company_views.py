@@ -45,7 +45,8 @@ class CompaniesView(generic.DetailView):
         try:
             form_data = {
                 'company_name': data['company_name'],
-                'telephone': data['telephone'],
+                'telephone_office': data['telephone_office'],
+                'telephone_mobile': data['telephone_mobile'],
                 'working_type': data['working_type'],
             }
             HandWorker.objects.filter(user_id=user_id).update(**form_data)

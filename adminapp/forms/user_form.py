@@ -74,8 +74,8 @@ class UserUpdateForm(ProfileForm):
 class WorkerForm(ProfileForm):
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(required=True)
-    telephone_office = forms.CharField(required=True, max_length=45)
-    telephone_mobile = forms.CharField(required=True, max_length=45)
+    telephone_office = forms.CharField(required=False, max_length=45)
+    telephone_mobile = forms.CharField(required=False, max_length=45)
     company_name = forms.CharField(required=True, max_length=100)
     working_type = forms.CharField(required=True, max_length=1000)
 
@@ -105,7 +105,8 @@ class WorkerForm(ProfileForm):
 
 
 class WorkerUpdateForm(ProfileForm):
-    telephone = forms.CharField(required=True, max_length=45)
+    telephone_office = forms.CharField(required=False, max_length=45)
+    telephone_mobile = forms.CharField(required=False, max_length=45)
     company_name = forms.CharField(required=True, max_length=100)
     working_type = forms.CharField(required=True, max_length=1000)
 
