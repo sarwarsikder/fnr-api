@@ -347,8 +347,22 @@ class CurrentProjects(generic.DetailView):
             return redirect('index')
 
 
+class NotificationText(generic.DetailView):
+    def get_edit_task_notification_text(user_name, task_title):
+        return "{} has edited Task {}".format(user_name, task_title)
 
+    def get_assign_worker_notification_text(user_name, task_title):
+        return "{} has edited Task {}".format(user_name, task_title)
 
+    def get_change_task_status_notification_text(user_name, task_title, task_status):
+        return "{} has change Task {} status to {}".format(user_name, task_title, task_status)
 
+    def get_task_comment_notification_text(user_name, task_title):
+        return "{} has edited Task {}".format(user_name, task_title)
 
+    def get_attach_file_notification_text(user_name, task_title):
+        return "{} has edited Task {}".format(user_name, task_title)
+
+    def get_change_due_date_notification_text(user_name, task_title):
+        return "{} has edited Task {}".format(user_name, task_title)
 

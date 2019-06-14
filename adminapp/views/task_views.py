@@ -13,7 +13,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from adminapp.models import Tasks, BuildingComponents, Buildings, Flats, HandWorker, Users, Comments
 from adminapp.views.helper import LogHelper
-from adminapp.views.common_views import CurrentProjects, CommonView
+from adminapp.views.common_views import CurrentProjects, CommonView, NotificationText
+from adminapp.views.notification_views import NotificationsView
 
 
 class TasksView(generic.DetailView):
@@ -274,6 +275,8 @@ class TaskDetailsView(generic.DetailView):
             task = Tasks.objects.get(id=task_id)
             task.building_component.description = description
             task.building_component.save()
+            message = NotificationText.get_edit_task_notification_text(request.user.get_full_name(), task.building_component.component.name)
+            NotificationsView.create_notfication(request, 'edit_task', message, task_id, request.user.id)
             response['success'] = True
             response['message'] = "Description Update successfully"
         except Exception as e:
@@ -288,6 +291,10 @@ class TaskDetailsView(generic.DetailView):
             task_id = request.POST.get('task_id')
             status = request.POST.get('status')
             Tasks.objects.filter(id=task_id).update(status=status)
+            task = Tasks.objects.get(id=task_id)
+            message = NotificationText.get_change_task_status_notification_text(request.user.get_full_name(),
+                                                                       task.building_component.component.name, task.status)
+            NotificationsView.create_notfication(request, 'change_task_status', message, task_id, request.user.id)
             response['success'] = True
             response['message'] = "Status Update successfully"
         except Exception as e:
@@ -305,6 +312,9 @@ class TaskDetailsView(generic.DetailView):
             if str(task.due_date) != str(due_date):
                 task.due_date = due_date
                 task.save()
+                message = NotificationText.get_change_due_date_notification_text(request.user.get_full_name(),
+                                                                                    task.building_component.component.name)
+                NotificationsView.create_notfication(request, 'change_due_date', message, task_id, request.user.id)
                 response['message'] = "Deadline Update successfully"
             response['success'] = True
         except Exception as e:
@@ -336,6 +346,15 @@ class TaskDetailsView(generic.DetailView):
                 }
                 new_comment = Comments(**comment_form)
                 new_comment.save()
+                task = Tasks.objects.get(id=task_id)
+                if comment != '':
+                    message = NotificationText.get_task_comment_notification_text(request.user.get_full_name(),
+                                                                                     task.building_component.component.name)
+                    NotificationsView.create_notfication(request, 'task_comment', message, task_id, request.user.id)
+                if len(file_list) > 0:
+                    message = NotificationText.get_attach_file_notification_text(request.user.get_full_name(),
+                                                                                  task.building_component.component.name)
+                    NotificationsView.create_notfication(request, 'attach_file', message, task_id, request.user.id)
         except Exception as e:
             LogHelper.efail(e)
         return HttpResponseRedirect('/tasks/'+str(task_id)+'/')

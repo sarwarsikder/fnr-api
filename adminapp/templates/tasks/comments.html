@@ -10,7 +10,7 @@
             <div class="col-sm-12 mb-2">
                 <span class="username">
                     {{ comment.user.first_name }} {{ comment.user.last_name }}
-                    <span class="text-muted float-right">{% if today == comment.created_at|date:"Y-m-d" %}{{ comment.created_at|date:"i:s A" }} Today{% else %}{{ comment.created_at|date:"d M Y" }}{% endif %}</span>
+                    <span class="text-muted float-right">{% if today == comment.created_at|date:"Y-m-d" %}{{ comment.created_at|date:"h:i A" }} Today{% else %}{{ comment.created_at|date:"d M Y" }}{% endif %}</span>
                 </span><!-- /.username -->
                 {{ comment.text }}
             </div>

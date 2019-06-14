@@ -216,7 +216,7 @@ function readImage(file) {
           t = file.type, // ext only: // file.type.split('/')[1],
           n = file.name,
           s = ~~(file.size/1024) +'KB';
-      $('#uploadPreview').append('<div class="up_img_wrap task-comment-image"><img src="' + this.src + '"> <span class="fa fa-times remove_this_image"></span></div>');
+      $('#uploadPreview').append('<div class="up_img_wrap task-comment-image" data-name="'+n+'"><img src="' + this.src + '"> <span class="fa fa-times remove_this_image"></span></div>');
     };
 
     image.onerror= function() {
@@ -226,15 +226,19 @@ function readImage(file) {
 
 }
 $('#uploadPreview').on('click','.remove_this_image', function(){
-
-    console.log($(this))
+    {#var filename = $(this).parent('.up_img_wrap').attr('data-name');#}
+    {#var files = Array.from($("#task_comment_files")[0].files);#}
+    {#for (var i = 0; i < files.length; ++i) {#}
+    {#    if (files[i].name === filename)#}
+    {#        files.splice(i, 1);#}
+    {#}#}
     $(this).parent('.up_img_wrap').remove();
-})
+});
 $("#task_comment_files").change(function (e) {
   if(this.disabled) {
     return alert('File upload not supported!');
   }
-
+  $('.up_img_wrap').remove();
   var F = this.files;
   if (F && F[0]) {
     for (var i = 0; i < F.length; i++) {
