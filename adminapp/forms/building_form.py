@@ -6,9 +6,9 @@ import re
 class BuildingForm(forms.ModelForm):
     hause_number = forms.CharField(required=True, max_length=45)
     display_number = forms.CharField(required=True, max_length=45)
-    grundung = forms.CharField(required=True, max_length=45)
-    aussenwande_eg_og_dg = forms.CharField(required=True, max_length=45)
-    fenster_beschattung = forms.CharField(required=True, max_length=45)
+    grundung = forms.CharField(required=False, max_length=45)
+    aussenwande_eg_og_dg = forms.CharField(required=False, max_length=45)
+    fenster_beschattung = forms.CharField(required=False, max_length=45)
     dach = forms.CharField(required=False, max_length=45)
     description = forms.CharField(required=False, max_length=1000)
 

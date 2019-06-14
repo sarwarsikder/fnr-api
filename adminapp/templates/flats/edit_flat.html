@@ -60,7 +60,7 @@
                                     <div class="col-sm-6 col-xs-12">
                                         <div class="form-group has-feedback">
                                             <label for="{{ form.client_email.id_for_label }}">Client Email</label>
-                                            <input type="text" id="id_client_email" name="client_email"
+                                            <input type="email" id="id_client_email" name="client_email"
                                                    class="form-control" placeholder="Enter Client Email" value="{{ form.client_email.value }}">
                                             {{ form.client_email.errors }}
                                         </div>
@@ -125,7 +125,8 @@
                         required: false
                     },
                     'client_tel': {
-                        required: false
+                        required: true,
+                        phonevalidate: true
                     },
                     'client_address': {
                         required: false

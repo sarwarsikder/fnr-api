@@ -55,8 +55,7 @@ class NotificationType(EnumField, models.CharField):
         roles = [
             ('edit_task', 'Edit Task'),
             ('assign_worker', 'Assign Worker'),
-            ('task_done', 'Task Done'),
-            ('task_pending', 'Task Pending'),
+            ('change_task_status', 'Change Task Status'),
             ('task_comment', 'Task Comment'),
             ('attach_file', 'Attach File'),
             ('change_due_date', 'Change Due Date'),

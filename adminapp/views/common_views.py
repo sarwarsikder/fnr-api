@@ -1,4 +1,5 @@
 import json
+import os
 import random, string
 
 from django.shortcuts import render, redirect
@@ -149,6 +150,31 @@ class CommonView(generic.DetailView):
         qr_code = QrCode(**qr_form)
         qr_code.save()
         return qr_code
+
+    # Imaginary function to handle an uploaded file.
+    def handle_uploaded_file(f):
+        random_number = CommonView.randomString(10)
+        file = str(f.name).rsplit('.', 1)
+        filename = file[0] + "_" + random_number + "." + file[1]
+        full_filename = os.path.join(settings.MEDIA_ROOT, "comments", filename)
+        fout = open(full_filename, 'wb+')
+        try:
+            for chunk in f.chunks():
+                fout.write(chunk)
+            fout.close()
+            file_info = {
+                "path": settings.SITE_URL + "/media/comments/" + filename,
+                "ext": file[1]
+            }
+            return file_info
+        except Exception as e:
+            LogHelper.efail(e)
+            return ""
+
+    def randomString(stringLength=10):
+        """Generate a random string of fixed length """
+        letters = string.ascii_lowercase
+        return ''.join(random.choice(letters) for i in range(stringLength))
 
 
 class QRResponse(generic.View):
@@ -321,8 +347,22 @@ class CurrentProjects(generic.DetailView):
             return redirect('index')
 
 
+class NotificationText(generic.DetailView):
+    def get_edit_task_notification_text(user_name, task_title):
+        return "{} has edited Task {}".format(user_name, task_title)
 
+    def get_assign_worker_notification_text(user_name, task_title):
+        return "{} has edited Task {}".format(user_name, task_title)
 
+    def get_change_task_status_notification_text(user_name, task_title, task_status):
+        return "{} has change Task {} status to {}".format(user_name, task_title, task_status)
 
+    def get_task_comment_notification_text(user_name, task_title):
+        return "{} has edited Task {}".format(user_name, task_title)
 
+    def get_attach_file_notification_text(user_name, task_title):
+        return "{} has edited Task {}".format(user_name, task_title)
+
+    def get_change_due_date_notification_text(user_name, task_title):
+        return "{} has edited Task {}".format(user_name, task_title)
 
