@@ -1,4 +1,6 @@
 {% load staticfiles %}
+{% load notifications_tags %}
+{% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
     {% csrf_token %}
@@ -28,29 +30,17 @@
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell-o fa-2x"></i>
-                        <span class="badge badge-warning navbar-badge">15</span>
+                        <i class="fas fa-bell fa-2x"></i>
+                        <span class="badge badge-warning navbar-badge">{% live_notify_badge %}</span>
                     </a>
+
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">15 Neu Nachrichten</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fa fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fa fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fa fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
-                        </a>
+                        <span class="dropdown-item dropdown-header">{% live_notify_badge %} Notifications </span>
+                        {% live_notify_list %}
                         <div class="dropdown-divider"></div>
                         <a href="notification.php" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
+
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#" style="padding-top: 0px;">
