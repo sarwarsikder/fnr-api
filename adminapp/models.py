@@ -291,6 +291,7 @@ class NotificationStatus(models.Model):
     status = models.BooleanField(default=False)
     notification = models.ForeignKey(Notification, on_delete=models.CASCADE)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    sending_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = "notification_status"

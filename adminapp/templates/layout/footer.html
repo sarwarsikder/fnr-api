@@ -50,6 +50,11 @@
     <div class="float-right d-none d-sm-block-down">
         Anything you want
     </div>
+          <button disabled class="js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+        Enable Push Messaging
+      </button>
+
+
     <!-- Default to the left -->
     <strong>Copyright &copy; 2019 <a href="{% url 'index' %}">F&R Projectbau GmbH</a>.</strong> All rights reserved.
 </footer>
@@ -226,12 +231,7 @@ function readImage(file) {
 
 }
 $('#uploadPreview').on('click','.remove_this_image', function(){
-    {#var filename = $(this).parent('.up_img_wrap').attr('data-name');#}
-    {#var files = Array.from($("#task_comment_files")[0].files);#}
-    {#for (var i = 0; i < files.length; ++i) {#}
-    {#    if (files[i].name === filename)#}
-    {#        files.splice(i, 1);#}
-    {#}#}
+
     $(this).parent('.up_img_wrap').remove();
 });
 $("#task_comment_files").change(function (e) {
@@ -275,7 +275,201 @@ $(document).ready(function() {
 });
 </script>
 
+<script>
+    // private: NLSiChEl9fXKpH4V0diB-FIzrsYTQZJI3t6m29cMoxU
 
+'use strict';
+
+const applicationServerPublicKey = 'BBuWomTVQOw0ujDOQ1V5iv9lKICFbG-9J8X3bPMvCJnHVQo8FomXbnGVNcAo1j_dtjSvnti6wfZwTWpmb8qrPSs\n';
+
+const pushButton = document.querySelector('.js-push-btn');
+
+let isSubscribed = false;
+let swRegistration = null;
+
+
+
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+  console.log('Service Worker and Push is supported');
+
+  navigator.serviceWorker.register('sw.js')
+  .then(function(swReg) {
+    console.log('Service Worker is registered', swReg);
+
+    swRegistration = swReg;
+  })
+  .catch(function(error) {
+    console.error('Service Worker Error', error);
+  });
+} else {
+  console.warn('Push messaging is not supported');
+  pushButton.textContent = 'Push Not Supported';
+}
+
+function initializeUI() {
+  pushButton.addEventListener('click', function() {
+    pushButton.disabled = true;
+    if (isSubscribed) {
+      unsubscribeUser();
+    } else {
+      subscribeUser();
+    }
+  });
+  swRegistration.pushManager.getSubscription()
+  .then(function(subscription) {
+    isSubscribed = !(subscription === null);
+
+    updateSubscriptionOnServer(subscription);
+
+    if (isSubscribed) {
+      console.log('User IS subscribed.');
+    } else {
+      console.log('User is NOT subscribed.');
+    }
+
+    updateBtn();
+  });
+}
+
+function updateBtn() {
+  if (Notification.permission === 'denied') {
+    pushButton.textContent = 'Push Messaging Blocked.';
+    pushButton.disabled = true;
+    updateSubscriptionOnServer(null);
+    return;
+  }
+
+  if (isSubscribed) {
+    pushButton.textContent = 'Disable Push Messaging';
+  } else {
+    pushButton.textContent = 'Enable Push Messaging';
+  }
+
+  pushButton.disabled = false;
+}
+
+function urlB64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+function subscribeUser() {
+  const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+  swRegistration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: applicationServerKey
+  })
+  .then(function(subscription) {
+    console.log('User is subscribed.');
+
+    updateSubscriptionOnServer(subscription);
+
+    isSubscribed = true;
+
+    updateBtn();
+  })
+  .catch(function(err) {
+    console.log('Failed to subscribe the user: ', err);
+    updateBtn();
+  });
+}
+
+function unsubscribeUser() {
+  swRegistration.pushManager.getSubscription()
+  .then(function(subscription) {
+    if (subscription) {
+      return subscription.unsubscribe();
+    }
+  })
+  .catch(function(error) {
+    console.log('Error unsubscribing', error);
+  })
+  .then(function() {
+    updateSubscriptionOnServer(null);
+
+    console.log('User is unsubscribed.');
+    isSubscribed = false;
+
+    updateBtn();
+  });
+}
+
+function updateSubscriptionOnServer(subscription) {
+
+    console.log(subscription);
+    var ua = navigator.userAgent.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i),
+      browser;
+    if (navigator.userAgent.match(/Edge/i) || navigator.userAgent.match(/Trident.*rv[ :]*11\./i)) {
+    browser = "msie";
+    }
+    else {
+    browser = ua[1].toLowerCase();
+    }
+    console.log(browser);
+  if (subscription && !isSubscribed) {
+    var data = $.parseJSON(JSON.stringify(subscription));
+    var endpoint = data['endpoint'].toString();
+    var expirationTime = data['expirationTime'];
+    var keys = JSON.stringify(data['keys']).toString();
+    var user_id = parseInt('{{ user_id }}');
+    $.ajax({
+      url: "/push-api/subscribe/",
+      type: 'POST',
+      data: {
+          'endpoint': endpoint,
+          'expirationTime': expirationTime,
+          'keys': keys,
+          'user_id': user_id,
+          'device': browser
+      },
+      success: function (responseText) {
+          var response = responseText;
+          if (response.success) {
+              $.growl.notice({message: "successfully subscribe"});
+          } else {
+              $.growl.error({message: response.message});
+          }
+      },
+      error: function (e) {
+          console.log(e)
+      }
+    });
+  }
+  if (subscription==null && isSubscribed) {
+      var user_id = parseInt('{{ user_id }}');
+    $.ajax({
+      {#url: "/api/subscribe/?user_id="+user_id+"/",#}
+      url: "/push-api/subscribe/destroy_by_user/",
+      type: 'DELETE',
+      data: {
+          'user_id': user_id,
+          'device': browser
+      }
+    });
+
+  }
+}
+
+navigator.serviceWorker.register('sw.js')
+.then(function(swReg) {
+  console.log('Service Worker is registered', swReg);
+
+  swRegistration = swReg;
+  initializeUI();
+})
+
+
+</script>
 </body>
 
 </html>

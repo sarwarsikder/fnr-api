@@ -247,7 +247,6 @@ $(function () {
             }
         });
     });
-
     $body.on('change', '#current-project', function () {
         var $this = $(this);
         var project_id = $this.val(),
@@ -354,6 +353,35 @@ $(function () {
             error: function (e) {
                 clog(e);
                 $('.loader').hide();
+            }
+        });
+    });
+    $body.on('click', '#markread', function () {
+        var $this = $(this);
+        var status = 1;
+        if ($this.is(':checked')) {
+            status = 0;
+        }
+        console.log("clicked");
+        var id = $this.closest('tr').data('id'),
+            csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            url: "/inbox/notifications/mark-all-as-read",
+            // {#url: "/inbox/notifications/mark-as-read?slug="+$(this).data("id"),#}
+            type: 'GET',
+            data: {
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function (responseText) {
+                var response = responseText;
+                if (response.success) {
+                    $.growl.notice({message: response.message});
+                } else {
+                    $.growl.error({message: response.message});
+                }
+            },
+            error: function (e) {
+                clog(e);
             }
         });
     });

@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.urls import path
+from django.views.generic import TemplateView
+
 from adminapp.views import common_views, login_views, staff_views, company_views, project_views, building_views, \
     flat_views, buildingplan_views, flatplan_views, component_views, reset_password, datatables, profile_views, \
     projectplan_views, task_views
@@ -89,6 +91,8 @@ urlpatterns = [
     url(r'^project/(?P<project_id>[\w-]+)/plan/add/$', projectplan_views.ProjectPlansAddView.as_view(), name='project-plan-add'),
     # url(r'^project-plan/update/(?P<pk>[\w-]+)/$', projectplan_views.ProjectPlansUpdateView.as_view(), name='project-plan-update'),
     url(r'^project-plan/delete/$', projectplan_views.ProjectPlansView.delete, name='project-plan-delete'),
+
+    url(r'^sw.js', (TemplateView.as_view(template_name="sw.js", content_type='application/javascript', )), name='sw.js'),
 
     url(r'^qr-to-png/(?P<qr_id>[\w-]+)/$', common_views.QRResponse.as_view(), name='qr-to-png'),
 
