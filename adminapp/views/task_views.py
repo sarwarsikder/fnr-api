@@ -186,7 +186,18 @@ class TasksView(generic.DetailView):
             component_id = request.POST.get('component_id')
             user_id = request.POST.get('user_id')
             BuildingComponents.objects.filter(id=component_id).update(assign_to_id=user_id, assigned_by=request.user)
+            component = BuildingComponents.objects.get(id=component_id)
             handworker = Users.objects.get(id=user_id)
+            message = NotificationText.get_assign_worker_notification_text(request.user.get_full_name(),
+                                                                       component.component.name)
+            if component.flat:
+                task = Tasks.objects.filter(building_component__component__parent_id=component.component_id).first()
+            else:
+                task = Tasks.objects.filter(building_component__building_id=component.building_id,
+                                            building_component__flat__isnull=True).filter(Q(
+                    Q(building_component__component__parent_id=component.component_id) | Q(
+                        building_component__component_id=component.component_id))).first()
+            NotificationsView.create_notfication(request, 'assign_worker', message, task.id, request.user.id)
             handworker_info = {
                 "fullname": handworker.get_full_name(),
                 "avatar": handworker.avatar.url if handworker.avatar else ''
