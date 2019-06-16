@@ -59,9 +59,6 @@ class UserLoginMiddleware(generic.DetailView):
                             'number': ''
                         }
                     request.session.modified = True
-                    print(request.session["active_project"])
-                    print(request.session["active_building"])
-                    print(request.session["active_flat"])
         # elif path != 'api':
         #     if request.is_ajax() == False:
         #         if 'user_bikeshare_settings' not in request.session:

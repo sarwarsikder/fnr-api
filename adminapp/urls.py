@@ -115,6 +115,7 @@ urlpatterns = [
     url(r'^change-task-deadline/$', task_views.TaskDetailsView.change_task_deadline, name='change-task-deadline'),
     url(r'^add-new-comment/(?P<task_id>[\w-]+)/$', task_views.TaskDetailsView.add_new_comment, name='add-new-comment'),
     url(r'^get-more-comments/$', task_views.TaskDetailsView.get_more_comments, name='get-more-comments'),
+    url(r'^add-task-followers/$', task_views.TaskDetailsView.add_task_followers, name='add-task-followers'),
 
 
 ]
