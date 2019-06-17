@@ -45,9 +45,9 @@ def send_notification(sender, **kwargs):
             else:
                 subscription_info = {"endpoint": subscriber.endpoint, "keys": json.loads(subscriber.keys)}
                 notification_sender(subscription_info, kwargs['instance'].notification.text)
-        user = Users.objects.get(id=kwargs['instance'].user_id)
-        print(user)
-        avatar = kwargs['instance'].notification.sending_by.avatar.url if kwargs['instance'].notification.sending_by.avatar else ''
-        notify.send(kwargs['instance'].notification.sending_by, recipient=user, verb=kwargs['instance'].notification.text, description=avatar, target=kwargs['instance'].notification.task)
+        # user = Users.objects.get(id=kwargs['instance'].user_id)
+        # print(user)
+        # avatar = kwargs['instance'].notification.sending_by.avatar.url if kwargs['instance'].notification.sending_by.avatar else ''
+        # notify.send(kwargs['instance'].notification.sending_by, recipient=user, verb=kwargs['instance'].notification.text, description=avatar, target=kwargs['instance'].notification.task)
     except Exception as e:
         print(e)

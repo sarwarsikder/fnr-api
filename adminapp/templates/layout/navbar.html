@@ -1,6 +1,6 @@
 {% load staticfiles %}
-{% load notifications_tags %}
-{% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
+{#{% load notifications_tags %}#}
+{#{% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}#}
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
     {% csrf_token %}
@@ -28,15 +28,15 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" id="notification-navbar">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="fas fa-bell fa-2x"></i>
-                        <span class="badge badge-warning navbar-badge">{% live_notify_badge %}</span>
+                        <span class="badge badge-warning navbar-badge"><span class="live_notify_badge"></span></span>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">{% live_notify_badge %} Notifications </span>
-                        {% live_notify_list %}
+                        <span class="dropdown-item dropdown-header"><span class="live_notify_badge"></span> Notifications </span>
+                        <div class="live_notify_list"></div>
                         <div class="dropdown-divider"></div>
                         <a href="notification.php" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>

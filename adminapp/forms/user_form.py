@@ -5,8 +5,8 @@ import re
 
 class ProfileForm(forms.ModelForm):
     username = forms.CharField(required=True, max_length=45)
-    first_name = forms.CharField(required=True, max_length=45)
-    last_name = forms.CharField(required=True, max_length=45)
+    first_name = forms.CharField(required=False, max_length=45)
+    last_name = forms.CharField(required=False, max_length=45)
     email = forms.CharField(required=True, max_length=45)
     avatar = forms.FileField(required=False)
     address = forms.CharField(required=False, max_length=1000)

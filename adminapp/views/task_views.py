@@ -164,11 +164,10 @@ class TasksView(generic.DetailView):
         try:
             component_id = request.POST.get('component_id')
             handworker_list = []
-            handworkers = HandWorker.objects.values('user__avatar','user__first_name', 'user__last_name', 'user_id').filter(user__is_active=True, working_type__contains={"id":component_id})
+            handworkers = HandWorker.objects.values('company_name', 'user_id').filter(user__is_active=True, working_type__contains={"id":component_id})
             for handworker in handworkers:
                 data = {
-                    # "avatar": handworker['user__avatar'],
-                    "text": handworker['user__first_name'] + " " +handworker['user__last_name'],
+                    "text": handworker['company_name'],
                     "id": handworker['user_id'],
                 }
                 handworker_list.append(data)
@@ -187,7 +186,7 @@ class TasksView(generic.DetailView):
             user_id = request.POST.get('user_id')
             BuildingComponents.objects.filter(id=component_id).update(assign_to_id=user_id, assigned_by=request.user)
             component = BuildingComponents.objects.get(id=component_id)
-            handworker = Users.objects.get(id=user_id)
+            # handworker = Users.objects.get(id=user_id)
             if component.flat:
                 task = Tasks.objects.filter(building_component__component__parent_id=component.component_id).first()
             else:
@@ -199,9 +198,10 @@ class TasksView(generic.DetailView):
             message = NotificationText.get_assign_worker_notification_text(request.user.get_full_name(),
                                                                            component.component.name)
             NotificationsView.create_notfication(request, 'assign_worker', message, task.id, request.user.id)
+            handworker = HandWorker.objects.get(user_id=user_id)
             handworker_info = {
-                "fullname": handworker.get_full_name(),
-                "avatar": handworker.avatar.url if handworker.avatar else ''
+                "fullname": handworker.company_name,
+                "avatar": handworker.user.avatar.url if handworker.user.avatar else ''
             }
             response['success'] = True
             response['handworker'] = handworker_info
@@ -224,7 +224,7 @@ class TaskDetailsView(generic.DetailView):
                 assign_to_user = task.building_component
             if assign_to_user.assign_to:
                 assign_to = {
-                    "fullname": assign_to_user.assign_to.get_full_name(),
+                    "fullname": assign_to_user.assign_to.handworker.company_name,
                     "avatar": assign_to_user.assign_to.avatar.url if assign_to_user.assign_to.avatar else ''
                 }
             else:
@@ -240,6 +240,7 @@ class TaskDetailsView(generic.DetailView):
             response['today'] = datetime.today().strftime('%Y-%m-%d')
             followers_response = TaskDetailsView.get_task_followers(request, task, assign_to_user.assign_to)
             response.update(followers_response)
+            NotificationsView.read_notification(request,task_id)
             return render(request, 'tasks/task_details.html', response)
         except Exception as e:
             LogHelper.efail(e)
