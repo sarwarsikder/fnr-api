@@ -18,7 +18,7 @@
                             <p class="td_assign_to mb-0 pull-right" style="float: right;">
                                 <label class="task_assigned_label">Handwerker: </label>
                                 <img class="img-circle img-sm assignee-handwerker-image"
-                                     src="{% if component.assign_to and component.assign_to.avatar %}{{ component.assign_to.avatar.url }}{% else %}{% static 'assets/images/avatar5.png' %}{% endif %}"
+                                     src="{% if component.assign_to and component.assign_to.avatar %}{{ component.assign_to.avatar.url }}{% else %}{% static 'assets/images/user.jpg' %}{% endif %}"
                                      alt="User Image">
                                 <span class="assignee-handwerker-name">{% if component.assign_to %}{{ component.assign_to.first_name }} {{ component.assign_to.last_name }}{% else %}N/A{% endif %}</span>
                                 <span class="edit_assign_task" data-id="{{ component.id }}" data-component-id="{{ component.component.id }}" data-handworker-id="{% if component.assign_to %}{{ component.assign_to.id }}{% endif %}"><a data-toggle="modal"

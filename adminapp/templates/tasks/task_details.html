@@ -60,6 +60,24 @@
                                         </div>
                                         <div class="col-sm col-12">
                                             <div class="form-group">
+                                                <label>Followers</label>
+                                                <select class="form-control select2" multiple
+                                                        id="task-followers" name="task-followers"
+                                                        data-placeholder="Select Followers"
+                                                        style="width: 100%;">
+                                                    {% for follower in followers %}
+                                                        <option value="{{ follower.id }}">{{ follower.text }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <input type="hidden" id="task-followers-id" value="{{ task_followers }}">
+                                                <button class="btn btn-primary" id="save-task-followers"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="Add followers"><i
+                                                        class="fa fa-check"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm col-12">
+                                            <div class="form-group">
                                                 <label>Status</label>
                                                 <select class="form-control" id="task-status"
                                                         data-placeholder="Select Status"
@@ -176,6 +194,9 @@
     </div>
     <script>
         $(function () {
+            var task_followers_id = $("#task-followers-id").val().replace(/'/g, '"');
+            $("#task-followers").select2();
+            $("#task-followers").select2('val', JSON.parse(task_followers_id));
             $("#task-due-date").datepicker({
                 uiLibrary: 'bootstrap4',
                 format: 'yyyy-mm-dd',

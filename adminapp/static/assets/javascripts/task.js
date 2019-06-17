@@ -266,6 +266,42 @@ $(function () {
         });
     });
 
+    $body.on('click', '#save-task-followers', function () {
+        var url = window.location.pathname.split("/");
+        var task_id = url[2];
+        var followers_data = $("#task-followers").select2('data');
+        var followers = [];
+        for (var i = 0; i < followers_data.length; i++) {
+            followers.push({"id": followers_data[i].id, "name": followers_data[i].text});
+        }
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        var data = {
+            'task_id': task_id,
+            'followers': JSON.stringify(followers),
+            'csrfmiddlewaretoken': csrfToken
+        };
+        bootbox.confirm("Are you sure you want to add followers?", function (result) {
+            if (result) {
+                $('.loader').show();
+                $.ajax({
+                    url: base_url + '/add-task-followers/',
+                    type: 'POST',
+                    data: data,
+                    success: function (response) {
+                        if (response.success) {
+                            $.growl.notice({message: response.message});
+                        }
+                        $('.loader').hide();
+                    },
+                    error: function (e) {
+                        clog(e);
+                        $('.loader').hide();
+                    }
+                });
+            }
+        });
+    });
+
     var previous_status;
     $("#task-status").focus(function (e) {
         previous_status = $(this).val();

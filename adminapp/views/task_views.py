@@ -186,7 +186,19 @@ class TasksView(generic.DetailView):
             component_id = request.POST.get('component_id')
             user_id = request.POST.get('user_id')
             BuildingComponents.objects.filter(id=component_id).update(assign_to_id=user_id, assigned_by=request.user)
+            component = BuildingComponents.objects.get(id=component_id)
             handworker = Users.objects.get(id=user_id)
+            if component.flat:
+                task = Tasks.objects.filter(building_component__component__parent_id=component.component_id).first()
+            else:
+                task = Tasks.objects.filter(building_component__building_id=component.building_id,
+                                            building_component__flat__isnull=True).filter(Q(
+                    Q(building_component__component__parent_id=component.component_id) | Q(
+                        building_component__component_id=component.component_id))).first()
+            # Send Notification
+            message = NotificationText.get_assign_worker_notification_text(request.user.get_full_name(),
+                                                                           component.component.name)
+            NotificationsView.create_notfication(request, 'assign_worker', message, task.id, request.user.id)
             handworker_info = {
                 "fullname": handworker.get_full_name(),
                 "avatar": handworker.avatar.url if handworker.avatar else ''
@@ -206,11 +218,14 @@ class TaskDetailsView(generic.DetailView):
             response = {}
             task_id = kwargs['task_id']
             task = Tasks.objects.get(id=task_id)
-            assign_to_user = BuildingComponents.objects.filter(component_id=task.building_component.component.parent_id, building_id=task.building_component.building_id, flat_id=task.building_component.flat_id).first()
+            if task.building_component.component.parent:
+                assign_to_user = BuildingComponents.objects.filter(component_id=task.building_component.component.parent_id, building_id=task.building_component.building_id, flat_id=task.building_component.flat_id).first()
+            else:
+                assign_to_user = task.building_component
             if assign_to_user.assign_to:
                 assign_to = {
                     "fullname": assign_to_user.assign_to.get_full_name(),
-                    "avatar": assign_to_user.assign_to.avatar.url
+                    "avatar": assign_to_user.assign_to.avatar.url if assign_to_user.assign_to.avatar else ''
                 }
             else:
                 assign_to = None
@@ -223,10 +238,49 @@ class TaskDetailsView(generic.DetailView):
             comments_list = comments[:1]
             response['comments_list'] = comments_list
             response['today'] = datetime.today().strftime('%Y-%m-%d')
+            followers_response = TaskDetailsView.get_task_followers(request, task, assign_to_user.assign_to)
+            response.update(followers_response)
             return render(request, 'tasks/task_details.html', response)
         except Exception as e:
             LogHelper.efail(e)
             return redirect('index')
+
+    def get_task_followers(request, task, assign_to):
+        response = {}
+        followers = []
+        if assign_to:
+            handworkers = HandWorker.objects.all().exclude(user_id=assign_to.id)
+        else:
+            handworkers = HandWorker.objects.all()
+        for handworker in handworkers:
+            data = {
+                "text": handworker.user.first_name + " " + handworker.user.last_name,
+                "id": handworker.user_id,
+            }
+            followers.append(data)
+        task_followers = []
+        if task.followers:
+            for follower in task.followers:
+                value = follower['id']
+                task_followers.append(value)
+        response['task_followers'] = task_followers
+        response['followers'] = followers
+        return response
+
+    def add_task_followers(request):
+        response = {}
+        try:
+            task_id = request.POST.get('task_id')
+            followers = json.loads(request.POST.get('followers'))
+            Tasks.objects.filter(id=task_id).update(followers=followers)
+            response['success'] = True
+            response['message'] = "Followers added successfully"
+        except Exception as e:
+            LogHelper.efail(e)
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
 
     def get_more_comments(request):
         response_data = {}
@@ -275,6 +329,7 @@ class TaskDetailsView(generic.DetailView):
             task = Tasks.objects.get(id=task_id)
             task.building_component.description = description
             task.building_component.save()
+            # Send Notification
             message = NotificationText.get_edit_task_notification_text(request.user.get_full_name(), task.building_component.component.name)
             NotificationsView.create_notfication(request, 'edit_task', message, task_id, request.user.id)
             response['success'] = True
@@ -292,6 +347,7 @@ class TaskDetailsView(generic.DetailView):
             status = request.POST.get('status')
             Tasks.objects.filter(id=task_id).update(status=status)
             task = Tasks.objects.get(id=task_id)
+            # Send Notification
             message = NotificationText.get_change_task_status_notification_text(request.user.get_full_name(),
                                                                        task.building_component.component.name, task.status)
             NotificationsView.create_notfication(request, 'change_task_status', message, task_id, request.user.id)
@@ -312,6 +368,7 @@ class TaskDetailsView(generic.DetailView):
             if str(task.due_date) != str(due_date):
                 task.due_date = due_date
                 task.save()
+                # Send Notification
                 message = NotificationText.get_change_due_date_notification_text(request.user.get_full_name(),
                                                                                     task.building_component.component.name)
                 NotificationsView.create_notfication(request, 'change_due_date', message, task_id, request.user.id)
@@ -348,10 +405,12 @@ class TaskDetailsView(generic.DetailView):
                 new_comment.save()
                 task = Tasks.objects.get(id=task_id)
                 if comment != '':
+                    # Send Notification
                     message = NotificationText.get_task_comment_notification_text(request.user.get_full_name(),
                                                                                      task.building_component.component.name)
                     NotificationsView.create_notfication(request, 'task_comment', message, task_id, request.user.id)
                 if len(file_list) > 0:
+                    # Send Notification
                     message = NotificationText.get_attach_file_notification_text(request.user.get_full_name(),
                                                                                   task.building_component.component.name)
                     NotificationsView.create_notfication(request, 'attach_file', message, task_id, request.user.id)

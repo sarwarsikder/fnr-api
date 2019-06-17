@@ -173,7 +173,7 @@ MEDIA_URL = '/media/'
 #     SITE_URL = 'http://192.168.1.10:8080'
 # else:
 #     SITE_URL = 'http://192.168.1.10:8080'
-SITE_URL = 'http://127.0.0.1:8000'
+SITE_URL = 'http://58.84.34.65:8006'
 
 LOGGING = {
     'version': 1,
