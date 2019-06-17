@@ -8,6 +8,8 @@ from django.dispatch import receiver
 from django.core.files.storage import FileSystemStorage
 
 # Create your models here.
+from notifications.signals import notify
+
 try:
     unicode = unicode
 except NameError:
@@ -26,6 +28,22 @@ else:
 
 def my_default():
     return {'foo': 'bar'}
+
+
+
+class BulkCreateQuerySet(models.query.QuerySet):
+    def bulk_create(self, objs, **kwargs):
+        for i in objs:
+            user = Users.objects.get(id=i.user_id)
+            avatar = i.notification.sending_by.avatar.url if i.notification.sending_by.avatar else ''
+            notify.send(i.notification.sending_by, recipient=user, verb=i.notification.text, description=avatar, target=i.notification.task)
+
+        return super().bulk_create(objs,**kwargs)
+
+
+class BulkCreateManager(models.Manager):
+    def get_queryset(self):
+        return BulkCreateQuerySet(self.model)
 
 
 class EnumField(models.Field):
@@ -293,6 +311,7 @@ class NotificationStatus(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     sending_at = models.DateTimeField(auto_now_add=True)
 
+    objects = BulkCreateManager()
     class Meta:
         db_table = "notification_status"
 
