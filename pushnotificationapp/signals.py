@@ -32,18 +32,22 @@ def notification_sender(subscription_info, data):
 
 @receiver(post_save, sender=NotificationStatus)
 def send_notification(sender, **kwargs):
-    subscribers = Subscribers.objects.filter(user_id=kwargs['instance'].user_id)
-    for subscriber in subscribers:
-        if subscriber.device == "mobile":
-            push_service = FCMNotification(api_key="AIzaSyDe760rQNsg6JOJbohxdrYTW86E9FtDSyw")
-            registration_id = "d7mMlK4FKR4:APA91bGCnJ-fPmlmvRDJTnTBTeg7-ZSeUh-puqrSHdAShkNIZEJrF5c2pTcadmU5rioks8aOIwek9oFKCxI0jIJXC1I19gMhyyD3gnGOU0eTeo8SDjkGTejxjYyDYww7d5t77yqsruUs"
-            result = push_service.notify_single_device(registration_id=registration_id,
-                                                       message_title="Notification title",
-                                                       message_body=kwargs['instance'].notification.text)
+    try:
+        subscribers = Subscribers.objects.filter(user_id=kwargs['instance'].user_id)
+        for subscriber in subscribers:
+            if subscriber.device == "mobile":
+                push_service = FCMNotification(api_key="AIzaSyDe760rQNsg6JOJbohxdrYTW86E9FtDSyw")
+                registration_id = "d7mMlK4FKR4:APA91bGCnJ-fPmlmvRDJTnTBTeg7-ZSeUh-puqrSHdAShkNIZEJrF5c2pTcadmU5rioks8aOIwek9oFKCxI0jIJXC1I19gMhyyD3gnGOU0eTeo8SDjkGTejxjYyDYww7d5t77yqsruUs"
+                result = push_service.notify_single_device(registration_id=registration_id,
+                                                           message_title="Notification title",
+                                                           message_body=kwargs['instance'].notification.text)
 
-        else:
-            subscription_info = {"endpoint": subscriber.endpoint, "keys": json.loads(subscriber.keys)}
-            notification_sender(subscription_info, kwargs['instance'].notification.text)
-    user = Users.objects.get(id=kwargs['instance'].user_id)
-    avatar = kwargs['instance'].notification.sending_by.avatar.url if kwargs['instance'].notification.sending_by.avatar else ''
-    notify.send(kwargs['instance'].notification.sending_by, recipient=user, verb=kwargs['instance'].notification.text, description=avatar, target=kwargs['instance'].notification.task)
+            else:
+                subscription_info = {"endpoint": subscriber.endpoint, "keys": json.loads(subscriber.keys)}
+                notification_sender(subscription_info, kwargs['instance'].notification.text)
+        user = Users.objects.get(id=kwargs['instance'].user_id)
+        print(user)
+        avatar = kwargs['instance'].notification.sending_by.avatar.url if kwargs['instance'].notification.sending_by.avatar else ''
+        notify.send(kwargs['instance'].notification.sending_by, recipient=user, verb=kwargs['instance'].notification.text, description=avatar, target=kwargs['instance'].notification.task)
+    except Exception as e:
+        print(e)

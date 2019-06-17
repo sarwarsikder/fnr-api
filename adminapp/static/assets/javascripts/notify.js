@@ -35,7 +35,7 @@ function fill_notification_list(data) {
                 message = message + " " + item.verb;
             }
             if(typeof item.target !== 'undefined'){
-                target_url = base_url+"/tasks/"+item.target+"/";
+                target_url = base_url+"/tasks/"+item.target.id+"/";
             }
             if(typeof item.timestamp !== 'undefined'){
                 // message = message + " " + item.timestamp;
@@ -63,6 +63,8 @@ function fill_notification_list(data) {
                     fuzzy = Math.floor(delta / hour) + ' hours ago.';
                 } else if (delta < day * 2) {
                     fuzzy = 'yesterday';
+                }else{
+                    fuzzy = Math.round(delta/(3600*24)) + ' days ago';
                 }
                 message = message +
                     '<span class="float-right text-muted text-sm">' + fuzzy+'</span>';

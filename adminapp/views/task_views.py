@@ -218,11 +218,14 @@ class TaskDetailsView(generic.DetailView):
             response = {}
             task_id = kwargs['task_id']
             task = Tasks.objects.get(id=task_id)
-            assign_to_user = BuildingComponents.objects.filter(component_id=task.building_component.component.parent_id, building_id=task.building_component.building_id, flat_id=task.building_component.flat_id).first()
+            if task.building_component.component.parent:
+                assign_to_user = BuildingComponents.objects.filter(component_id=task.building_component.component.parent_id, building_id=task.building_component.building_id, flat_id=task.building_component.flat_id).first()
+            else:
+                assign_to_user = task.building_component
             if assign_to_user.assign_to:
                 assign_to = {
                     "fullname": assign_to_user.assign_to.get_full_name(),
-                    "avatar": assign_to_user.assign_to.avatar.url
+                    "avatar": assign_to_user.assign_to.avatar.url if assign_to_user.assign_to.avatar else ''
                 }
             else:
                 assign_to = None

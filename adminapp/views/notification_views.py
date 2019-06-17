@@ -56,3 +56,17 @@ class NotificationsView(generic.DetailView):
         except Exception as e:
             LogHelper.efail(e)
         return
+
+    # def get_notifications(request):
+    #     response = {}
+    #     try:
+    #         notifications = NotificationStatus.objects.filter(user_id=request.user.id, )
+    #         response['success'] = True
+    #         response['message'] = "Followers added successfully"
+    #     except Exception as e:
+    #         LogHelper.efail(e)
+    #         response['success'] = False
+    #         response['message'] = "Something went wrong. Please try again"
+    #     return HttpResponse(json.dumps(response), content_type='application/json')
+
+    # def read_notification(self):
