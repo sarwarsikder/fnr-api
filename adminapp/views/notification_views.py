@@ -1,13 +1,69 @@
+import math
+from datetime import datetime
 import json
 
 from django.http import HttpResponse
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.views import generic
-from adminapp.models import Notification, NotificationStatus, BuildingComponents, ProjectStuff
+from adminapp.models import Notification, NotificationStatus, BuildingComponents, ProjectStuff, Users
 from adminapp.views.helper import LogHelper
 
 
 class NotificationsView(generic.DetailView):
+    def get(self, request, *args, **kwargs):
+        response = {}
+        try:
+            notifications = NotificationStatus.objects.filter(user_id=request.user.id).order_by('-sending_at')
+            response['more_notifications'] = False
+            if notifications.count() > 10:
+                response['more_notifications'] = True
+            notifications_list = notifications[:10]
+            response['notifications_list'] = notifications_list
+            response['today'] = datetime.today().strftime('%Y-%m-%d')
+            return render(request, 'profiles/notifications.html', response)
+        except Exception as e:
+            LogHelper.efail(e)
+            return redirect('index')
+
+    def get_more_notifications(request):
+        response_data = {}
+        try:
+            response = {}
+            page_num = int(request.POST.get('page_number'))
+            notifications = NotificationStatus.objects.filter(user_id=request.user.id).order_by('-sending_at')
+            total = len(notifications)
+            limit = 10
+            more_btn_visible = True
+            if total > limit:
+                offset = (page_num - 1) * limit
+                highest = (offset + limit)
+                no_of_pages = math.ceil(total / limit)
+                pages = range(1, no_of_pages + 1)
+                if page_num in pages:
+                    next_page_number = page_num + 1
+                    last_page_no = pages[-1]
+                    if page_num == last_page_no:
+                        more_btn_visible = False
+                    notifications_list = notifications[offset:highest]
+                    response['notifications_list'] = notifications_list
+                    response['today'] = datetime.today().strftime('%Y-%m-%d')
+                    response['request'] = request
+                    all_list = render_to_string('profiles/notification_list.html', response)
+                    response_data['new_lists'] = all_list
+                    response_data['success'] = True
+                    response_data['total_notifications'] = len(notifications_list)
+                    response_data['next_page_number'] = next_page_number
+                    response_data['more_btn_visible'] = more_btn_visible
+                else:
+                    response_data['success'] = False
+            else:
+                response_data['success'] = False
+        except Exception as e:
+            LogHelper.elog(e)
+            response_data['success'] = False
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
     def create_notfication(request, type, text, task_id, sending_by_id):
         try:
             notification_form = {
@@ -25,6 +81,7 @@ class NotificationsView(generic.DetailView):
 
 
     # Notification will send to
+    # Super Admin
     # Assigned user
     # All staffs of this project
     # All followers
@@ -33,6 +90,15 @@ class NotificationsView(generic.DetailView):
         LogHelper.ex_time_init()
         try:
             # notification_users = []
+            super_admin = Users.objects.filter(is_superuser=True).first()
+            notification_user_form = {
+                "user_id": super_admin.id,
+                "notification_id": notification.id
+            }
+            # notification_users.append(NotificationStatus(**notification_user_form))
+            notification_user = NotificationStatus(**notification_user_form)
+            notification_user.save()
+
             assigned_user = BuildingComponents.objects.filter(component_id=notification.task.building_component.component.parent_id,
                                                                building_id=notification.task.building_component.building_id,
                                                                flat_id=notification.task.building_component.flat_id).first()

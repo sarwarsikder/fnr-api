@@ -15,4 +15,4 @@ class NotificationSerializer(serializers.ModelSerializer):
         return notification.notification.text
 
     def get_avatar(self, notification):
-        return notification.user.avatar.url if notification.user.avatar else ''
+        return notification.notification.sending_by.avatar.url if notification.notification.sending_by.avatar else ''

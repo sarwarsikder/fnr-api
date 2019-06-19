@@ -503,6 +503,40 @@ $(function () {
         });
     });
 
+    $('body').on('click', '#show-more-notifications', function () {
+        var page_number = $(this).attr('data-page-number');
+        var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+        $('.loader').show();
+        var $this_button = $(this);
+        $this_button.attr('disabled', true);
+        $.ajax({
+            url: base_url + '/get-more-notifications/',
+            type: "POST",
+            data: {
+                page_number: page_number,
+                csrfmiddlewaretoken: csrf_token
+            },
+            success: function (result) {
+                $this_button.attr('disabled', false);
+                $('.loader').hide();
+                if (result.success) {
+                    $('.loader').hide();
+                    if (result.total_notifications > 0) {
+                        $('#show-more-notifications').attr('data-page-number', result.next_page_number);
+                        $('.notificaton_ul').append(result.new_lists);
+                    }
+                    if (!result.more_btn_visible) {
+                        $this_button.hide();
+                    }
+                }
+            },
+            error: function (e) {
+                $this_button.attr('disabled', false);
+                $('.loader').hide();
+            }
+        });
+    });
+
 });
 
 function getAllCurrentBuildingsByProject($this) {

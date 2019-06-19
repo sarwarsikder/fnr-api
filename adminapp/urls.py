@@ -117,6 +117,8 @@ urlpatterns = [
     url(r'^get-more-comments/$', task_views.TaskDetailsView.get_more_comments, name='get-more-comments'),
     url(r'^add-task-followers/$', task_views.TaskDetailsView.add_task_followers, name='add-task-followers'),
     url(r'^get-new-notifications/$', notification_views.NotificationsView.get_new_notifications, name='get-new-notifications'),
+    url(r'^get-all-notifications/$', notification_views.NotificationsView.as_view(), name='get-all-notifications'),
+    url(r'^get-more-notifications/$', notification_views.NotificationsView.get_more_notifications, name='get-more-notifications'),
 
 
 ]
