@@ -397,7 +397,7 @@ class TaskDetailsView(generic.DetailView):
             if comment != '' or len(file_list) > 0:
                 comment_form = {
                     "text": comment,
-                    "file_type": file_list,
+                    "file_type": file_list if(len(file_list) > 0) else None,
                     "task_id": task_id,
                     "user": request.user,
                     "type": "text"
