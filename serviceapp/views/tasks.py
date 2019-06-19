@@ -9,8 +9,14 @@ from rest_framework.views import APIView
 from adminapp.models import Tasks, BuildingComponents, Comments
 from rest_framework.pagination import PageNumberPagination
 
+from adminapp.views.common_views import NotificationText
 from adminapp.views.helper import LogHelper
+from adminapp.views.notification_views import NotificationsView
 from serviceapp.serializers.task_serializer import TaskSerializer, TaskDetailsSerializer
+from rest_framework.decorators import api_view
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+import threading
 
 
 class TaskPermissions(BasePermission):
@@ -130,3 +136,56 @@ class TaskDetailsViewSet(APIView):
             return Response({'success': False, 'message': "Something went wrong."},
                             status=status.HTTP_404_NOT_FOUND)
 
+    @api_view(["post"])
+    @login_required()
+    @transaction.atomic()
+    def change_task_status(request, task_id):
+        try:
+            with transaction.atomic():
+                response = {}
+                task_status = request.data.pop("status", '')
+                task = Tasks.objects.get(id=task_id)
+                task.status = task_status
+                task.save()
+                # Send Notification
+                message = NotificationText.get_change_task_status_notification_text(request.user.get_full_name(),
+                                                                                    task.building_component.component.name,
+                                                                                    task.status)
+                task_thread = threading.Thread(target=NotificationsView.create_notfication,
+                                        args=(request, 'change_task_status', message, task_id, request.user.id))
+                task_thread.start()
+
+                response['success'] = True
+                response['message'] = "Task status changed successfully"
+                return Response(response, status=status.HTTP_200_OK)
+        except Exception as e:
+            LogHelper.efail(e)
+            return Response({'status': False, 'message': "Something went wrong."},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @api_view(["post"])
+    @login_required()
+    @transaction.atomic()
+    def change_task_due_date(request, task_id):
+        try:
+            with transaction.atomic():
+                response = {}
+                if not request.user.is_staff:
+                    raise ModuleNotFoundError
+                due_date = request.data.pop("due_date", '')
+                task = Tasks.objects.get(id=task_id)
+                task.due_date = due_date
+                task.save()
+                # Send Notification
+                message = NotificationText.get_change_due_date_notification_text(request.user.get_full_name(),
+                                                                                 task.building_component.component.name)
+                task_thread = threading.Thread(target=NotificationsView.create_notfication,
+                                               args=(request, 'change_due_date', message, task_id, request.user.id))
+                task_thread.start()
+                response['success'] = True
+                response['message'] = "Deadline Update successfully"
+                return Response(response, status=status.HTTP_200_OK)
+        except Exception as e:
+            LogHelper.efail(e)
+            return Response({'status': False, 'message': "Something went wrong."},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)

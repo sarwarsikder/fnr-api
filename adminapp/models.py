@@ -353,7 +353,7 @@ class NotificationStatus(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     sending_at = models.DateTimeField(auto_now_add=True)
 
-    objects = BulkCreateManager()
+    # objects = BulkCreateManager()
     class Meta:
         db_table = "notification_status"
 

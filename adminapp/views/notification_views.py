@@ -30,8 +30,9 @@ class NotificationsView(generic.DetailView):
     # All followers
 
     def create_notification_user(request, notification):
+        LogHelper.ex_time_init()
         try:
-            notification_users = []
+            # notification_users = []
             assigned_user = BuildingComponents.objects.filter(component_id=notification.task.building_component.component.parent_id,
                                                                building_id=notification.task.building_component.building_id,
                                                                flat_id=notification.task.building_component.flat_id).first()
@@ -40,14 +41,18 @@ class NotificationsView(generic.DetailView):
                     "user_id": assigned_user.assign_to.id,
                     "notification_id": notification.id
                 }
-                notification_users.append(NotificationStatus(**notification_user_form))
+                # notification_users.append(NotificationStatus(**notification_user_form))
+                notification_user = NotificationStatus(**notification_user_form)
+                notification_user.save()
             staffs = ProjectStuff.objects.filter(project_id=notification.task.building_component.building.project_id, user__is_active=True)
             for staff in staffs:
                 notification_user_form = {
                     "user_id": staff.user_id,
                     "notification_id": notification.id
                 }
-                notification_users.append(NotificationStatus(**notification_user_form))
+                # notification_users.append(NotificationStatus(**notification_user_form))
+                notification_user = NotificationStatus(**notification_user_form)
+                notification_user.save()
             followers = notification.task.followers
             if followers:
                 for follower in followers:
@@ -55,8 +60,11 @@ class NotificationsView(generic.DetailView):
                         "user_id": follower['id'],
                         "notification_id": notification.id
                     }
-                    notification_users.append(NotificationStatus(**notification_user_form))
-            NotificationStatus.objects.bulk_create(notification_users)
+                    # notification_users.append(NotificationStatus(**notification_user_form))
+                    notification_user = NotificationStatus(**notification_user_form)
+                    notification_user.save()
+            # NotificationStatus.objects.bulk_create(notification_users)
+            LogHelper.ex_time()
         except Exception as e:
             LogHelper.efail(e)
         return

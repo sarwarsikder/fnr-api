@@ -194,6 +194,7 @@ class TasksView(generic.DetailView):
                                             building_component__flat__isnull=True).filter(Q(
                     Q(building_component__component__parent_id=component.component_id) | Q(
                         building_component__component_id=component.component_id))).first()
+            task.save()
             # Send Notification
             message = NotificationText.get_assign_worker_notification_text(request.user.get_full_name(),
                                                                            component.component.name)
@@ -330,6 +331,7 @@ class TaskDetailsView(generic.DetailView):
             task = Tasks.objects.get(id=task_id)
             task.building_component.description = description
             task.building_component.save()
+            task.save()
             # Send Notification
             message = NotificationText.get_edit_task_notification_text(request.user.get_full_name(), task.building_component.component.name)
             NotificationsView.create_notfication(request, 'edit_task', message, task_id, request.user.id)
@@ -346,8 +348,9 @@ class TaskDetailsView(generic.DetailView):
         try:
             task_id = request.POST.get('task_id')
             status = request.POST.get('status')
-            Tasks.objects.filter(id=task_id).update(status=status)
             task = Tasks.objects.get(id=task_id)
+            task.status = status
+            task.save()
             # Send Notification
             message = NotificationText.get_change_task_status_notification_text(request.user.get_full_name(),
                                                                        task.building_component.component.name, task.status)
@@ -405,6 +408,7 @@ class TaskDetailsView(generic.DetailView):
                 new_comment = Comments(**comment_form)
                 new_comment.save()
                 task = Tasks.objects.get(id=task_id)
+                task.save()
                 if comment != '':
                     # Send Notification
                     message = NotificationText.get_task_comment_notification_text(request.user.get_full_name(),

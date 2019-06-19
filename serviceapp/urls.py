@@ -43,4 +43,6 @@ urlpatterns = [
     url(r'^flat/(?P<flat_id>[\w-]+)/component/(?P<component_id>[\w-]+)/tasks/$', FlatTasksViewSet.as_view()),
     url(r'^task/(?P<task_id>[\w-]+)/$', TaskDetailsViewSet.as_view()),
     url(r'^task/(?P<task_id>[\w-]+)/comments/$', CommentsViewSet.as_view()),
+    url(r'^task/(?P<task_id>[\w-]+)/change-status/$', TaskDetailsViewSet.change_task_status),
+    url(r'^task/(?P<task_id>[\w-]+)/change-due-date/$', TaskDetailsViewSet.change_task_due_date),
 ] + router.urls
