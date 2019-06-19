@@ -1,5 +1,3 @@
-import json
-
 from django.db.models import Q, F
 from rest_framework import status
 from rest_framework.response import Response
