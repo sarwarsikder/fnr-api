@@ -57,7 +57,22 @@ class ComponentsViewSet(APIView):
             paginator.page_size = 10
             result_page = paginator.paginate_queryset(components, request)
             serializer = ComponentSerializer(result_page, many=True)
-            return paginator.get_paginated_response(data=serializer.data, flat=scan_obj.flat.number if scan_obj.flat else None, building=scan_obj.building.display_number, project=scan_obj.building.project.name)
+            if scan_obj.flat:
+                flat_info = {
+                    "id": scan_obj.flat.id,
+                    "number": scan_obj.flat.number
+                }
+            else:
+                flat_info = None
+            building_info = {
+                "id": scan_obj.building.id,
+                "display_number": scan_obj.building.display_number
+            }
+            project_info = {
+                "id": scan_obj.building.project.id,
+                "name": scan_obj.building.project.name
+            }
+            return paginator.get_paginated_response(data=serializer.data, flat=flat_info, building=building_info, project=project_info)
         except Exception as e:
             LogHelper.efail(e)
             return Response({'status': False, 'message': "Something went wrong."},
