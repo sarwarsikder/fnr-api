@@ -176,7 +176,7 @@ class TaskDetailsViewSet(APIView):
                 task.save()
                 # Send Notification
                 message = NotificationText.get_change_due_date_notification_text(request.user.get_full_name(),
-                                                                                 task.building_component.component.name)
+                                                                                 task.building_component.component.name, due_date)
                 task_thread = threading.Thread(target=NotificationsView.create_notfication,
                                                args=(request, 'change_due_date', message, task_id, request.user.id))
                 task_thread.start()

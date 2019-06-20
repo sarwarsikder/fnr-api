@@ -349,20 +349,31 @@ class CurrentProjects(generic.DetailView):
 
 class NotificationText(generic.DetailView):
     def get_edit_task_notification_text(user_name, task_title):
-        return "{} has edited Task {}".format(user_name, task_title)
+        text = "{} hat {} geändert"
+        return text.format(user_name, task_title)
 
-    def get_assign_worker_notification_text(user_name, task_title):
-        return "{} has edited Task {}".format(user_name, task_title)
+    def get_assign_worker_notification_text(company_name, task_title):
+        text = "{} wurde zu {} hinzugefügt"
+        return text.format(company_name, task_title)
 
     def get_change_task_status_notification_text(user_name, task_title, task_status):
-        return "{} has change Task {} status to {}".format(user_name, task_title, task_status)
+        status = "Noch nicht begonnen"
+        if task_status == 'in_progress':
+            status = "in Arbeit"
+        elif task_status == 'done':
+            status = "Fertig"
+        text = "Der Status von {} hat sich geändert: {}"
+        return text.format(task_title, status)
 
     def get_task_comment_notification_text(user_name, task_title):
-        return "{} has edited Task {}".format(user_name, task_title)
+        text = "{} hat {} kommentiert"
+        return text.format(user_name, task_title)
 
     def get_attach_file_notification_text(user_name, task_title):
-        return "{} has edited Task {}".format(user_name, task_title)
+        text = "{} hat File in {} hinzugefügt"
+        return text.format(user_name, task_title)
 
-    def get_change_due_date_notification_text(user_name, task_title):
-        return "{} has edited Task {}".format(user_name, task_title)
+    def get_change_due_date_notification_text(user_name, task_title, due_date):
+        text = "Die frist von {} hat sich  geändert: {}"
+        return text.format(task_title, due_date)
 

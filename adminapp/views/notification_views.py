@@ -139,7 +139,7 @@ class NotificationsView(generic.DetailView):
         response = {}
         try:
             notification_list = []
-            notifications = NotificationStatus.objects.filter(user_id=request.user.id).order_by('status')[:5]
+            notifications = NotificationStatus.objects.filter(user_id=request.user.id).order_by('-sending_at', 'status')[:5]
             for notification in notifications:
                 notification_data = {
                     "avatar": notification.notification.sending_by.avatar.url if notification.notification.sending_by.avatar else '',

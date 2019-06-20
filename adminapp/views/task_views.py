@@ -195,11 +195,11 @@ class TasksView(generic.DetailView):
                     Q(building_component__component__parent_id=component.component_id) | Q(
                         building_component__component_id=component.component_id))).first()
             task.save()
+            handworker = HandWorker.objects.get(user_id=user_id)
             # Send Notification
-            message = NotificationText.get_assign_worker_notification_text(request.user.get_full_name(),
+            message = NotificationText.get_assign_worker_notification_text(handworker.company_name,
                                                                            component.component.name)
             NotificationsView.create_notfication(request, 'assign_worker', message, task.id, request.user.id)
-            handworker = HandWorker.objects.get(user_id=user_id)
             handworker_info = {
                 "fullname": handworker.company_name,
                 "avatar": handworker.user.avatar.url if handworker.user.avatar else ''
@@ -374,7 +374,7 @@ class TaskDetailsView(generic.DetailView):
                 task.save()
                 # Send Notification
                 message = NotificationText.get_change_due_date_notification_text(request.user.get_full_name(),
-                                                                                    task.building_component.component.name)
+                                                                                    task.building_component.component.name, due_date)
                 NotificationsView.create_notfication(request, 'change_due_date', message, task_id, request.user.id)
                 response['message'] = "Deadline Update successfully"
             response['success'] = True
