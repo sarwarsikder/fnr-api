@@ -152,7 +152,7 @@ function get_new_notifications() {
                     $.growl.notice({message: "You got a new notification"});
                 }
             } else {
-                clog(eresponse.message);
+                clog(response.message);
             }
             // setTimeout(get_new_notifications, 5000);
         },
