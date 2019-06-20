@@ -33,4 +33,4 @@ class ComponentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BuildingComponents
-        fields = ('component_id', 'name', 'description')
+        fields = ('component_id', 'name')

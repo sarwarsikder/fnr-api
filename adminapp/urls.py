@@ -19,7 +19,7 @@ from django.views.generic import TemplateView
 
 from adminapp.views import common_views, login_views, staff_views, company_views, project_views, building_views, \
     flat_views, buildingplan_views, flatplan_views, component_views, reset_password, datatables, profile_views, \
-    projectplan_views, task_views
+    projectplan_views, task_views, notification_views
 from django.conf import settings
 from django.views.static import serve
 urlpatterns = [
@@ -116,6 +116,9 @@ urlpatterns = [
     url(r'^add-new-comment/(?P<task_id>[\w-]+)/$', task_views.TaskDetailsView.add_new_comment, name='add-new-comment'),
     url(r'^get-more-comments/$', task_views.TaskDetailsView.get_more_comments, name='get-more-comments'),
     url(r'^add-task-followers/$', task_views.TaskDetailsView.add_task_followers, name='add-task-followers'),
+    url(r'^get-new-notifications/$', notification_views.NotificationsView.get_new_notifications, name='get-new-notifications'),
+    url(r'^get-all-notifications/$', notification_views.NotificationsView.as_view(), name='get-all-notifications'),
+    url(r'^get-more-notifications/$', notification_views.NotificationsView.get_more_notifications, name='get-more-notifications'),
 
 
 ]

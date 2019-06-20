@@ -20,7 +20,10 @@ from rest_framework.routers import SimpleRouter
 from serviceapp.views.projects import ProjectViewSet, ProjectPlanViewSet
 from serviceapp.views.buildings import BuildingViewSet, BuildingPlanViewSet, BuildingComponentViewSet
 from serviceapp.views.flats import FlatViewSet, FlatPlanViewSet, FlatComponentViewSet
-from serviceapp.views.tasks import BuildingTasksViewSet, FlatTasksViewSet
+from serviceapp.views.tasks import BuildingTasksViewSet, FlatTasksViewSet, TaskDetailsViewSet
+from serviceapp.views.comments import CommentsViewSet
+from serviceapp.views.notifications import NotificationsViewSet
+from serviceapp.views.components import ComponentsViewSet
 
 router = SimpleRouter()
 router.register(r'projects', ProjectViewSet)
@@ -40,4 +43,10 @@ urlpatterns = [
     url(r'^flat/(?P<flat_id>[\w-]+)/plans/$', FlatPlanViewSet.as_view()),
     url(r'^flat/(?P<flat_id>[\w-]+)/components/$', FlatComponentViewSet.as_view()),
     url(r'^flat/(?P<flat_id>[\w-]+)/component/(?P<component_id>[\w-]+)/tasks/$', FlatTasksViewSet.as_view()),
+    url(r'^task/(?P<task_id>[\w-]+)/$', TaskDetailsViewSet.as_view()),
+    url(r'^task/(?P<task_id>[\w-]+)/comments/$', CommentsViewSet.as_view()),
+    url(r'^task/(?P<task_id>[\w-]+)/change-status/$', TaskDetailsViewSet.change_task_status),
+    url(r'^task/(?P<task_id>[\w-]+)/change-due-date/$', TaskDetailsViewSet.change_task_due_date),
+    url(r'^notifications/$', NotificationsViewSet.as_view()),
+    url(r'^scan/$', ComponentsViewSet.as_view()),
 ] + router.urls
