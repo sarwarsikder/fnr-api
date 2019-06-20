@@ -64,13 +64,13 @@
                                                 <select class="form-control select2" multiple
                                                         id="task-followers" name="task-followers"
                                                         data-placeholder="Select Followers"
-                                                        style="width: 100%;">
+                                                        style="width: 90%;">
                                                     {% for follower in followers %}
                                                         <option value="{{ follower.id }}">{{ follower.text }}</option>
                                                     {% endfor %}
                                                 </select>
                                                 <input type="hidden" id="task-followers-id" value="{{ task_followers }}">
-                                                <button class="btn btn-primary" id="save-task-followers"
+                                                <button class="btn btn-primary" id="save-task-followers" style="display: inline-block"
                                                         data-toggle="tooltip"
                                                         data-placement="top" title="Add followers"><i
                                                         class="fa fa-check"></i></button>
@@ -79,7 +79,7 @@
                                         <div class="col-sm col-12">
                                             <div class="form-group">
                                                 <label>Status</label>
-                                                <select class="form-control" id="task-status"
+                                                <select class="form-control" id="task-status" style="    border-radius: 0px;height: 32px;border-color: #aba9ab;"
                                                         data-placeholder="Select Status"
                                                         style="width: 100%;">
                                                     <option value="to_do"
@@ -98,7 +98,7 @@
                                         <div class="col-sm col-12">
                                             <div class="form-group">
                                                 <label for="stn">Deadline</label>
-                                                <input id="task-due-date" width="100%" placeholder="yyyy-mm-dd"
+                                                <input id="task-due-date" width="100%" placeholder="yyyy-mm-dd" style="   height: 32px;border-color: #aba9ab;"
                                                        value="{{ task.due_date|date:"Y-m-d" }}"/>
                                             </div>
                                         </div>
@@ -172,7 +172,7 @@
                                             </div>
                                             {% if more_comments %}
                                                 <div class="col-md-12 text-center">
-                                                    <button id="show-more-comments" class="btn btn-send"
+                                                    <button id="show-more-comments" class="btn btn-send btn-v-n"
                                                             data-page-number="2">More Comments</button>
                                                 </div>
                                             {% endif %}

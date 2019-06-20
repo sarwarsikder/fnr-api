@@ -174,10 +174,10 @@ function notification_list(notifications) {
             if (item.avatar == '' || item.avatar == null) {
                 item.avatar = base_url + "/static/assets/images/avatar5.png";
             }
-            message = "<img src='" + item.avatar + "' class='img-circle img-sm' alt='User Image'/>";
+            message = "<img src='" + item.avatar + "' class='img-circle img-sm' style='margin-right:7px;' alt='User Image'/>";
         }
         if (typeof item.message !== 'undefined') {
-            message = message + " " + item.message;
+            message = message + "<p style='padding-left:7px;'>" + item.message +"</p>";
         }
         if (typeof item.task_id !== 'undefined') {
             target_url = base_url + "/tasks/" + item.task_id + "/";
