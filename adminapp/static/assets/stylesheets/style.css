@@ -491,7 +491,7 @@ span.cwp_title{
     display: inline-block;
     float: left;
 }
-.notificaton_ul li.unread{
+.notificaton_ul li.unread, .dropdown-item.unread{
     background: #f1e4d1;
 }
 .notificaton_ul li:first-child{
