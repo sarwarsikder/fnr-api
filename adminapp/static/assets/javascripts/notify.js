@@ -213,9 +213,13 @@ function notification_list(notifications) {
             message = message +
                 '<span class="float-right text-muted text-sm">' + fuzzy + '</span>';
         }
+        var nt_class = "dropdown-item";
+        if(!item.status){
+            nt_class +=" unread";
+        }
         var notificationElem = '<div class="dropdown-divider"></div>' +
-            '<a href="' + target_url + '" class="dropdown-item">' + message +
-            '</a>'
+            '<a href="' + target_url + '" class="'+nt_class+'">' + message +
+            '</a>';
         return notificationElem;
     }).join('');
     $(".live_notify_list").html(messages);

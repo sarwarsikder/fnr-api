@@ -144,6 +144,7 @@ class NotificationsView(generic.DetailView):
                 notification_data = {
                     "avatar": notification.notification.sending_by.avatar.url if notification.notification.sending_by.avatar else '',
                     "message": notification.notification.text,
+                    "status": notification.status,
                     "task_id": notification.notification.task_id,
                     "sending_time": str(notification.sending_at)
                 }
