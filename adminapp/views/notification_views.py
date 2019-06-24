@@ -16,9 +16,9 @@ class NotificationsView(generic.DetailView):
         try:
             notifications = NotificationStatus.objects.filter(user_id=request.user.id).order_by('-sending_at')
             response['more_notifications'] = False
-            if notifications.count() > 10:
+            if notifications.count() > 20:
                 response['more_notifications'] = True
-            notifications_list = notifications[:10]
+            notifications_list = notifications[:20]
             response['notifications_list'] = notifications_list
             response['today'] = datetime.today().strftime('%Y-%m-%d')
             return render(request, 'profiles/notifications.html', response)
@@ -33,7 +33,7 @@ class NotificationsView(generic.DetailView):
             page_num = int(request.POST.get('page_number'))
             notifications = NotificationStatus.objects.filter(user_id=request.user.id).order_by('-sending_at')
             total = len(notifications)
-            limit = 10
+            limit = 20
             more_btn_visible = True
             if total > limit:
                 offset = (page_num - 1) * limit

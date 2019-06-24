@@ -47,9 +47,13 @@ class TasksView(generic.DetailView):
                 building_id = request.POST.get('building_id')
                 components = BuildingComponents.objects.filter(building_id=building_id, flat__isnull=True,
                                                                component__parent__isnull=True)
+                for component in components:
+                    component.total_tasks = Tasks.objects.filter(building_component__building_id=building_id, building_component__flat__isnull=True).filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).exclude(status='done').count()
             elif 'flat_id' in request.POST:
                 flat_id = request.POST.get('flat_id')
                 components = BuildingComponents.objects.filter(flat_id=flat_id, component__parent__isnull=True)
+                for component in components:
+                    component.total_tasks = Tasks.objects.filter(building_component__flat_id=flat_id).filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).exclude(status='done').count()
             components_list = render_to_string('tasks/pending_components.html', {"components": components, "request": request})
             response['success'] = True
             response['components_list'] = components_list
@@ -66,9 +70,18 @@ class TasksView(generic.DetailView):
                 building_id = request.POST.get('building_id')
                 components = BuildingComponents.objects.filter(building_id=building_id, flat__isnull=True,
                                                                component__parent__isnull=True)
+                for component in components:
+                    component.total_tasks = Tasks.objects.filter(building_component__building_id=building_id,
+                                                 building_component__flat__isnull=True, status='done').filter(Q(
+                        Q(building_component__component__parent_id=component.component_id) | Q(
+                            building_component__component_id=component.component_id))).count()
             elif 'flat_id' in request.POST:
                 flat_id = request.POST.get('flat_id')
                 components = BuildingComponents.objects.filter(flat_id=flat_id, component__parent__isnull=True)
+                for component in components:
+                    component.total_tasks = Tasks.objects.filter(building_component__flat_id=flat_id, status='done').filter(Q(
+                        Q(building_component__component__parent_id=component.component_id) | Q(
+                            building_component__component_id=component.component_id))).count()
             components_list = render_to_string('tasks/done_components.html', {"components": components, "request": request})
             response['success'] = True
             response['components_list'] = components_list
@@ -234,9 +247,9 @@ class TaskDetailsView(generic.DetailView):
             response['assign_to'] = assign_to
             comments = Comments.objects.filter(task_id=task_id).order_by('-created_at')
             response['more_comments'] = False
-            if comments.count() > 1:
+            if comments.count() > 5:
                 response['more_comments'] = True
-            comments_list = comments[:1]
+            comments_list = comments[:5]
             response['comments_list'] = comments_list
             response['today'] = datetime.today().strftime('%Y-%m-%d')
             followers_response = TaskDetailsView.get_task_followers(request, task, assign_to_user.assign_to)
@@ -292,7 +305,7 @@ class TaskDetailsView(generic.DetailView):
             task_id = request.POST.get('task_id')
             comments = Comments.objects.filter(task_id=task_id).order_by('-created_at')
             total = len(comments)
-            limit = 1
+            limit = 5
             more_btn_visible = True
             if total > limit:
                 offset = (page_num - 1) * limit

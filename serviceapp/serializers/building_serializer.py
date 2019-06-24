@@ -30,7 +30,9 @@ class BuildingPlanSerializer(serializers.ModelSerializer):
 
 class ComponentSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=100, read_only=True)
+    total_tasks = serializers.IntegerField(read_only=True)
+    tasks_done = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = BuildingComponents
-        fields = ('component_id', 'name')
+        fields = ('component_id', 'name', 'total_tasks', 'tasks_done')
