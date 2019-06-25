@@ -65,7 +65,7 @@
                                                 <div class="form-group inform_select">
                                                     <label for="{{ form.parent_id.id_for_label }}">Parent</label>
                                                     <br>
-                                                    <select class="component-parent" name="parent_id" id="id_parent_id" {% if parent_id is None %}disabled{% endif %}>
+                                                    <select class="component-parent" name="parent_id" id="id_parent_id" {% if parent_id is None %}disabled{% endif %} disabled>
                                                       <option></option>
                                                         {% for parent in parents %}
                                                         <option value="{{ parent.id }}" {% if parent_id == parent.id %}selected{% endif %}>{{ parent.name }}</option>
@@ -78,7 +78,7 @@
                                                 <div class="form-group inform_select">
                                                     <label for="{{ form.type.id_for_label }}">Type</label>
                                                     <br>
-                                                    <select class="component-type" name="type" id="id_type" {% if parent_id is None %}disabled{% endif %}>
+                                                    <select class="component-type" name="type" id="id_type" {% if parent_id is None %}disabled{% endif %} disabled>
                                                         <option></option>
                                                         <optgroup name="Grundung" label="Grundung">
                                                             <option value="sf" {% if form.type.value == 'sf' %}selected{% endif %}>Streifenfundamente</option>

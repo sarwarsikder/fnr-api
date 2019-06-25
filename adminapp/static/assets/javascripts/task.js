@@ -280,26 +280,28 @@ $(function () {
             'followers': JSON.stringify(followers),
             'csrfmiddlewaretoken': csrfToken
         };
-        bootbox.confirm("Are you sure you want to add followers?", function (result) {
-            if (result) {
-                $('.loader').show();
-                $.ajax({
-                    url: base_url + '/add-task-followers/',
-                    type: 'POST',
-                    data: data,
-                    success: function (response) {
-                        if (response.success) {
-                            $.growl.notice({message: response.message});
+        if(followers.length > 0){
+            bootbox.confirm("Are you sure you want to add followers?", function (result) {
+                if (result) {
+                    $('.loader').show();
+                    $.ajax({
+                        url: base_url + '/add-task-followers/',
+                        type: 'POST',
+                        data: data,
+                        success: function (response) {
+                            if (response.success) {
+                                $.growl.notice({message: response.message});
+                            }
+                            $('.loader').hide();
+                        },
+                        error: function (e) {
+                            clog(e);
+                            $('.loader').hide();
                         }
-                        $('.loader').hide();
-                    },
-                    error: function (e) {
-                        clog(e);
-                        $('.loader').hide();
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
     });
 
     var previous_status;
