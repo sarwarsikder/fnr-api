@@ -18,9 +18,16 @@ class ComponentForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(ComponentForm, self).clean()
-        name = cleaned_data.get('name')
-        if Components.objects.filter(name=name).exclude(pk=self.instance.id).exists():
-            self.add_error('name', 'Component is already exists.')
+        # name = cleaned_data.get('name')
+        # if Components.objects.filter(name=name).exclude(pk=self.instance.id).exists():
+        #     self.add_error('name', 'Component is already exists.')
+
+    def clean_type(self):
+        data = self.cleaned_data['type']
+        # do some stuff
+        if data == '':
+            data = None
+        return data
 
     def save(self, request, commit=True):
         cleaned_data = super(ComponentForm, self).clean()

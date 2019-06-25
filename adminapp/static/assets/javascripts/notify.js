@@ -154,7 +154,7 @@ function get_new_notifications() {
             } else {
                 clog(response.message);
             }
-            // setTimeout(get_new_notifications, 5000);
+            setTimeout(get_new_notifications, 5000);
         },
         error: function (e) {
             clog(e);

@@ -291,7 +291,7 @@ class Tasks(models.Model):
     building_component = models.ForeignKey(BuildingComponents, on_delete=models.CASCADE)
     followers = JSONField(null=True, blank=True)
     status = TaskStatusType(max_length=20, default="to_do")
-    due_date = models.DateField(default=None)
+    due_date = models.DateField(default=None, null=True, blank=True)
     created_by = models.ForeignKey(Users, related_name='task_created_by', null=True, on_delete=models.SET_NULL)
     updated_by = models.ForeignKey(Users, related_name='task_last_updated_by', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -80,7 +80,7 @@ class CommonView(generic.DetailView):
 
     def create_default_building_components(request, building):
         try:
-            default_components = Components.objects.filter(Q(type__isnull=True) | Q(type=building.grundung) | Q(type=building.aussenwande_eg_og_dg) | Q(type=building.fenster_beschattung) | Q(type=building.dach)).filter(building=True)
+            default_components = Components.objects.filter(Q(type__isnull=True) | Q(type='') | Q(type=building.grundung) | Q(type=building.aussenwande_eg_og_dg) | Q(type=building.fenster_beschattung) | Q(type=building.dach)).filter(building=True)
             building_components = []
             for component in default_components:
                 component_form = {
@@ -129,6 +129,7 @@ class CommonView(generic.DetailView):
                 if task_flag:
                     task_form = {
                         "building_component": component,
+                        "followers": None,
                         "created_by": request.user,
                         "updated_by": request.user
                     }
