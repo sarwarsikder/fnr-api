@@ -88,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'wsit',
         'PASSWORD': 'wsit97480',
-        'HOST': '58.84.34.65',
+        'HOST': '172.18.1.11',
         'PORT': '3306',
         'OPTIONS': {
             'autocommit': True,
