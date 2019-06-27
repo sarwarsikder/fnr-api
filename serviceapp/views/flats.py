@@ -3,7 +3,7 @@ from rest_framework.permissions import BasePermission
 from rest_framework import viewsets, mixins
 from rest_framework.views import APIView
 
-from adminapp.models import Flats, FlatPlans, BuildingComponents
+from adminapp.models import Flats, FlatPlans, BuildingComponents, Tasks
 from rest_framework.pagination import PageNumberPagination
 from serviceapp.serializers.flat_serializer import FlatSerializer, FlatPlanSerializer
 from serviceapp.serializers.building_serializer import ComponentSerializer
@@ -38,6 +38,9 @@ class FlatComponentViewSet(APIView):
         paginator = PageNumberPagination()
         paginator.page_size = 10
         components = BuildingComponents.objects.annotate(name=F('component__name')).filter(flat_id=flat_id, component__parent__isnull=True)
+        for component in components:
+            component.total_tasks = Tasks.objects.filter(building_component__flat_id=flat_id).filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).exclude(status='done').count()
+            component.tasks_done = Tasks.objects.filter(building_component__flat_id=flat_id, status='done').filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).count()
         result_page = paginator.paginate_queryset(components, request)
         serializer = ComponentSerializer(result_page, many=True)
         return paginator.get_paginated_response(data=serializer.data)

@@ -141,6 +141,11 @@ class TasksView(generic.DetailView):
                     tasks = Tasks.objects.filter(building_component__flat_id=flat_id).filter(Q(
                         Q(building_component__component__parent_id=component_id) | Q(
                             building_component__component_id=component_id)))
+            for task in tasks:
+                try:
+                    task.comment = Comments.objects.filter(task_id=task.id, text__isnull=False).last()
+                except Exception as e:
+                    task.comment = None
             tasks_list = render_to_string('tasks/task.html', {"tasks": tasks, "request": request})
             response['success'] = True
             response['tasks_list'] = tasks_list

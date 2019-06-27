@@ -24,15 +24,15 @@
                     <div class="task_detail_description">
                         <p class="mb-0"><label for="">Last Updated By: </label> {{ task.updated_by.first_name }} {{ task.updated_by.last_name }}</p>
                     </div>
+                {% if task.comment %}
                     <div class="last_comment">
                         <blockquote class="blockquote">
-                            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit.
-                                Integer posuere erat a ante.</p>
-                            <footer class="blockquote-footer">Someone famous in <cite
-                                    title="Source Title">Source Title</cite></footer>
+                            <p class="mb-0">{{ task.comment.text }}</p>
+                            <footer class="blockquote-footer">{{ task.comment.user.first_name }} {{ task.comment.user.last_name }}</footer>
+{#                             <cite title="Source Title">Source Title</cite>#}
                         </blockquote>
                     </div>
+                {% endif %}
                 </div>
             </div>
         </div>
