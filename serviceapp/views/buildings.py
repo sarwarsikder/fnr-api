@@ -37,12 +37,9 @@ class BuildingComponentViewSet(APIView):
         paginator = PageNumberPagination()
         paginator.page_size = 10
         components = BuildingComponents.objects.annotate(name=F('component__name')).filter(building_id=building_id, flat__isnull=True, component__parent__isnull=True)
-        # components = BuildingComponents.objects.annotate(name=F('component__name'), total_tasks=Count('tasks', filter=Q(Q(tasks__building_component__component__parent_id=F('component_id')) | Q(tasks__building_component__component_id=F('component_id'))))).filter(building_id=building_id, flat__isnull=True, component__parent__isnull=True)
-        # for component in components:
-        #     print(component.component_id)
-        #     component.total_tasks = Tasks.objects.filter(building_component__flat__isnull=True).filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id)))
-        #     print(component.total_tasks.query)
-        #     component.total_tasks = Tasks.objects.filter(building_component__flat__isnull=True, status='done').filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).count()
+        for component in components:
+            component.total_tasks = Tasks.objects.filter(building_component__building_id=building_id, building_component__flat__isnull=True).filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).count()
+            component.tasks_done = Tasks.objects.filter(building_component__building_id=building_id, building_component__flat__isnull=True, status='done').filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).count()
         result_page = paginator.paginate_queryset(components, request)
         serializer = ComponentSerializer(result_page, many=True)
         return paginator.get_paginated_response(data=serializer.data)

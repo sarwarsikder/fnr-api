@@ -8,25 +8,31 @@
             <div class="task_detail_bottom">
                 <div class="task_detail_bottom_wrap celarfix">
                     <div class="task_detail_description">
-                        <p class="mb-0"><label for="">Last Updated: </label> 13-04-2020</p>
+                        <p class="mb-0"><label for="">Last Updated: </label> {{ task.updated_at|date:'d-m-Y' }}</p>
                     </div>
                     <div class="task_detail_description">
-                        <p class="text-center mb-0"><label for="">Status: </label> To Do <span
-                                class="badge badge-info"><i class="fa fa-list-alt"></i></span>
+                        <p class="text-center mb-0"><label for="">Status: </label>
+                            {% if task.status == 'to_do' %}
+                                To Do <span class="badge badge-info"><i class="fa fa-list-alt"></i></span>
+                            {% elif task.status == 'in_progress' %}
+                                 In Progress <span class="badge badge-warning"><i class="fa fa-spinner"></i></span>
+                            {% else %}
+                                 Done <span class="badge badge-success"><i class="fa fa-check"></i></span>
+                            {% endif %}
                         </p>
                     </div>
                     <div class="task_detail_description">
-                        <p class="mb-0"><label for="">Last Updated By: </label> Arnab</p>
+                        <p class="mb-0"><label for="">Last Updated By: </label> {{ task.updated_by.first_name }} {{ task.updated_by.last_name }}</p>
                     </div>
+                {% if task.comment %}
                     <div class="last_comment">
                         <blockquote class="blockquote">
-                            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                elit.
-                                Integer posuere erat a ante.</p>
-                            <footer class="blockquote-footer">Someone famous in <cite
-                                    title="Source Title">Source Title</cite></footer>
+                            <p class="mb-0">{{ task.comment.text }}</p>
+                            <footer class="blockquote-footer">{{ task.comment.user.first_name }} {{ task.comment.user.last_name }}</footer>
+{#                             <cite title="Source Title">Source Title</cite>#}
                         </blockquote>
                     </div>
+                {% endif %}
                 </div>
             </div>
         </div>
