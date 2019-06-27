@@ -26,7 +26,7 @@ INSERT INTO `components` (`id`, `name`, `static_description`, `created_at`, `upd
 (45, 'Sichtschutz', 'In Bädern Satinato', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '4', '1', '0', '1', NULL),
 (46, 'Fensterbänke', 'Innen Naturstein, poliert, Material analog Treppenhausboden, für nicht raumhohe Fenster, außen Alu-Blech in Alu-Natur. Keine Fensterbank an Terrassen- und Balkontüren.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '4', '1', '0', '1', NULL),
 (47, 'Keller', 'Kunststoff-Fenster mit Leibungsrahmen.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '4', '1', '1', '0', NULL),
-(48, 'Beschattung', 'Aufsatzrollladenkästen an allen Wohnungsfenstern, außer im Treppenhaus.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '4', '1', '1', '0', '‘nbk’'),
+(48, 'Beschattung', 'Aufsatzrollladenkästen an allen Wohnungsfenstern, außer im Treppenhaus.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '4', '1', '1', '0', 'nbk'),
 (49, 'Beschattung', 'Aufsatzrollladenkästen an allen Wohnungsfenstern, außer im Treppenhaus.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '4', '1', '1', '0', 'aufsr'),
 (50, 'Beschattung', 'Aufsatzrollladenkästen an allen Wohnungsfenstern, außer im Treppenhaus.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '4', '1', '1', '0', 'rse'),
 (51, 'Elektro', 'Unterputzinstallation in den Wohnungen, im Treppenhaus und in der Schleuse zur Tiefgarage. Aufputzinstallation im Untergeschoß, mit Ausnahme der vorstehend genannten Bereiche, und in der Tiefgarage.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '5', '1', '1', '1', NULL),
