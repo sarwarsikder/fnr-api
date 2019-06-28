@@ -66,10 +66,10 @@ class StaffFormView(View):
     def post(self, request, *args, **kwargs):
         if CommonView.superuser_login(request):
             form = self.form_class(request.POST, request.FILES)
+            project_list = request.POST.getlist('project_list')
             if form.is_valid():
-                projects = request.POST.getlist('project_list')
                 obj = form.save(self, request)
-                ProjectsView.assign_staff(request, projects, obj.id)
+                ProjectsView.assign_staff(request, project_list, obj.id)
                 mailTemplate = "mails/user_registered.html"
                 context = {
                     "user_full_name": obj.get_full_name(),
@@ -81,7 +81,7 @@ class StaffFormView(View):
                 CommonView.sendEmail(self.request, mailTemplate, context, subject, to, obj.id)
                 return HttpResponseRedirect('/staffs/')
             projects = CommonView.get_all_projects(request)
-            return render(request, self.template_name, {'form': form, 'projects': projects})
+            return render(request, self.template_name, {'form': form, 'projects': projects, 'project_list': project_list})
         else:
             return redirect('index')
 
