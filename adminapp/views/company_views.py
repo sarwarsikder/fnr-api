@@ -92,7 +92,7 @@ class CompanyFormView(View):
             CommonView.sendEmail(self.request, mailTemplate, context, subject, to, obj.id)
             return HttpResponseRedirect('/companies/')
         components = CommonView.get_all_main_component(request)
-        return render(request, self.template_name, {'form': form, 'components': components})
+        return render(request, self.template_name, {'form': form, 'components': components, 'working_types': working_components})
 
 
 class CompanyUpdateView(UpdateView):

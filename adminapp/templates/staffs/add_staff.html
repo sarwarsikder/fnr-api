@@ -65,7 +65,7 @@
                                         <div class="form-group">
                                             <label for="{{ form.first_name.id_for_label }}">First name</label>
                                             <div class="has-feedback">
-                                                <input type="text" id="id_first_name" name="first_name"
+                                                <input type="text" id="id_first_name" name="first_name" value="{{ form.first_name.value|default_if_none:'' }}"
                                                        class="form-control" placeholder="Enter First name">
                                                 {{ form.first_name.errors }}
                                             </div>
@@ -74,7 +74,7 @@
                                             <label for="{{ form.last_name.id_for_label }}">Last name</label>
                                             <div class="has-feedback">
                                                 <input type="text" class="form-control" id="id_last_name"
-                                                       name="last_name"
+                                                       name="last_name" value="{{ form.last_name.value|default_if_none:'' }}"
                                                        placeholder="Enter Last Name">
                                                 {{ form.last_name.errors }}
                                             </div>
@@ -82,7 +82,7 @@
                                         <div class="form-group">
                                             <label for="{{ form.username.id_for_label }}">User name</label>
                                             <div class="has-feedback">
-                                                <input type="text" class="form-control" id="id_username" name="username"
+                                                <input type="text" class="form-control" id="id_username" name="username" value="{{ form.username.value|default_if_none:'' }}"
                                                        placeholder="Enter User name">
                                                 {{ form.username.errors }}
                                             </div>
@@ -90,7 +90,7 @@
                                         <div class="form-group">
                                             <label for="{{ form.email.id_for_label }}">Email address</label>
                                             <div class="has-feedback">
-                                                <input type="email" class="form-control" id="id_email" name="email"
+                                                <input type="email" class="form-control" id="id_email" name="email" value="{{ form.email.value|default_if_none:'' }}"
                                                        placeholder="Enter email">
                                                 {{ form.email.errors }}
                                             </div>
@@ -115,6 +115,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <input type="hidden" id="project_list_selection" value='{{ project_list }}'>
                                             <label for="{{ form.project_list.id_for_label }}">Assigned Projects</label>
                                             <div class="has-feedback">
                                                 <select class="form-control select2" multiple
@@ -133,7 +134,7 @@
                                             <div class="has-feedback">
                                                         <textarea id="id_address" name="address" class="form-control"
                                                                   placeholder="Enter staff address"
-                                                                  style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                                                  style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ form.address.value|default_if_none:'' }}</textarea>
                                                 {{ form.address.errors }}
                                             </div>
                                         </div>
@@ -198,6 +199,10 @@
                 }
                 return false;
             });
+            var project_list = $("#project_list_selection").val().replace(/'/g, '"');
+            if(project_list != ''){
+                $('#id_project_list').select2('val', JSON.parse(project_list));
+            }
         });
     </script>
 {% endblock %}
