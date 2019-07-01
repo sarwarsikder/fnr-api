@@ -8,7 +8,7 @@
             <div class="task_detail_bottom">
                 <div class="task_detail_bottom_wrap celarfix">
                     <div class="task_detail_description">
-                        <p class="mb-0"><label for="">Last Updated: </label> {{ task.updated_at|date:'d-m-Y' }}</p>
+                        <p class="mb-0"><label for="">Updated On: </label> {{ task.updated_at|date:'d-m-Y' }}</p>
                     </div>
                     <div class="task_detail_description">
                         <p class="text-center mb-0"><label for="">Status: </label>
@@ -22,7 +22,7 @@
                         </p>
                     </div>
                     <div class="task_detail_description">
-                        <p class="mb-0"><label for="">Last Updated By: </label> {{ task.updated_by.first_name }} {{ task.updated_by.last_name }}</p>
+                        <p class="mb-0"><label for="">Updated By: </label> {{ task.updated_by.first_name }} {{ task.updated_by.last_name }}</p>
                     </div>
                 {% if task.comment %}
                     <div class="last_comment">

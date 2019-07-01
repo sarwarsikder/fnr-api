@@ -12,7 +12,7 @@ RUN apk add --update \
   && rm -rf /var/cache/apk/*
 
 ENV LIBRARY_PATH=/lib:/usr/lib
-
+RUN pip install --upgrade pip
 RUN mkdir /app
 WORKDIR /app
 COPY . /app

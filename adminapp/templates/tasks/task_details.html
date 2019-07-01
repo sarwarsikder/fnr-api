@@ -20,7 +20,7 @@
                                 {% if task.building_component.flat %}
                                     <li>{{ task.building_component.flat.number }}</li>
                                 {% endif %}
-                                <li>Task {{ task.id }}</li>
+                                <li>{{ task.building_component.component.parent.name }}</li>
                             </ul>
                         </div>
                     </div>
