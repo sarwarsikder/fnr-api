@@ -20,7 +20,7 @@
                                 {% if task.building_component.flat %}
                                     <li>{{ task.building_component.flat.number }}</li>
                                 {% endif %}
-                                <li>Task {{ task.id }}</li>
+                                <li>{{ task.building_component.component.parent.name }}</li>
                             </ul>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                                 <div class="col-sm col-12">
                                     <h5><strong>{{ task.building_component.component.name|title }}</strong></h5>
                                     <p><strong>Created
-                                        By: </strong> {{ task.created_by.first_name }} {{ task.created_by.last_name }}
+                                        By: </strong> {{ task.created_by }}
                                     </p>
 
                                     <div class="row align-items-center">
