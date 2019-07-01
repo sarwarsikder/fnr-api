@@ -26,7 +26,8 @@ class CommonView(generic.DetailView):
         response = {}
         try:
             context["request"] = request
-            context["base_url"] = settings.SITE_URL
+            # context["base_url"] = settings.SITE_URL
+            context["base_url"] = "http://"+request.get_host()
             context["project_title"] = settings.PROJECT_TITLE
             mail_template_content = render_to_string(template, context)
             sender_mail = settings.EMAIL_HOST_USER
@@ -153,18 +154,19 @@ class CommonView(generic.DetailView):
         return qr_code
 
     # Imaginary function to handle an uploaded file.
-    def handle_uploaded_file(f):
+    def handle_uploaded_file(request, f):
         random_number = CommonView.randomString(10)
         file = str(f.name).rsplit('.', 1)
         filename = file[0] + "_" + random_number + "." + file[1]
         full_filename = os.path.join(settings.MEDIA_ROOT, "comments", filename)
         fout = open(full_filename, 'wb+')
+        host_url = "http://"+request.get_host()
         try:
             for chunk in f.chunks():
                 fout.write(chunk)
             fout.close()
             file_info = {
-                "path": settings.SITE_URL + "/media/comments/" + filename,
+                "path": host_url + "/media/comments/" + filename,
                 "ext": file[1]
             }
             return file_info

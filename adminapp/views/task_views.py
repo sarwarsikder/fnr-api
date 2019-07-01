@@ -412,7 +412,7 @@ class TaskDetailsView(generic.DetailView):
             if not os.path.exists(dir):
                 os.makedirs(dir)
             for file in files:
-                uploaded_file = CommonView.handle_uploaded_file(file)
+                uploaded_file = CommonView.handle_uploaded_file(request, file)
                 if uploaded_file != "":
                     file_list.append(uploaded_file)
             if comment != '' or len(file_list) > 0:

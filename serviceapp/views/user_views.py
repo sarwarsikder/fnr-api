@@ -115,7 +115,8 @@ class ResetPasswordRequestViewSet:
                     key = key.encode('utf-8')
                     hash_code = hashlib.sha224(key).hexdigest()
                     ResetPassword(user=user, hash_code=hash_code, expired_at=expired_date).save()
-                base_url = settings.SITE_URL
+                # base_url = settings.SITE_URL
+                base_url = "http://"+request.get_host()
                 mail_template = "mails/reset_password.html"
                 context = {
                     'base_url': base_url,
