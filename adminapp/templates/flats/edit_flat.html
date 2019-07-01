@@ -41,7 +41,7 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-xs-12">
                                         <div class="form-group has-feedback">
-                                            <label for="{{ form.number.id_for_label }}">Wohnung Number</label>
+                                            <label for="{{ form.number.id_for_label }}">Wohnung Number<span class="required-cls">*</span></label>
                                             <input type="text" id="id_number" name="number"
                                                    class="form-control" placeholder="Enter Wohnung number" value="{{ form.number.value }}">
                                             {{ form.number.errors }}
