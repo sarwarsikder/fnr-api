@@ -274,7 +274,7 @@ class TaskDetailsView(generic.DetailView):
             handworkers = HandWorker.objects.all()
         for handworker in handworkers:
             data = {
-                "text": handworker.user.first_name + " " + handworker.user.last_name,
+                "text": handworker.company_name,
                 "id": handworker.user_id,
             }
             followers.append(data)
