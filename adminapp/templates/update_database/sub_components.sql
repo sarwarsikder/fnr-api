@@ -1,5 +1,5 @@
 INSERT INTO `components` (`id`, `name`, `static_description`, `created_at`, `updated_at`, `created_by_id`, `parent_id`, `updated_by_id`, `building`, `flat`, `type`) VALUES
-(21, 'Erdbau', 'Aushub, Boeschung, etc.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '1', '1', '1', '0', 'sb'),
+(21, 'Erdbau', 'Aushub, Boeschung, etc.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '1', '1', '1', '0', NULL),
 (22, 'Gründung', 'Tragende Bodenplatte aus Stahlbeton. Geglättet.  In der Tiefgarage Boden mit OS8-Beschichtung und aufgehende Bauteile mit OS4-Beschichtung.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '2', '1', '1', '0', 'sb'),
 (23, 'Gründung', 'Tragende Bodenplatte aus Stahlbeton. Geglättet.  In der Tiefgarage Boden mit OS8-Beschichtung und aufgehende Bauteile mit OS4-Beschichtung.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '2', '1', '1', '0', 'sb_sf'),
 (24, 'Geschossdecken', 'Stahlbeton.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '2', '1', '1', '0', NULL),
