@@ -63,7 +63,7 @@ body{
 }
 
 .form-control{
-    font-size: 0.8em !important;
+    font-size:1em !important;
 }
 .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active {
         background-color: #7d6e58 !important;
@@ -316,14 +316,16 @@ li.nav-item.navbar_select_li {
 
 
 .imagePreview {
-    width: 100%;
-    height: 215px;
+    width: 120px;
+    height: 120px;
+    min-height: 80px;
+    min-width: 80px;
     background-position: center center !important;
     background: url(../images/photo.png);
     background-color: #fff;
     background-size: cover !important;
     background-repeat: no-repeat;
-    display: inline-block;
+    margin: 0px auto;
 }
 .btn_up_image
 {
@@ -351,7 +353,9 @@ li.nav-item.navbar_select_li {
 .chg_image_profile{
     display: flex;
 }
-
+.required-cls{
+    color: red;
+}
 
 
 .switch {
@@ -465,7 +469,6 @@ span.cwp_title{
 }
 .plan_pdf img {
     width: auto;
-    height: 75px;
 }
 .plan_pdf  {
     padding: 20px;
@@ -971,4 +974,10 @@ button.btn.btn-primary.submit_modal_assignee{
     background: #5f5240 !important;
     border-color: transparent !important;
     color: #fff !important;
+}
+.btn-chk-follower{
+    display: inline-block;
+    position: absolute;
+    top: 32px;
+    right: 0px;
 }

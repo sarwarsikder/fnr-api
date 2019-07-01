@@ -63,7 +63,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="{{ form.company_name.id_for_label }}">Company
-                                                        name</label>
+                                                        name<span class="required-cls">*</span></label>
                                                     <div class="has-feedback">
                                                         <input type="text" class="form-control"
                                                                id="id_company_name" name="company_name" value="{{ form.company_name.value|default_if_none:'' }}"
@@ -72,7 +72,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="{{ form.password.id_for_label }}">Password</label>
+                                                    <label for="{{ form.password.id_for_label }}">Password<span class="required-cls">*</span></label>
                                                     <div class="has-feedback">
                                                         <input type="password" class="form-control"
                                                                id="id_password" name="password"
@@ -101,7 +101,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="{{ form.email.id_for_label }}">Email
-                                                        address</label>
+                                                        address<span class="required-cls">*</span></label>
                                                     <div class="has-feedback">
                                                         <input type="email" class="form-control" id="id_email" value="{{ form.email.value|default_if_none:'' }}"
                                                                name="email" placeholder="Enter email">
@@ -111,7 +111,7 @@
                                                 <div class="form-group">
                                                     <input type="hidden" id="working_type_selection" value='{{ working_types }}'>
                                                     <label for="{{ form.working_type.id_for_label }}">Working
-                                                        type</label>
+                                                        type<span class="required-cls">*</span></label>
                                                     <div class="has-feedback">
                                                         <select class="form-control select2" multiple
                                                                 id="id_working_type" name="working_type"
@@ -128,7 +128,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="{{ form.username.id_for_label }}">User
-                                                        name</label>
+                                                        name<span class="required-cls">*</span></label>
                                                     <div class="has-feedback">
                                                         <input type="text" class="form-control" id="id_username"
                                                                name="username" value="{{ form.username.value|default_if_none:'' }}"
@@ -138,7 +138,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="{{ form.confirm_password.id_for_label }}">Confirm
-                                                        Password</label>
+                                                        Password<span class="required-cls">*</span></label>
                                                     <div class="has-feedback">
                                                         <input type="password" class="form-control"
                                                                id="id_confirm_password" name="confirm_password"
