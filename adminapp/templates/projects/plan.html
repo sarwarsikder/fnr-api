@@ -6,7 +6,7 @@
                class="plan_anc">
                 <div class="plan_wrap add_plan_wrap">
                     <div class="plan_pdf text-center">
-                        <img src="{% static 'assets/images/add_plan.png' %}">
+                        <img class="img-fluid" style="max-height: 100px;" src="{% static 'assets/images/add_plan.png' %}">
                     </div>
                     <div class="plan_title">
                         <p>Add Plan</p>
@@ -27,7 +27,7 @@
                    class="plan_anc">
                     <div class="plan_wrap">
                         <div class="plan_pdf text-center">
-                            <img src="
+                            <img class="img-fluid" style="max-height: 100px;" src="
                                     {% if plan.file_type == "pdf" %}{% static 'assets/images/pdf.png' %}{% else %}{% static 'assets/images/file.png' %}{% endif %}">
                         </div>
                         <div class="plan_title">
