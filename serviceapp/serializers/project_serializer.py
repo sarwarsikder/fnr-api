@@ -9,7 +9,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Projects
-        fields = ('id', 'address', 'description', 'city', 'type', 'energetic_standard', 'total_tasks', 'tasks_done')
+        fields = ('id', 'name', 'address', 'description', 'city', 'type', 'energetic_standard', 'total_tasks', 'tasks_done')
 
 
 class PlanSerializer(serializers.ModelSerializer):
