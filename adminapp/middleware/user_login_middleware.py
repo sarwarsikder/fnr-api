@@ -17,7 +17,7 @@ class UserLoginMiddleware(generic.DetailView):
 
     def __call__(self, request):
         path = request.path.split('/')[1]
-        if path == '' or path != 'api':
+        if path == '' and path != 'api' and path !='media':
             if request.is_ajax() == False:
                 settings.USE_TZ = False
                 browser_current_url = resolve(request.path_info).url_name
