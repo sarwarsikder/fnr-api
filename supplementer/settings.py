@@ -128,7 +128,7 @@ REST_FRAMEWORK = {
 #     },
 # ]
 
-EMAIL_HOST_USER = 'projektadmin@frprojektbau.de'
+EMAIL_HOST_USER = 'mahedi@workspaceit.com'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SMTP_USERNAME = 'AKIATIKUJJNFIJKO2GZR'
 SMTP_PASSWORD = 'zMMViCz8WSx1VlnBROv3cY+qVwA0NS8lXyvll66c'

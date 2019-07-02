@@ -68,7 +68,7 @@ class Mailer():
         subject = self.subject
         to = self.to
         if settings.LOCAL_ENV:
-            to = 'projektadmin@frprojektbau.de'
+            to = 'workspaceinfotech@gmail.com'
         messages=self.mime_email(subject,from_email_address,to,html2text.html2text(message,"",256),message)
         self.conn.send_raw_email(messages)
 
@@ -89,7 +89,7 @@ class MailHelper(generic.View):
     def mail_send(context, subject, to, sender_mail):
         html_content = context
         if os.environ['ENVIRONMENT_TYPE'] == 'master':
-            email = Mailer(subject=subject, to='projektadmin@frprojektbau.de', from_addr=sender_mail)
+            email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
             email.send(html_content)
             email = Mailer(subject=subject, to=to, from_addr=sender_mail)
             email.send(html_content)
