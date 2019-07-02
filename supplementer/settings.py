@@ -128,12 +128,11 @@ REST_FRAMEWORK = {
 #     },
 # ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'workspaceinfotech@gmail.com'
-EMAIL_HOST_PASSWORD = 'workspaceit'
+EMAIL_HOST_USER = 'mahedi@workspaceit.com'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SMTP_USERNAME = 'AKIATIKUJJNFIJKO2GZR'
+SMTP_PASSWORD = 'zMMViCz8WSx1VlnBROv3cY+qVwA0NS8lXyvll66c'
+SES_REGION = 'eu-west-1'
 
 PROJECT_TITLE = "Supplementer"
 
