@@ -17,11 +17,11 @@
                             <ul class="detail_breadcrumb">
                                 {% if flat %}
                                     <li>{{ flat.building.project.name|title }}</li>
-                                    <li>{{ flat.building.display_number }}</li>
-                                    <li>{{ flat.number }}</li>
+                                    <li>Haus:&nbsp;{{ flat.building.display_number }}</li>
+                                    <li>Wohnung:&nbsp;{{ flat.number }}</li>
                                 {% elif building %}
                                     <li>{{ building.project.name|title }}</li>
-                                    <li>{{ building.display_number }}</li>
+                                    <li>Haus:&nbsp;{{ building.display_number }}</li>
                                 {% endif %}
                             </ul>
                         </div>
