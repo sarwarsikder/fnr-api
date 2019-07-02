@@ -9,15 +9,26 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from adminapp.views.mail import MailHelper
 from adminapp.views.helper import LogHelper
-from adminapp.models import Components, Projects, BuildingComponents, Tasks, QrCode, Buildings, Flats
+from adminapp.models import Components, Projects, BuildingComponents, Tasks, QrCode, Buildings, Flats, NotificationStatus
 from django.db.models import Q, Count
+from datetime import datetime
 import qrcode
 import io
 
 
 class IndexView(generic.DetailView):
     def get(self, request):
-        return render(request, 'dashboard/index.html', {'user_id': request.user.id})
+        response = {}
+        try:
+            response["user_id"] = request.user.id 
+            notifications = NotificationStatus.objects.filter(user_id=request.user.id).order_by('-sending_at')
+            notification_list = notifications[:10]
+            response["notification_list"] = notification_list
+            response['today'] = datetime.today().strftime('%Y-%m-%d')
+            # print(response)
+            return render(request, 'dashboard/index.html', response)
+        except Exception as e:
+            print(e)
 
 
 class CommonView(generic.DetailView):

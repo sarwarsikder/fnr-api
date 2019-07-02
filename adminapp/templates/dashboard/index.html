@@ -29,82 +29,32 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Letzte Actualiserung</h3>
+                            <h3 class="card-title">Letzte Actualiserung</h3>                            
                         </div>
                         <!-- /.card-header -->
+                        
+                        
+                        
                         <div class="card-body">
                             <div class="notificaiton_wrap">
                                 <ul class="notificaton_ul">
+                                    {% for notification in notification_list %}
                                     <a href="#">
-                                        <li class="unread clearfix">
-                                            <img class="img-circle img-sm" src="{% static 'assets/images/avatar5.png' %}"
-                                                 alt="User Image">
-
-                                            <div class="comment-text">
-                                                <span class="username">Maria Gonzales<span
-                                                        class="text-muted float-right">8:03 PM Today</span></span>
+                                        <li>
+                                            <img class="img-circle img-sm"
+                                                src="{% if notification.notification.sending_by.avatar %}{{ notification.notification.sending_by.avatar.url }}{% else %}{% static "assets/images/avatar5.png" %}{% endif %}"
+                                                alt="User Image">
+                                            <a href="{% url 'task-details' task_id=notification.notification.task_id %}" class="comment-text">
+                                                <span
+                                                    class="text-muted float-right">{% if today == notification.sending_at|date:"Y-m-d" %}{{ notification.sending_at|date:"h:i A" }}
+                                                    Today{% else %}{{ notification.sending_at|date:"d M Y" }}{% endif %}</span>
                                                 <!-- /.username -->
-                                                It is a long established fact that a reader will be distracted
-                                                by the readable content of a page when looking at its layout.
-                                            </div>
+                                                {{ notification.notification.text }}
+                                            </a>
                                         </li>
                                     </a>
-                                    <a href="#">
-                                        <li class="unread clearfix">
-                                            <img class="img-circle img-sm" src="{% static 'assets/images/avatar5.png' %}"
-                                                 alt="User Image">
-
-                                            <div class="comment-text">
-                                                <span class="username">Maria Gonzales<span
-                                                        class="text-muted float-right">8:03 PM Today</span></span>
-                                                <!-- /.username -->
-                                                It is a long established fact that a reader will be distracted
-                                                by the readable content of a page when looking at its layout.
-                                            </div>
-                                        </li>
-                                    </a>
-                                    <a href="#">
-                                        <li class="unread clearfix">
-                                            <img class="img-circle img-sm" src="{% static 'assets/images/avatar5.png' %}"
-                                                 alt="User Image">
-
-                                            <div class="comment-text">
-                                                <span class="username">Maria Gonzales<span
-                                                        class="text-muted float-right">8:03 PM Today</span></span>
-                                                <!-- /.username -->
-                                                It is a long established fact that a reader will be distracted
-                                                by the readable content of a page when looking at its layout.
-                                            </div>
-                                        </li>
-                                    </a>
-                                    <a href="#">
-                                        <li class="unread clearfix">
-                                            <img class="img-circle img-sm" src="{% static 'assets/images/avatar5.png' %}"
-                                                 alt="User Image">
-
-                                            <div class="comment-text">
-                                                <span class="username">Maria Gonzales<span
-                                                        class="text-muted float-right">8:03 PM Today</span></span>
-                                                <!-- /.username -->
-                                                It is a long established fact that a reader will be distracted
-                                                by the readable content of a page when looking at its layout.
-                                            </div>
-                                        </li>
-                                    </a>
-                                    <a href="#">
-                                        <li class="unread clearfix">
-                                            <img class="img-circle img-sm" src="{% static 'assets/images/avatar5.png' %}"
-                                                 alt="User Image">
-
-                                            <div class="comment-text">
-                                                <span class="username">Maria Gonzales<span
-                                                        class="text-muted float-right">8:03 PM Today</span></span>
-                                                <!-- /.username -->
-                                                It is a long established fact that a reader will be distracted
-                                                by the readable content of a page when looking at its layout.
-                                            </div>
-                                        </li>
-                                    </a>
+                                    {% endfor %}
+                                
 
 
                                 </ul>
