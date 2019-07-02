@@ -128,7 +128,7 @@ REST_FRAMEWORK = {
 #     },
 # ]
 
-EMAIL_HOST_USER = 'mahedi@workspaceit.com'
+EMAIL_HOST_USER = 'projektadmin@frprojektbau.de'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SMTP_USERNAME = 'AKIATIKUJJNFIJKO2GZR'
 SMTP_PASSWORD = 'zMMViCz8WSx1VlnBROv3cY+qVwA0NS8lXyvll66c'
@@ -158,6 +158,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = False
+
+LOCAL_ENV = False
 
 STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static')
 STATIC_URL = '/static/'
