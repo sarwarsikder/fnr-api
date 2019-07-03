@@ -30,19 +30,21 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6 offset-sm-3">
-                    <div class="card">
+                    <div class="card" id="print-element">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm">
-                                    <p class="brand-text" style="text-align: center;"><strong>F&R Projectbau GmbH</strong></p>
+                                    <p class="brand-text" style="text-align: center;"><strong>F&R Projectbau
+                                        GmbH</strong></p>
                                 </div>
                             </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body text-center">
-                            <img src="{% url 'qr-to-png' qr_id=qr_info.id %}" onclick="window.print();return false;"/>
+                            <img src="{% url 'qr-to-png' qr_id=qr_info.id %}"/>
                             <div class="project-info">
-                                <label>Project Name:</label>&nbsp;<span>{{ qr_info.building.project.name|title }}</span>
+                                <label>Project
+                                    Name:</label>&nbsp;<span>{{ qr_info.building.project.name|title }}</span>
                             </div>
                             <div class="building-info">
                                 <label>Hause Number:</label>&nbsp;<span>{{ qr_info.building.display_number }}</span>
@@ -50,6 +52,11 @@
                             <!-- /.card-body -->
                         </div>
                         <!-- /.col-lg-6 -->
+                    </div>
+                    <div class="print-btn">
+                        <button class="print-qr btn btn-primary" onclick="printDiv('print-element');return false;">Print
+                        </button>
+                        <button class="close-qr btn btn-danger" onclick="window.close();return false;">Close</button>
                     </div>
                     <!-- /.row -->
                 </div>
