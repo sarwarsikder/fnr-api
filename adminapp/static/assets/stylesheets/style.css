@@ -981,3 +981,7 @@ button.btn.btn-primary.submit_modal_assignee{
     top: 32px;
     right: 0px;
 }
+
+.print-btn{
+    text-align: center;
+}

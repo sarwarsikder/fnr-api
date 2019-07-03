@@ -31,7 +31,8 @@ class ProjectListView(BaseDatatableView):
         if self.request.user.is_superuser:
             return Projects.objects.all()
         else:
-            return Projects.objects.annotate(user_type=Case(When(projectstuff__user__is_superuser=True, then='projectstuff__user__is_superuser'), default='projectstuff__user__is_superuser')).filter(projectstuff__user_id=self.request.user.id)
+            projects = Projects.objects.annotate(user_type=Case(When(projectstuff__user__is_superuser=True, then='projectstuff__user__is_superuser'), default='projectstuff__user__is_superuser')).filter(projectstuff__user_id=self.request.user.id).distinct()
+            return projects
 
 
 class BuildingListView(BaseDatatableView):
