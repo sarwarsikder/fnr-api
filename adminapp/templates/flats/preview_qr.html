@@ -41,7 +41,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body text-center">
-                            <img src="{% url 'qr-to-png' qr_id=qr_info.id %}" onclick="window.print();return false;"/>
+                            <img src="{% url 'qr-to-png' qr_id=qr_info.id %}"/>
                             <div class="project-info">
                                 <label>Project Name:</label>&nbsp;<span>{{ qr_info.building.project.name|title }}</span>
                             </div>
