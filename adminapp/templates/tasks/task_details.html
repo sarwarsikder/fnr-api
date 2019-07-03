@@ -16,9 +16,9 @@
                         <div class="brad_info pull-right">
                             <ul class="detail_breadcrumb">
                                 <li>{{ task.building_component.building.project.name|title }}</li>
-                                <li>{{ task.building_component.building.display_number }}</li>
+                                <li>Haus: &nbsp;{{ task.building_component.building.display_number }}</li>
                                 {% if task.building_component.flat %}
-                                    <li>{{ task.building_component.flat.number }}</li>
+                                    <li>Wohnung: &nbsp;{{ task.building_component.flat.number }}</li>
                                 {% endif %}
                                 <li>{{ task.building_component.component.parent.name }}</li>
                             </ul>
