@@ -119,6 +119,7 @@ urlpatterns = [
     url(r'^get-new-notifications/$', notification_views.NotificationsView.get_new_notifications, name='get-new-notifications'),
     url(r'^get-all-notifications/$', notification_views.NotificationsView.as_view(), name='get-all-notifications'),
     url(r'^get-more-notifications/$', notification_views.NotificationsView.get_more_notifications, name='get-more-notifications'),
+    url(r'^read-all-notifications/$', notification_views.NotificationsView.read_all_notification, name='read-all-notifications'),
 
     url(r'^update-database/$', update_database.UpdateDatabaseView.as_view(), name='update-database'),
     url(r'^update-database-request/$', update_database.UpdateDatabaseView.update_database, name='update-database-request'),

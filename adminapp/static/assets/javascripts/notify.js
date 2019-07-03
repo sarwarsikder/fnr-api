@@ -136,6 +136,29 @@
 //
 $(function () {
     get_new_notifications();
+    $('body').on('click', '.mark-all-read', function () {
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        var data = {
+            'csrfmiddlewaretoken': csrfToken
+        };
+        $.ajax({
+            url: base_url + '/read-all-notifications/',
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                if (response.success) {
+                    $(".live_notify_list").find('.dropdown-item.unread').removeClass('unread');
+                    $(".live_notify_badge").html("0");
+                    $.growl.notice({message: response.message});
+                } else {
+                    clog(response.message);
+                }
+            },
+            error: function (e) {
+                clog(e);
+            }
+        });
+    });
 });
 
 // setTimeout(get_new_notifications, 5000);
@@ -148,7 +171,7 @@ function get_new_notifications() {
             if (response.success) {
                 var elem = notification_list(response.notifications);
                 $(".live_notify_badge").html(response.unread_notifications);
-                if(response.new_notifications){
+                if (response.new_notifications) {
                     $.growl.notice({message: "You got a new notification"});
                 }
             } else {
@@ -177,7 +200,7 @@ function notification_list(notifications) {
             message = "<img src='" + item.avatar + "' class='img-circle img-sm' style='margin-right:7px;' alt='User Image'/>";
         }
         if (typeof item.message !== 'undefined') {
-            message = message + "<p style='padding-left:7px;'>" + item.message +"</p>";
+            message = message + "<p style='padding-left:7px;'>" + item.message + "</p>";
         }
         if (typeof item.task_id !== 'undefined') {
             target_url = base_url + "/tasks/" + item.task_id + "/";
@@ -214,11 +237,11 @@ function notification_list(notifications) {
                 '<span class="float-right text-muted text-sm">' + fuzzy + '</span>';
         }
         var nt_class = "dropdown-item";
-        if(!item.status){
-            nt_class +=" unread";
+        if (!item.status) {
+            nt_class += " unread";
         }
         var notificationElem = '<div class="dropdown-divider"></div>' +
-            '<a href="' + target_url + '" class="'+nt_class+'">' + message +
+            '<a href="' + target_url + '" class="' + nt_class + '">' + message +
             '</a>';
         return notificationElem;
     }).join('');

@@ -169,3 +169,15 @@ class NotificationsView(generic.DetailView):
             NotificationStatus.objects.filter(user_id=request.user.id, notification__task_id=task_id).update(status=True)
         except Exception as e:
             LogHelper.efail(e)
+
+    def read_all_notification(request):
+        response = {}
+        try:
+            NotificationStatus.objects.filter(user_id=request.user.id).update(status=True)
+            response['success'] = True
+            response['message'] = "All notifications read successfully"
+        except Exception as e:
+            response['success'] = False
+            response['message'] = "Something went wrong. Please try again"
+            LogHelper.efail(e)
+        return HttpResponse(json.dumps(response), content_type='application/json')
