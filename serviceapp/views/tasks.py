@@ -35,15 +35,15 @@ class BuildingTasksViewSet(APIView):
         paginator = PageNumberPagination()
         paginator.page_size = 10
         if status == 'pending':
-            tasks = Tasks.objects.annotate(description=F('building_component__description')).filter(building_component__building_id=building_id, building_component__flat__isnull=True).filter(Q(Q(building_component__component__parent_id=component_id) | Q(building_component__component_id=component_id))).exclude(status='done')
+            tasks = Tasks.objects.annotate(name=F('building_component__component__name'), description=F('building_component__description')).filter(building_component__building_id=building_id, building_component__flat__isnull=True).filter(Q(Q(building_component__component__parent_id=component_id) | Q(building_component__component_id=component_id))).exclude(status='done')
         elif status == 'done':
-            tasks = Tasks.objects.annotate(description=F('building_component__description')).filter(
+            tasks = Tasks.objects.annotate(name=F('building_component__component__name'), description=F('building_component__description')).filter(
                 building_component__building_id=building_id,
                 building_component__flat__isnull=True, status='done').filter(Q(
                 Q(building_component__component__parent_id=component_id) | Q(
                     building_component__component_id=component_id)))
         else:
-            tasks = Tasks.objects.annotate(description=F('building_component__description')).filter(building_component__building_id=building_id,
+            tasks = Tasks.objects.annotate(name=F('building_component__component__name'), description=F('building_component__description')).filter(building_component__building_id=building_id,
                                          building_component__flat__isnull=True).filter(Q(
                 Q(building_component__component__parent_id=component_id) | Q(
                     building_component__component_id=component_id)))
@@ -62,13 +62,13 @@ class FlatTasksViewSet(APIView):
         paginator = PageNumberPagination()
         paginator.page_size = 10
         if type == 'pending':
-            tasks = Tasks.objects.annotate(description=F('building_component__description')).filter(building_component__flat_id=flat_id).filter(Q(Q(building_component__component__parent_id=component_id) | Q(building_component__component_id=component_id))).exclude(status='done')
+            tasks = Tasks.objects.annotate(name=F('building_component__component__name'), description=F('building_component__description')).filter(building_component__flat_id=flat_id).filter(Q(Q(building_component__component__parent_id=component_id) | Q(building_component__component_id=component_id))).exclude(status='done')
         elif type == 'done':
-            tasks = Tasks.objects.annotate(description=F('building_component__description')).filter(building_component__flat_id=flat_id, status='done').filter(Q(
+            tasks = Tasks.objects.annotate(name=F('building_component__component__name'), description=F('building_component__description')).filter(building_component__flat_id=flat_id, status='done').filter(Q(
                         Q(building_component__component__parent_id=component_id) | Q(
                             building_component__component_id=component_id)))
         else:
-            tasks = Tasks.objects.annotate(description=F('building_component__description')).filter(building_component__flat_id=flat_id).filter(Q(
+            tasks = Tasks.objects.annotate(name=F('building_component__component__name'), description=F('building_component__description')).filter(building_component__flat_id=flat_id).filter(Q(
                         Q(building_component__component__parent_id=component_id) | Q(
                             building_component__component_id=component_id)))
         result_page = paginator.paginate_queryset(tasks, request)
@@ -83,6 +83,8 @@ class TaskDetailsViewSet(APIView):
         try:
             task_id = kwargs['task_id']
             task = Tasks.objects.get(id=task_id)
+            task.name = task.building_component.component.name
+            task.description = task.building_component.description
             if task.building_component.component.parent:
                 assign_to_user = BuildingComponents.objects.filter(
                     component_id=task.building_component.component.parent_id,
