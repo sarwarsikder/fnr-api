@@ -5,10 +5,10 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <ol class="breadcrumb ">
+                    <!-- <ol class="breadcrumb ">
                         <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
                         <li class="breadcrumb-item active">Add Handworker</li>
-                    </ol>
+                    </ol> -->
                 </div>
                 <!-- /.col -->
             </div>
@@ -27,7 +27,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm">
-                                    <h3 class="card-title">Add Handwerker</h3>
+                                    <h3 class="card-title">Hinzufügen Handwerker</h3>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                                                     <div class="has-feedback imgUp">
                                                         <div class="imagePreview"></div>
                                                         <label class="btn btn-primary btn_up_image w-100">
-                                                            Upload<input type="file" class="uploadFile img"
+                                                            Bild auswählen<input type="file" class="uploadFile img"
                                                                          id="id_avatar" name="avatar"
                                                                          value="Upload Photo"
                                                                          style="width: 0px;height: 0px;overflow: hidden;">
@@ -62,8 +62,7 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="{{ form.company_name.id_for_label }}">Company
-                                                        name<span class="required-cls">*</span></label>
+                                                    <label for="{{ form.company_name.id_for_label }}">Firmenname<span class="required-cls">*</span></label>
                                                     <div class="has-feedback">
                                                         <input type="text" class="form-control"
                                                                id="id_company_name" name="company_name" value="{{ form.company_name.value|default_if_none:'' }}"
@@ -72,7 +71,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="{{ form.password.id_for_label }}">Password<span class="required-cls">*</span></label>
+                                                    <label for="{{ form.password.id_for_label }}">Passwort<span class="required-cls">*</span></label>
                                                     <div class="has-feedback">
                                                         <input type="password" class="form-control"
                                                                id="id_password" name="password"
@@ -81,8 +80,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="{{ form.first_name.id_for_label }}">First
-                                                        name</label>
+                                                    <label for="{{ form.first_name.id_for_label }}">Vorname</label>
                                                     <div class="has-feedback">
                                                         <input type="text" id="id_first_name" name="first_name"
                                                                class="form-control" value="{{ form.first_name.value|default_if_none:'' }}"
@@ -91,7 +89,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="{{ form.telephone_office.id_for_label }}">Phone Office</label>
+                                                    <label for="{{ form.telephone_office.id_for_label }}">Buronummer</label>
                                                     <div class="has-feedback">
                                                         <input type="text" class="form-control" id="id_telephone_office"
                                                                name="telephone_office" value="{{ form.telephone_office.value|default_if_none:'' }}"
@@ -110,8 +108,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="hidden" id="working_type_selection" value='{{ working_types }}'>
-                                                    <label for="{{ form.working_type.id_for_label }}">Working
-                                                        type<span class="required-cls">*</span></label>
+                                                    <label for="{{ form.working_type.id_for_label }}">Arbeit type<span class="required-cls">*</span></label>
                                                     <div class="has-feedback">
                                                         <select class="form-control select2" multiple
                                                                 id="id_working_type" name="working_type"
@@ -127,8 +124,7 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="{{ form.username.id_for_label }}">User
-                                                        name<span class="required-cls">*</span></label>
+                                                    <label for="{{ form.username.id_for_label }}">Benutzername<span class="required-cls">*</span></label>
                                                     <div class="has-feedback">
                                                         <input type="text" class="form-control" id="id_username"
                                                                name="username" value="{{ form.username.value|default_if_none:'' }}"
@@ -137,8 +133,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="{{ form.confirm_password.id_for_label }}">Confirm
-                                                        Password<span class="required-cls">*</span></label>
+                                                    <label for="{{ form.confirm_password.id_for_label }}">Passwort Bestätigen<span class="required-cls">*</span></label>
                                                     <div class="has-feedback">
                                                         <input type="password" class="form-control"
                                                                id="id_confirm_password" name="confirm_password"
@@ -147,8 +142,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="{{ form.last_name.id_for_label }}">Last
-                                                        name</label>
+                                                    <label for="{{ form.last_name.id_for_label }}">Nachname</label>
                                                     <div class="has-feedback">
                                                         <input type="text" class="form-control"
                                                                id="id_last_name" name="last_name" value="{{ form.last_name.value|default_if_none:'' }}"
@@ -157,7 +151,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="{{ form.telephone_mobile.id_for_label }}">Phone Mobile</label>
+                                                    <label for="{{ form.telephone_mobile.id_for_label }}">Mobilnummer</label>
                                                     <div class="has-feedback">
                                                         <input type="text" class="form-control" id="id_telephone_mobile"
                                                                name="telephone_mobile" value="{{ form.telephone_mobile.value|default_if_none:'' }}"
@@ -166,7 +160,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="{{ form.address.id_for_label }}">Address</label>
+                                                    <label for="{{ form.address.id_for_label }}">Addresse</label>
                                                     <div class="has-feedback">
                                                             <textarea id="id_address" name="address"
                                                                       class="form-control"
@@ -177,7 +171,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
-                                                <button type="submit" class="btn btn-primary">Add Handwerker</button>
+                                                <button type="submit" class="btn btn-primary">Handwerker Hinzufügen</button>
                                             </div>
                                         </div>
                                     </div>

@@ -6,10 +6,10 @@
             <div class="row mb-2">
                 <!-- /.col -->
                 <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-left">
+                    <!-- <ol class="breadcrumb float-sm-left">
                         <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
                         <li class="breadcrumb-item active">Edit Staff</li>
-                    </ol>
+                    </ol> -->
                 </div>
                 <!-- /.col -->
             </div>
@@ -29,7 +29,7 @@
 
                             <div class="row">
                                 <div class="col-sm">
-                                    <h3 class="card-title">Edit Staff</h3>
+                                    <h3 class="card-title">Bearbeiten Staff</h3>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                                                     <div class="has-feedback imgUp">
                                                         <div class="imagePreview" style="background: url('{% if avatar %}{{ avatar }}{% else %}{% static 'assets/images/photo.png' %}{% endif %}')"></div>
                                                         <label class="btn btn-primary btn_up_image w-100">
-                                                            Upload<input type="file" class="uploadFile img"
+                                                            Bild auswählen <input type="file" class="uploadFile img"
                                                                          id="id_avatar" name="avatar"
                                                                          value="Upload Photo"
                                                                          style="width: 0px;height: 0px;overflow: hidden;">
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="col-sm-8 col-xs-12">
                                         <div class="form-group">
-                                            <label for="{{ form.first_name.id_for_label }}">First name<span class="required-cls">*</span></label>
+                                            <label for="{{ form.first_name.id_for_label }}">Vorname<span class="required-cls">*</span></label>
                                             <div class="has-feedback">
                                                 <input type="text" id="id_first_name" name="first_name"
                                                        class="form-control" placeholder="Enter First name" value="{{ form.first_name.value }}">
@@ -70,7 +70,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="{{ form.last_name.id_for_label }}">Last name<span class="required-cls">*</span></label>
+                                            <label for="{{ form.last_name.id_for_label }}">Nachname<span class="required-cls">*</span></label>
                                             <div class="has-feedback">
                                                 <input type="text" class="form-control" id="id_last_name"
                                                        name="last_name"
@@ -79,7 +79,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="{{ form.username.id_for_label }}">User name<span class="required-cls">*</span></label>
+                                            <label for="{{ form.username.id_for_label }}">Benutzername<span class="required-cls">*</span></label>
                                             <div class="has-feedback">
                                                 <input type="text" class="form-control" id="id_username" name="username"
                                                        placeholder="Enter User name" value="{{ form.username.value }}">
@@ -87,7 +87,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="{{ form.email.id_for_label }}">Email address<span class="required-cls">*</span></label>
+                                            <label for="{{ form.email.id_for_label }}">Email addresse<span class="required-cls">*</span></label>
                                             <div class="has-feedback">
                                                 <input type="email" class="form-control" id="id_email" name="email"
                                                        placeholder="Enter email" value="{{ form.email.value }}">
@@ -96,7 +96,7 @@
                                         </div>
                                         <div class="form-group">
                                                     <input type="hidden" id="project_list_selection" value='{{ project_list }}'>
-                                                    <label for="{{ form.project_list.id_for_label }}">Assigned Projects</label>
+                                                    <label for="{{ form.project_list.id_for_label }}">Projekt Zugehorigkeit</label>
                                                     <div class="has-feedback">
                                                         <select class="form-control select2" multiple
                                                                 id="id_project_list" name="project_list"
@@ -110,7 +110,7 @@
                                                     </div>
                                                 </div>
                                         <div class="form-group">
-                                            <label for="{{ form.address.id_for_label }}">Address</label>
+                                            <label for="{{ form.address.id_for_label }}">Addresse</label>
                                             <div class="has-feedback">
                                                         <textarea id="id_address" name="address" class="form-control"
                                                                   placeholder="Enter staff address"
@@ -122,7 +122,7 @@
                                     </div>
 
                                     <div class="col-sm-6 offset-sm-3 col-xs-12">
-                                        <button type="submit" class="btn btn-primary">Update Staff</button>
+                                        <button type="submit" class="btn btn-primary">Bearbeiten</button>
 
                                     </div>
                                 </div>

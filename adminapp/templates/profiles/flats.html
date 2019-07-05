@@ -36,7 +36,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm col-6">
-                                    <h3 class="card-title">Wohnungs</h3>
+                                    <h3 class="card-title">Wohnungen</h3>
                                 </div>
                             </div>
                         </div>
@@ -45,9 +45,9 @@
                             <nav>
                                 <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                                     <a class="nav-item nav-link active" id="current-flat-list" data-toggle="tab" href="#current-flat-list-tab"
-                                       role="tab" aria-controls="nav-task" aria-selected="false">Wohnungs</a>
+                                       role="tab" aria-controls="nav-task" aria-selected="false">Wohnungen</a>
                                     <a class="nav-item nav-link" id="current-building-plan-list" data-toggle="tab" href="#current-plan-list-tab"
-                                       role="tab" aria-controls="nav-task" aria-selected="false">Plans</a>
+                                       role="tab" aria-controls="nav-task" aria-selected="false">Pläne</a>
                                 </div>
                             </nav>
                            <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
@@ -66,11 +66,11 @@
                                                                <h5>{{ flat.number }}</h5>
                                                            </div>
                                                            <div class="card-footer">
-{#                                                               <div class="bd_cardfooter justify-content-start">#}
-{#                                                                   <h6><strong>Hauser Name</strong></h6>#}
-{#                                                               </div>#}
+                                                            {#<div class="bd_cardfooter justify-content-start">#}
+                                                                {#<h6><strong>Hauser Name</strong></h6>#}
+                                                            {#</div>#}
                                                                <div class="bd_cardfooter justify-content-end">
-                                                                   <p><label for="">Task : </label> {{ flat.total_tasks }}</p>
+                                                                   <p><label for="">Bauteil Übersicht: </label> {{ flat.total_tasks }}</p>
                                                                </div>
                                                            </div>
                                                        </div>

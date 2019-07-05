@@ -40,14 +40,13 @@
                             <div class="row">
                                 <div class="col-sm col-12">
                                     <h5><strong>{{ task.building_component.component.name|title }}</strong></h5>
-                                    <p><strong>Created
-                                        By: </strong> {{ task.created_by.first_name }} {{ task.created_by.last_name }}
+                                    <p><strong>Erstellt Von: </strong> {{ task.created_by.first_name }} {{ task.created_by.last_name }}
                                     </p>
 
                                     <div class="row align-items-center">
                                         <div class="col-sm col-12">
                                             <div class="form-group">
-                                                <label>Assigned to</label>
+                                                <label>Zugehörig</label>
                                                 {% if assign_to %}
                                                     <p class="td_assign_to"><img class="img-circle img-sm"
                                                                                  src="{{ assign_to.avatar }}"
@@ -60,7 +59,7 @@
                                         </div>
                                         <div class="col-sm col-12">
                                             <div class="form-group">
-                                                <label>Followers</label>
+                                                <label>Anhänger</label>
                                                 <select class="form-control select2" multiple
                                                         id="task-followers" name="task-followers"
                                                         data-placeholder="Select Followers"
@@ -83,21 +82,20 @@
                                                         data-placeholder="Select Status"
                                                         style="width: 100%;">
                                                     <option value="to_do"
-                                                            {% if task.status == 'to_do' %}selected{% endif %}>To Do
+                                                            {% if task.status == 'to_do' %}selected{% endif %}>Nicht Begonnen
                                                     </option>
                                                     <option value="in_progress"
-                                                            {% if task.status == 'in_progress' %}selected{% endif %}>In
-                                                        Progress
+                                                            {% if task.status == 'in_progress' %}selected{% endif %}>In Bearbeitung
                                                     </option>
                                                     <option value="done"
-                                                            {% if task.status == 'done' %}selected{% endif %}>Done
+                                                            {% if task.status == 'done' %}selected{% endif %}>Fertig
                                                     </option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-sm col-12">
                                             <div class="form-group">
-                                                <label for="stn">Deadline</label>
+                                                <label for="stn">Frist</label>
                                                 <input id="task-due-date" width="100%" placeholder="yyyy-mm-dd" style="   height: 32px;border-color: #aba9ab;"
                                                        value="{{ task.due_date|date:"Y-m-d" }}"/>
                                             </div>
@@ -108,7 +106,7 @@
                                         <div class="col-sm-12 col-12">
                                             <div class="dropdown-divider"></div>
                                             <h3 class="task_des">
-                                                <strong>Description </strong>
+                                                <strong>Beschreibung</strong>
                                                 <button class="btn btn-primary edit_des" data-toggle="tooltip"
                                                         data-placement="top" title="Edit Description"><i
                                                         class="fa fa-pencil-alt"></i></button>
@@ -127,7 +125,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12 col-12">
-                                            <h5><strong>Comments </strong></h5>
+                                            <h5><strong>Nachrichten </strong></h5>
                                             <form class="task-comment-form" action="{% url 'add-new-comment' task_id=task.id %}" method="post" enctype="multipart/form-data">
                                                 {% csrf_token %}
                                                 <div class="row">
@@ -147,10 +145,10 @@
                                                 <div class="yes">
                                                             <span class="btn_upload btn btn-primary">
                                                             <input type="file" id="task_comment_files" name="task_comment_files" multiple="multiple"/>
-                                                            Choose Image
+                                                            Wählen Sie Image
                                                             </span>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary">Add Comment
+                                                <button type="submit" class="btn btn-primary">Nachrichten hinzufügen
                                                 </button>
                                             </form>
                                         </div>
@@ -159,7 +157,7 @@
                                         <div class="col-sm-12 col-12">
                                             <br>
                                             <div class="dropdown-divider"></div>
-                                            <h5><strong>Previous Comments </strong></h5>
+                                            <h5><strong>vorheriger Nachrichten  </strong></h5>
                                             <div class="dropdown-divider"></div>
                                             <!-- Box Comment -->
                                             <div class="card card-widget">
@@ -173,7 +171,7 @@
                                             {% if more_comments %}
                                                 <div class="col-md-12 text-center">
                                                     <button id="show-more-comments" class="btn btn-send btn-v-n"
-                                                            data-page-number="2">More Comments</button>
+                                                            data-page-number="2">Mehr Nachrichten</button>
                                                 </div>
                                             {% endif %}
                                         </div>
