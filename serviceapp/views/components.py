@@ -8,6 +8,7 @@ from adminapp.models import QrCode, BuildingComponents
 
 from adminapp.views.helper import LogHelper
 from serviceapp.serializers.building_serializer import ComponentSerializer
+from serviceapp.views.activities import ActivityView
 
 
 class ComponentPermissions(BasePermission):
@@ -53,6 +54,10 @@ class ComponentsViewSet(APIView):
                         building_id=scan_obj.building_id, flat__isnull=True, component__parent__isnull=True, assign_to_id=request.user.id)
             if len(components) < 1:
                 return Response({'success': False, "message": "Not Found"}, status=status.HTTP_404_NOT_FOUND)
+            if scan_obj.flat:
+                ActivityView.change_active_flat(request, scan_obj.flat_id)
+            else:
+                ActivityView.change_active_building(request, scan_obj.building_id)
             paginator = CustomPagination()
             paginator.page_size = 10
             result_page = paginator.paginate_queryset(components, request)

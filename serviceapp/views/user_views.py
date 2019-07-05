@@ -41,10 +41,10 @@ class UserInfo(APIView):
         if request.user.current_activity:
             request.user.current_activity = json.loads(request.user.current_activity)
         if not request.user.is_staff:
-            request.user.telephone = request.user.handworker.telephone
+            request.user.telephone_office = request.user.handworker.telephone_office
+            request.user.telephone_mobile = request.user.handworker.telephone_mobile
             request.user.company_name = request.user.handworker.company_name
-            if request.user.handworker.working_type:
-                request.user.working_type = json.loads(request.user.handworker.working_type)
+            request.user.working_type = request.user.handworker.working_type
         serializer = UserSerializer(request.user)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 

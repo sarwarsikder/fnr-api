@@ -7,6 +7,7 @@ from adminapp.models import Flats, FlatPlans, BuildingComponents, Tasks
 from rest_framework.pagination import PageNumberPagination
 from serviceapp.serializers.flat_serializer import FlatSerializer, FlatPlanSerializer
 from serviceapp.serializers.building_serializer import ComponentSerializer
+from serviceapp.views.activities import ActivityView
 
 
 class FlatPermissions(BasePermission):
@@ -27,6 +28,7 @@ class FlatViewSet(APIView):
         flats = Flats.objects.annotate(total_tasks=Count('buildingcomponents__tasks'), tasks_done=Count('buildingcomponents__tasks', filter=Q(buildingcomponents__tasks__status='done'))).filter(building_id=building_id)
         result_page = paginator.paginate_queryset(flats, request)
         serializer = FlatSerializer(result_page, many=True)
+        ActivityView.change_active_building(request, building_id)
         return paginator.get_paginated_response(data=serializer.data)
 
 
@@ -43,6 +45,7 @@ class FlatComponentViewSet(APIView):
             component.tasks_done = Tasks.objects.filter(building_component__flat_id=flat_id, status='done').filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).count()
         result_page = paginator.paginate_queryset(components, request)
         serializer = ComponentSerializer(result_page, many=True)
+        ActivityView.change_active_flat(request, flat_id)
         return paginator.get_paginated_response(data=serializer.data)
 
 
@@ -56,4 +59,5 @@ class FlatPlanViewSet(APIView):
         plans = FlatPlans.objects.filter(flat_id=flat_id)
         result_page = paginator.paginate_queryset(plans, request)
         serializer = FlatPlanSerializer(result_page, many=True)
+        ActivityView.change_active_flat(request, flat_id)
         return paginator.get_paginated_response(data=serializer.data)
