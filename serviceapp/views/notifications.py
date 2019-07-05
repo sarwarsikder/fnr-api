@@ -18,12 +18,6 @@ class NotificationsViewSet(APIView):
     permission_classes = (NotificationPermissions,)
 
     def get(self, request, **kwargs):
-        # if request.user.is_staff:
-        #     projects = list(ProjectStuff.objects.values('id').filter(user_id=self.request.user.id,
-        #                                                              project__is_complete=False).values_list(
-        #         'project_id', flat=True))
-        #     notifications = NotificationStatus.objects.filter(notification__task__building_component__building__project_id__in=projects).order_by('-sending_at')
-        # else:
         notifications = NotificationStatus.objects.filter(user_id=request.user.id).order_by('-sending_at')
         paginator = PageNumberPagination()
         paginator.page_size = 10

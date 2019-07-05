@@ -130,6 +130,7 @@ class TaskDetailsViewSet(APIView):
             task.more_comments = more_comments
             task.total_comments = comments.count()
             serializer = TaskDetailsSerializer(task)
+            NotificationsView.read_notification(request, task_id)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             LogHelper.efail(e)
