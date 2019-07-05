@@ -8,21 +8,21 @@
             <div class="task_detail_bottom">
                 <div class="task_detail_bottom_wrap celarfix">
                     <div class="task_detail_description">
-                        <p class="mb-0"><label for="">Updated On: </label> {{ task.updated_at|date:'d-m-Y' }}</p>
+                        <p class="mb-0"><label for="">Letztes Update: </label> {{ task.updated_at|date:'d-m-Y' }}</p>
                     </div>
                     <div class="task_detail_description">
                         <p class="text-center mb-0"><label for="">Status: </label>
                             {% if task.status == 'to_do' %}
-                                To Do <span class="badge badge-info"><i class="fa fa-list-alt"></i></span>
+                                Nicht Begonnen <span class="badge badge-info"><i class="fa fa-list-alt"></i></span>
                             {% elif task.status == 'in_progress' %}
-                                 In Progress <span class="badge badge-warning"><i class="fa fa-spinner"></i></span>
+                                In bearbeitung <span class="badge badge-warning"><i class="fa fa-spinner"></i></span>
                             {% else %}
-                                 Done <span class="badge badge-success"><i class="fa fa-check"></i></span>
+                                Fertig <span class="badge badge-success"><i class="fa fa-check"></i></span>
                             {% endif %}
                         </p>
                     </div>
                     <div class="task_detail_description">
-                        <p class="mb-0"><label for="">Updated By: </label> {{ task.updated_by.first_name }} {{ task.updated_by.last_name }}</p>
+                        <p class="mb-0"><label for="">Update Von: </label> {{ task.updated_by.first_name }} {{ task.updated_by.last_name }}</p>
                     </div>
                 {% if task.comment %}
                     <div class="last_comment">
