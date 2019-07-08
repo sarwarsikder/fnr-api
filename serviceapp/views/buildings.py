@@ -27,7 +27,7 @@ class BuildingViewSet(APIView):
         if request.user.is_staff:
             buildings = Buildings.objects.annotate(total_flats=Count('flats', distinct=True), total_tasks=Count('buildingcomponents__tasks', filter=Q(buildingcomponents__flat__isnull=True)), tasks_done=Count('buildingcomponents__tasks', filter=Q(buildingcomponents__tasks__status='done', buildingcomponents__flat__isnull=True))).filter(project_id=project_id)
         else:
-            buildings = Buildings.objects.filter(project_id=project_id, buildingcomponents__assign_to=request.user.id)
+            buildings = Buildings.objects.filter(project_id=project_id, buildingcomponents__assign_to=request.user.id).distinct()
         result_page = paginator.paginate_queryset(buildings, request)
         serializer = BuildingSerializer(result_page, many=True)
         ActivityView.change_active_project(request, project_id)
@@ -50,7 +50,7 @@ class BuildingComponentViewSet(APIView):
         else:
             components = BuildingComponents.objects.annotate(name=F('component__name')).filter(building_id=building_id,
                                                                                                flat__isnull=True,
-                                                                                               component__parent__isnull=True, assign_to=request.user.id)
+                                                                                               component__parent__isnull=True, assign_to=request.user.id).distinct()
         result_page = paginator.paginate_queryset(components, request)
         serializer = ComponentSerializer(result_page, many=True)
         ActivityView.change_active_building(request, building_id)

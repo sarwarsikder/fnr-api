@@ -44,8 +44,7 @@ class ProjectViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
                                                      buildings__buildingcomponents__tasks__status='done'))).filter(
                 id__in=projects)
         else:
-            projects = list(Projects.objects.values('id').filter(buildings__buildingcomponents__assign_to=self.request.user.id, is_complete=False).values_list('id', flat=True))
-            queryset = Projects.objects.filter(id__in=projects)
+            queryset = Projects.objects.filter(buildings__buildingcomponents__assign_to=self.request.user.id, is_complete=False).distinct()
         return queryset
 
 
