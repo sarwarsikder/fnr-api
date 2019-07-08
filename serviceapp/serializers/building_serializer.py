@@ -4,9 +4,9 @@ from adminapp.models import Buildings, BuildingPlans, BuildingComponents
 
 
 class BuildingSerializer(serializers.ModelSerializer):
-    total_tasks = serializers.IntegerField(read_only=True)
-    tasks_done = serializers.IntegerField(read_only=True)
-    total_flats = serializers.IntegerField(read_only=True)
+    total_tasks = serializers.IntegerField(read_only=True, default=None)
+    tasks_done = serializers.IntegerField(read_only=True,  default=None)
+    total_flats = serializers.IntegerField(read_only=True,  default=None)
 
     class Meta:
         model = Buildings
@@ -30,8 +30,8 @@ class BuildingPlanSerializer(serializers.ModelSerializer):
 
 class ComponentSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=100, read_only=True)
-    total_tasks = serializers.IntegerField(read_only=True)
-    tasks_done = serializers.IntegerField(read_only=True)
+    total_tasks = serializers.IntegerField(read_only=True, default=None)
+    tasks_done = serializers.IntegerField(read_only=True, default=None)
 
     class Meta:
         model = BuildingComponents

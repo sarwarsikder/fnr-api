@@ -12,7 +12,7 @@ from serviceapp.views.activities import ActivityView
 class BuildingPermissions(BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.is_authenticated and request.user.is_staff and request.method == 'GET':
+        if request.user.is_authenticated and request.method == 'GET':
             return True
         return False
 
@@ -24,7 +24,10 @@ class BuildingViewSet(APIView):
         project_id = kwargs['project_id']
         paginator = PageNumberPagination()
         paginator.page_size = 10
-        buildings = Buildings.objects.annotate(total_flats=Count('flats', distinct=True), total_tasks=Count('buildingcomponents__tasks', filter=Q(buildingcomponents__flat__isnull=True)), tasks_done=Count('buildingcomponents__tasks', filter=Q(buildingcomponents__tasks__status='done', buildingcomponents__flat__isnull=True))).filter(project_id=project_id)
+        if request.user.is_staff:
+            buildings = Buildings.objects.annotate(total_flats=Count('flats', distinct=True), total_tasks=Count('buildingcomponents__tasks', filter=Q(buildingcomponents__flat__isnull=True)), tasks_done=Count('buildingcomponents__tasks', filter=Q(buildingcomponents__tasks__status='done', buildingcomponents__flat__isnull=True))).filter(project_id=project_id)
+        else:
+            buildings = Buildings.objects.filter(project_id=project_id, buildingcomponents__assign_to=request.user.id)
         result_page = paginator.paginate_queryset(buildings, request)
         serializer = BuildingSerializer(result_page, many=True)
         ActivityView.change_active_project(request, project_id)
@@ -38,10 +41,16 @@ class BuildingComponentViewSet(APIView):
         building_id = kwargs['building_id']
         paginator = PageNumberPagination()
         paginator.page_size = 10
-        components = BuildingComponents.objects.annotate(name=F('component__name')).filter(building_id=building_id, flat__isnull=True, component__parent__isnull=True)
-        for component in components:
-            component.total_tasks = Tasks.objects.filter(building_component__building_id=building_id, building_component__flat__isnull=True).filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).count()
-            component.tasks_done = Tasks.objects.filter(building_component__building_id=building_id, building_component__flat__isnull=True, status='done').filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).count()
+        if request.user.is_staff:
+            components = BuildingComponents.objects.annotate(name=F('component__name')).filter(building_id=building_id, flat__isnull=True, component__parent__isnull=True)
+            for component in components:
+                component.total_tasks = Tasks.objects.filter(building_component__building_id=building_id,
+                                                             building_component__flat__isnull=True).filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).count()
+                component.tasks_done = Tasks.objects.filter(building_component__building_id=building_id,building_component__flat__isnull=True, status='done').filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).count()
+        else:
+            components = BuildingComponents.objects.annotate(name=F('component__name')).filter(building_id=building_id,
+                                                                                               flat__isnull=True,
+                                                                                               component__parent__isnull=True, assign_to=request.user.id)
         result_page = paginator.paginate_queryset(components, request)
         serializer = ComponentSerializer(result_page, many=True)
         ActivityView.change_active_building(request, building_id)

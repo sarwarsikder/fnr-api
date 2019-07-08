@@ -4,8 +4,8 @@ from adminapp.models import Flats, FlatPlans
 
 
 class FlatSerializer(serializers.ModelSerializer):
-    total_tasks = serializers.IntegerField(read_only=True)
-    tasks_done = serializers.IntegerField(read_only=True)
+    total_tasks = serializers.IntegerField(read_only=True, default=None)
+    tasks_done = serializers.IntegerField(read_only=True, default=None)
 
     class Meta:
         model = Flats

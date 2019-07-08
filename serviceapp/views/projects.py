@@ -3,7 +3,7 @@ from rest_framework.permissions import BasePermission
 from rest_framework import viewsets, mixins
 from rest_framework.views import APIView
 
-from adminapp.models import Projects, ProjectStuff, ProjectPlans
+from adminapp.models import Projects, ProjectStuff, ProjectPlans, BuildingComponents
 from rest_framework.pagination import PageNumberPagination
 from serviceapp.serializers.project_serializer import ProjectSerializer, PlanSerializer
 
@@ -11,7 +11,7 @@ from serviceapp.serializers.project_serializer import ProjectSerializer, PlanSer
 class ProjectPermissions(BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.is_authenticated and request.user.is_staff and request.method == 'GET':
+        if request.user.is_authenticated and request.method == 'GET':
             return True
         return False
 
@@ -32,8 +32,20 @@ class ProjectViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         This view should return a list of all the purchases
         for the currently authenticated user.
         """
-        projects = list(ProjectStuff.objects.values('id').filter(user_id=self.request.user.id, project__is_complete=False).values_list('project_id', flat=True))
-        queryset = Projects.objects.annotate(total_tasks=Count('buildings__buildingcomponents__tasks'), tasks_done=Count('buildings__buildingcomponents__tasks', filter=Q(buildings__buildingcomponents__tasks__status='done'))).filter(id__in=projects)
+        if self.request.user.is_superuser:
+            queryset = Projects.objects.annotate(total_tasks=Count('buildings__buildingcomponents__tasks'),
+                                                 tasks_done=Count('buildings__buildingcomponents__tasks', filter=Q(
+                                                     buildings__buildingcomponents__tasks__status='done'))).filter(is_complete=False)
+        elif self.request.user.is_staff:
+            projects = list(ProjectStuff.objects.values('id').filter(user_id=self.request.user.id,
+                                                                     project__is_complete=False).values_list('project_id', flat=True))
+            queryset = Projects.objects.annotate(total_tasks=Count('buildings__buildingcomponents__tasks'),
+                                                 tasks_done=Count('buildings__buildingcomponents__tasks', filter=Q(
+                                                     buildings__buildingcomponents__tasks__status='done'))).filter(
+                id__in=projects)
+        else:
+            projects = list(Projects.objects.values('id').filter(buildings__buildingcomponents__assign_to=self.request.user.id, is_complete=False).values_list('id', flat=True))
+            queryset = Projects.objects.filter(id__in=projects)
         return queryset
 
 
