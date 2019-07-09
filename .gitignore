@@ -4,4 +4,5 @@
 __pycache__
 venv/
 local_settings.py
-https:/
+media/
+.supplementer.log

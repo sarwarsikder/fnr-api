@@ -1,0 +1,41 @@
+{% for task in tasks %}
+    <a href="{% url 'task-details' task_id=task.id %}" class="task_title">
+        <div class="col-md-12 task_wrap">
+            {{ task.building_component.component.name|title }}
+            <div class="dropdown-divider"></div>
+            <p>{{ task.building_component.description }}</p>
+            <div class="dropdown-divider"></div>
+            <div class="task_detail_bottom">
+                <div class="task_detail_bottom_wrap celarfix">
+                    <div class="task_detail_description">
+                        <p class="mb-0"><label for="">Letztes Update: </label> {{ task.updated_at|date:'d-m-Y' }}</p>
+                    </div>
+                    <div class="task_detail_description">
+                        <p class="text-center mb-0"><label for="">Status: </label>
+                            {% if task.status == 'to_do' %}
+                                Nicht Begonnen <span class="badge badge-info"><i class="fa fa-list-alt"></i></span>
+                            {% elif task.status == 'in_progress' %}
+                                In bearbeitung <span class="badge badge-warning"><i class="fa fa-spinner"></i></span>
+                            {% else %}
+                                Fertig <span class="badge badge-success"><i class="fa fa-check"></i></span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="task_detail_description">
+                        <p class="mb-0"><label for="">Update Von: </label> {{ task.updated_by.first_name }} {{ task.updated_by.last_name }}</p>
+                    </div>
+                {% if task.comment %}
+                    <div class="last_comment">
+                        <blockquote class="blockquote">
+                            <p class="mb-0">{{ task.comment.text }}</p>
+                            <footer class="blockquote-footer">{{ task.comment.user.first_name }} {{ task.comment.user.last_name }}</footer>
+{#                             <cite title="Source Title">Source Title</cite>#}
+                        </blockquote>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </a>
+{% endfor %}
+

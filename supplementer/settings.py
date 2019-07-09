@@ -14,8 +14,6 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -41,7 +39,10 @@ INSTALLED_APPS = [
     'adminapp',
     'serviceapp',
     'oauth2_provider',
-    'django_mysql'
+    'django_mysql',
+    'rest_framework',
+    'pushnotificationapp',
+    'notifications'
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'adminapp.middleware.user_login_middleware.UserLoginMiddleware'
 ]
 
 ROOT_URLCONF = 'supplementer.urls'
@@ -72,6 +74,8 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'adminapp.Users'
+
 WSGI_APPLICATION = 'supplementer.wsgi.application'
 
 
@@ -80,16 +84,29 @@ WSGI_APPLICATION = 'supplementer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'supplementer_db',
+        'NAME': 'supplementer_live',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': 'Wsit_97480',
-        'HOST': 'localhost',
+        'USER': 'wsit',
+        'PASSWORD': 'wsit97480',
+        'HOST': '172.18.1.11',
         'PORT': '3306',
         'OPTIONS': {
             'autocommit': True,
         },
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100
 }
 
 
@@ -111,10 +128,23 @@ DATABASES = {
 #     },
 # ]
 
+EMAIL_HOST_USER = 'mahedi@workspaceit.com'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SMTP_USERNAME = 'AKIATIKUJJNFIJKO2GZR'
+SMTP_PASSWORD = 'zMMViCz8WSx1VlnBROv3cY+qVwA0NS8lXyvll66c'
+SES_REGION = 'eu-west-1'
+
+PROJECT_TITLE = "Supplementer"
+
 OAUTH2_PROVIDER = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': 86400,
 }
 
+if DEBUG:
+    import logging
+    l = logging.getLogger('django.db.backends')
+    l.setLevel(logging.DEBUG)
+    l.addHandler(logging.StreamHandler())
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -129,16 +159,23 @@ USE_L10N = True
 
 USE_TZ = False
 
+LOCAL_ENV = False
+
 STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static')
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
+MEDIA_URL = '/media/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-if os.environ['ENVIRONMENT_TYPE'] == 'master':
-    SITE_URL = 'http://127.0.0.1:8000'
-else:
-    SITE_URL = 'http://127.0.0.1:8000'
+# if os.environ['ENVIRONMENT_TYPE'] == 'master':
+#     SITE_URL = 'http://192.168.1.10:8080'
+# else:
+#     SITE_URL = 'http://192.168.1.10:8080'
+# SITE_URL = 'http://18.185.218.125:8006'
+SITE_URL = 'http://58.84.34.65:8006'
 
 LOGGING = {
     'version': 1,
