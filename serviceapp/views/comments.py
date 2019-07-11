@@ -43,46 +43,57 @@ class CommentsViewSet(APIView):
         return paginator.get_paginated_response(data=serializer.data)
 
     def post(self, request, **kwargs):
-        task_id = kwargs['task_id']
-        comment = request.data.pop("text", '')
-        # comment = comment[0]
-        files = request.data.getlist('files')
-        file_list = []
-        dir = os.path.join(settings.MEDIA_ROOT, "comments")
-        if not os.path.exists(dir):
-            os.makedirs(dir)
-        for file in files:
-            uploaded_file = CommonView.handle_uploaded_file(request, file)
-            if uploaded_file != "":
-                file_list.append(uploaded_file)
-        if comment != '' or len(file_list) > 0:
-            comment_form = {
-                "text": comment,
-                "file_type": file_list if (len(file_list) > 0) else None,
-                "task_id": task_id,
-                "user": request.user,
-                "type": "text"
-            }
-            new_comment = Comments(**comment_form)
-            new_comment.save()
-            task = Tasks.objects.get(id=task_id)
-            task.save()
-            if comment != '':
-                # Send Notification
-                message = NotificationText.get_task_comment_notification_text(request.user.get_full_name(),
-                                                                              task.building_component.component.name)
-                task_thread = threading.Thread(target=NotificationsView.create_notfication,
-                                               args=(request, 'task_comment', message, task_id, request.user.id))
-                task_thread.start()
-            if len(file_list) > 0:
-                # Send Notification
-                message = NotificationText.get_attach_file_notification_text(request.user.get_full_name(),
-                                                                             task.building_component.component.name)
-                task_thread = threading.Thread(target=NotificationsView.create_notfication,
-                                               args=(request, 'attach_file', message, task_id, request.user.id))
-                task_thread.start()
-            serializer = CommentSerializer(new_comment)
-            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-        else:
+        try:
+            task_id = kwargs['task_id']
+            comment = ''
+            file_list = []
+            dir = os.path.join(settings.MEDIA_ROOT, "comments")
+            if not os.path.exists(dir):
+                os.makedirs(dir)
+            if 'files' in request.data:
+                files = request.data.getlist('files')
+                for file in files:
+                    uploaded_file = CommonView.handle_uploaded_file(request, file)
+                    if uploaded_file != "":
+                        file_list.append(uploaded_file)
+            if 'text' in request.data:
+                comment = request.data["text"]
+            if comment != '' or len(file_list) > 0:
+                comment_form = {
+                    "text": comment,
+                    "file_type": file_list if (len(file_list) > 0) else None,
+                    "task_id": task_id,
+                    "user": request.user,
+                    "type": "text"
+                }
+                new_comment = Comments(**comment_form)
+                new_comment.save()
+                task = Tasks.objects.get(id=task_id)
+                task.save()
+                if comment != '':
+                    # Send Notification
+                    message = NotificationText.get_task_comment_notification_text(request.user.get_full_name(),
+                                                                                  task.building_component.component.name)
+                    task_thread = threading.Thread(target=NotificationsView.create_notfication,
+                                                   args=(request, 'task_comment', message, task_id, request.user.id))
+                    task_thread.start()
+                if len(file_list) > 0:
+                    # Send Notification
+                    message = NotificationText.get_attach_file_notification_text(request.user.get_full_name(),
+                                                                                 task.building_component.component.name)
+                    task_thread = threading.Thread(target=NotificationsView.create_notfication,
+                                                   args=(request, 'attach_file', message, task_id, request.user.id))
+                    task_thread.start()
+                paginator = PageNumberPagination()
+                paginator.page_size = 5
+                comments = Comments.objects.filter(task_id=task_id).order_by('-created_at')
+                result_page = paginator.paginate_queryset(comments, request)
+                serializer = CommentSerializer(result_page, many=True)
+                return paginator.get_paginated_response(data=serializer.data)
+            else:
+                return Response({'success': False, 'message': "Something went wrong."},
+                                status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            LogHelper.efail(e)
             return Response({'success': False, 'message': "Something went wrong."},
-                            status=status.HTTP_404_NOT_FOUND)
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
