@@ -84,8 +84,12 @@ class CommentsViewSet(APIView):
                     task_thread = threading.Thread(target=NotificationsView.create_notfication,
                                                    args=(request, 'attach_file', message, task_id, request.user.id))
                     task_thread.start()
-                serializer = CommentSerializer(new_comment)
-                return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+                paginator = PageNumberPagination()
+                paginator.page_size = 5
+                comments = Comments.objects.filter(task_id=task_id).order_by('-created_at')
+                result_page = paginator.paginate_queryset(comments, request)
+                serializer = CommentSerializer(result_page, many=True)
+                return paginator.get_paginated_response(data=serializer.data)
             else:
                 return Response({'success': False, 'message': "Something went wrong."},
                                 status=status.HTTP_404_NOT_FOUND)
