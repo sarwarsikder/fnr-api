@@ -25,7 +25,6 @@ class IndexView(generic.DetailView):
             notification_list = notifications[:10]
             response["notification_list"] = notification_list
             response['today'] = datetime.today().strftime('%Y-%m-%d')
-            # print(response)
             return render(request, 'dashboard/index.html', response)
         except Exception as e:
             print(e)
@@ -68,10 +67,8 @@ class CommonView(generic.DetailView):
         file = str(file)
         file_path = ""
         try:
-            print(settings.MEDIA_URL)
             # path = file.split("adminapp/")[1]
             file_path = settings.MEDIA_URL+file
-            print(file_path)
         except Exception as e:
             LogHelper.elog(e)
         return file_path
