@@ -95,7 +95,6 @@ class MailHelper(generic.View):
             email.send(html_content)
         else:
             email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
-            print(email)
             email.send(html_content)
 
 
