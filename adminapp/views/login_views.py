@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 
 class LoginView(generic.DetailView):
     def get(self, request):
-        print(request.user.is_authenticated)
         if request.user.is_authenticated:
             return redirect('index')
         else:
