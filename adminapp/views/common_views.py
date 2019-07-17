@@ -168,7 +168,8 @@ class CommonView(generic.DetailView):
         filename = file[0] + "_" + random_number + "." + file[1]
         full_filename = os.path.join(settings.MEDIA_ROOT, "comments", filename)
         fout = open(full_filename, 'wb+')
-        host_url = "http://"+request.get_host()
+        # host_url = "http://"+request.get_host()
+        host_url = ""
         try:
             for chunk in f.chunks():
                 fout.write(chunk)
