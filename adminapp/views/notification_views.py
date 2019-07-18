@@ -87,7 +87,6 @@ class NotificationsView(generic.DetailView):
     # All followers
 
     def create_notification_user(request, notification):
-        LogHelper.ex_time_init()
         try:
             # notification_users = []
             super_admin = Users.objects.filter(is_superuser=True).first()
@@ -130,7 +129,6 @@ class NotificationsView(generic.DetailView):
                     notification_user = NotificationStatus(**notification_user_form)
                     notification_user.save()
             # NotificationStatus.objects.bulk_create(notification_users)
-            LogHelper.ex_time()
         except Exception as e:
             LogHelper.efail(e)
         return
