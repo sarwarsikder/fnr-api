@@ -89,12 +89,12 @@ class MailHelper(generic.View):
     def mail_send(context, subject, to, sender_mail):
         html_content = context
         if os.environ['ENVIRONMENT_TYPE'] == 'master':
-            email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
-            email.send(html_content)
+            # email = Mailer(subject=subject, to='webservice@frprojektbau.de', from_addr=sender_mail)
+            # email.send(html_content)
             email = Mailer(subject=subject, to=to, from_addr=sender_mail)
             email.send(html_content)
         else:
-            email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
+            email = Mailer(subject=subject, to='webservice@frprojektbau.de', from_addr=sender_mail)
             email.send(html_content)
 
 

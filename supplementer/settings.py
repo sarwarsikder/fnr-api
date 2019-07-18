@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#gq%cfh(uzbe1hmwyztlx)@9p85^0n3q9m@*z_*lgz(@d78v5#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = ['*']
 os.environ['ENVIRONMENT_TYPE'] = 'master'
@@ -128,7 +128,7 @@ REST_FRAMEWORK = {
 #     },
 # ]
 
-EMAIL_HOST_USER = 'mahedi@workspaceit.com'
+EMAIL_HOST_USER = 'webservice@frprojektbau.de'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SMTP_USERNAME = 'AKIATIKUJJNFIJKO2GZR'
 SMTP_PASSWORD = 'zMMViCz8WSx1VlnBROv3cY+qVwA0NS8lXyvll66c'
@@ -175,7 +175,7 @@ MEDIA_URL = '/media/'
 # else:
 #     SITE_URL = 'http://192.168.1.10:8080'
 # SITE_URL = 'http://18.185.218.125:8006'
-SITE_URL = 'http://58.84.34.65:8006'
+SITE_URL = 'http://www.frprojektman.de'
 
 LOGGING = {
     'version': 1,
