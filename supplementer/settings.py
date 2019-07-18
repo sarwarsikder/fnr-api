@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#gq%cfh(uzbe1hmwyztlx)@9p85^0n3q9m@*z_*lgz(@d78v5#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = ['*']
 os.environ['ENVIRONMENT_TYPE'] = 'master'
@@ -140,11 +140,11 @@ OAUTH2_PROVIDER = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': 86400,
 }
 
-if DEBUG:
-    import logging
-    l = logging.getLogger('django.db.backends')
-    l.setLevel(logging.DEBUG)
-    l.addHandler(logging.StreamHandler())
+# if DEBUG:
+import logging
+l = logging.getLogger('django.db.backends')
+l.setLevel(logging.DEBUG)
+l.addHandler(logging.StreamHandler())
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -203,11 +203,11 @@ LOGGING = {
         }
     },
     'loggers': {
-        'app': {
+        'adminapp': {
             'handlers': ['file'],
             'level': 'DEBUG',
         },
-        'publicfront': {
+        'serviceapp': {
             'handlers': ['file'],
             'level': 'DEBUG',
         },
