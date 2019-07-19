@@ -985,3 +985,8 @@ button.btn.btn-primary.submit_modal_assignee{
 .print-btn{
     text-align: center;
 }
+
+.summary-building-flat{
+    margin-left: 10px;
+    display: inline;
+}
