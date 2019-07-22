@@ -22,7 +22,7 @@ class TasksView(generic.DetailView):
         try:
             building_id = kwargs['building_id']
             building = Buildings.objects.get(id=building_id)
-            if str(building.project_id) == request.session['active_project']['id']:
+            if str(building.project_id) == str(request.session['active_project']['id']):
                 CurrentProjects.change_active_building(request, building_id)
             return render(request, 'tasks/task_list.html', {'building': building})
         except Exception as e:
@@ -33,7 +33,7 @@ class TasksView(generic.DetailView):
         try:
             flat_id = kwargs['flat_id']
             flat = Flats.objects.get(id=flat_id)
-            if str(flat.building_id) == request.session['active_building']['id']:
+            if str(flat.building_id) == str(request.session['active_building']['id']):
                 CurrentProjects.change_active_flat(request, flat_id)
             return render(request, 'tasks/task_list.html', {'flat': flat})
         except Exception as e:

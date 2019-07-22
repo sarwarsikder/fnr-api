@@ -251,94 +251,161 @@ class CurrentProjects(generic.DetailView):
             response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+
     def change_active_project(request, project_id):
         try:
+            project = Projects.objects.get(id=project_id)
             request.session['active_project']['id'] = str(project_id)
-            request.session['active_project']['name'] = Projects.objects.get(id=project_id).name
+            request.session['active_project']['name'] = project.name
             request.session["active_building"]['id'] = ''
             request.session["active_building"]['number'] = ''
             request.session["active_flat"]['id'] = ''
             request.session["active_flat"]['number'] = ''
             request.session.modified = True
-            if request.user.current_activity:
-                current_activity = json.loads(request.user.current_activity)
-                current_activity['project_id'] = request.session['active_project']['id']
-                current_activity['project_name'] = request.session['active_project']['name']
-                current_activity['building_id'] = request.session['active_building']['id']
-                current_activity['building_number'] = request.session['active_building']['number']
-                current_activity['flat_id'] = request.session['active_flat']['id']
-                current_activity['flat_number'] = request.session['active_flat']['number']
-                request.user.current_activity = json.dumps(current_activity)
-                request.user.save()
-            else:
-                current_activity = {
-                    'project_id': request.session['active_project']['id'],
-                    'project_name': request.session['active_project']['name'],
-                    'building_id': request.session['active_building']['id'],
-                    'building_number': request.session['active_building']['number'],
-                    'flat_id': request.session['active_flat']['id'],
-                    'flat_number': request.session['active_flat']['number']
-                }
-                request.user.current_activity = json.dumps(current_activity)
-                request.user.save()
+            current_activity = {
+                'project_id': project.id,
+                'project_name': project.name
+            }
+            request.user.current_activity = json.dumps(current_activity)
+            request.user.save()
         except Exception as e:
             LogHelper.efail(e)
         return True
 
     def change_active_building(request, building_id):
         try:
-            current_building = Buildings.objects.get(id=building_id)
-            # if request.session['active_building']['id'] != str(building_id):
+            building = Buildings.objects.get(id=building_id)
+            request.session['active_project']['id'] = str(building.project_id)
+            request.session['active_project']['name'] = building.project.name
+            request.session["active_building"]['id'] = str(building_id)
+            request.session["active_building"]['number'] = building.display_number
             request.session["active_flat"]['id'] = ''
             request.session["active_flat"]['number'] = ''
-            request.session["active_building"]['id'] = str(current_building.id)
-            request.session["active_building"]['number'] = current_building.display_number
             request.session.modified = True
-            if request.user.current_activity:
-                current_activity = json.loads(request.user.current_activity)
-                current_activity['building_id'] = request.session['active_building']['id']
-                current_activity['building_number'] = request.session['active_building']['number']
-                request.user.current_activity = json.dumps(current_activity)
-                request.user.save()
-            else:
-                current_activity = {
-                    'building_id': request.session['active_building']['id'],
-                    'building_number': request.session['active_building']['number']
-                }
-                request.user.current_activity = json.dumps(current_activity)
-                request.user.save()
+            current_activity = {
+                'project_id': building.project.id,
+                'project_name': building.project.name,
+                'building_id': building.id,
+                'building_number': building.display_number
+            }
+            request.user.current_activity = json.dumps(current_activity)
+            request.user.save()
         except Exception as e:
             LogHelper.efail(e)
-            request.session["active_building"]['id'] = ''
-            request.session["active_building"]['number'] = ''
-            request.session.modified = True
         return True
 
     def change_active_flat(request, flat_id):
         try:
-            current_flat = Flats.objects.get(id=flat_id)
-            request.session["active_flat"]['id'] = str(current_flat.id)
-            request.session["active_flat"]['number'] = current_flat.number
+            flat = Flats.objects.get(id=flat_id)
+            request.session['active_project']['id'] = str(flat.building.project_id)
+            request.session['active_project']['name'] = flat.building.project.name
+            request.session["active_building"]['id'] = str(flat.building_id)
+            request.session["active_building"]['number'] = flat.building.display_number
+            request.session["active_flat"]['id'] = str(flat_id)
+            request.session["active_flat"]['number'] = flat.number
             request.session.modified = True
-            if request.user.current_activity:
-                current_activity = json.loads(request.user.current_activity)
-                current_activity['flat_id'] = request.session['active_flat']['id']
-                current_activity['flat_number'] = request.session['active_flat']['number']
-                request.user.current_activity = json.dumps(current_activity)
-                request.user.save()
-            else:
-                current_activity = {
-                    'flat_id': request.session['active_flat']['id'],
-                    'flat_number': request.session['active_flat']['number']
-                }
-                request.user.current_activity = json.dumps(current_activity)
-                request.user.save()
+            current_activity = {
+                'project_id': flat.building.project.id,
+                'project_name': flat.building.project.name,
+                'building_id': flat.building.id,
+                'building_number': flat.building.display_number,
+                'flat_id': flat.id,
+                'flat_number': flat.number
+            }
+            request.user.current_activity = json.dumps(current_activity)
+            request.user.save()
         except Exception as e:
             LogHelper.efail(e)
-            request.session["active_flat"]['id'] = ''
-            request.session["active_flat"]['number'] = ''
-            request.session.modified = True
         return True
+
+    # def change_active_project(request, project_id):
+    #     try:
+    #         request.session['active_project']['id'] = str(project_id)
+    #         request.session['active_project']['name'] = Projects.objects.get(id=project_id).name
+    #         request.session["active_building"]['id'] = ''
+    #         request.session["active_building"]['number'] = ''
+    #         request.session["active_flat"]['id'] = ''
+    #         request.session["active_flat"]['number'] = ''
+    #         request.session.modified = True
+    #         if request.user.current_activity:
+    #             current_activity = json.loads(request.user.current_activity)
+    #             current_activity['project_id'] = request.session['active_project']['id']
+    #             current_activity['project_name'] = request.session['active_project']['name']
+    #             current_activity['building_id'] = request.session['active_building']['id']
+    #             current_activity['building_number'] = request.session['active_building']['number']
+    #             current_activity['flat_id'] = request.session['active_flat']['id']
+    #             current_activity['flat_number'] = request.session['active_flat']['number']
+    #             request.user.current_activity = json.dumps(current_activity)
+    #             request.user.save()
+    #         else:
+    #             current_activity = {
+    #                 'project_id': request.session['active_project']['id'],
+    #                 'project_name': request.session['active_project']['name'],
+    #                 'building_id': request.session['active_building']['id'],
+    #                 'building_number': request.session['active_building']['number'],
+    #                 'flat_id': request.session['active_flat']['id'],
+    #                 'flat_number': request.session['active_flat']['number']
+    #             }
+    #             request.user.current_activity = json.dumps(current_activity)
+    #             request.user.save()
+    #     except Exception as e:
+    #         LogHelper.efail(e)
+    #     return True
+    #
+    # def change_active_building(request, building_id):
+    #     try:
+    #         current_building = Buildings.objects.get(id=building_id)
+    #         # if request.session['active_building']['id'] != str(building_id):
+    #         request.session["active_flat"]['id'] = ''
+    #         request.session["active_flat"]['number'] = ''
+    #         request.session["active_building"]['id'] = str(current_building.id)
+    #         request.session["active_building"]['number'] = current_building.display_number
+    #         request.session.modified = True
+    #         if request.user.current_activity:
+    #             current_activity = json.loads(request.user.current_activity)
+    #             current_activity['building_id'] = request.session['active_building']['id']
+    #             current_activity['building_number'] = request.session['active_building']['number']
+    #             request.user.current_activity = json.dumps(current_activity)
+    #             request.user.save()
+    #         else:
+    #             current_activity = {
+    #                 'building_id': request.session['active_building']['id'],
+    #                 'building_number': request.session['active_building']['number']
+    #             }
+    #             request.user.current_activity = json.dumps(current_activity)
+    #             request.user.save()
+    #     except Exception as e:
+    #         LogHelper.efail(e)
+    #         request.session["active_building"]['id'] = ''
+    #         request.session["active_building"]['number'] = ''
+    #         request.session.modified = True
+    #     return True
+    #
+    # def change_active_flat(request, flat_id):
+    #     try:
+    #         current_flat = Flats.objects.get(id=flat_id)
+    #         request.session["active_flat"]['id'] = str(current_flat.id)
+    #         request.session["active_flat"]['number'] = current_flat.number
+    #         request.session.modified = True
+    #         if request.user.current_activity:
+    #             current_activity = json.loads(request.user.current_activity)
+    #             current_activity['flat_id'] = request.session['active_flat']['id']
+    #             current_activity['flat_number'] = request.session['active_flat']['number']
+    #             request.user.current_activity = json.dumps(current_activity)
+    #             request.user.save()
+    #         else:
+    #             current_activity = {
+    #                 'flat_id': request.session['active_flat']['id'],
+    #                 'flat_number': request.session['active_flat']['number']
+    #             }
+    #             request.user.current_activity = json.dumps(current_activity)
+    #             request.user.save()
+    #     except Exception as e:
+    #         LogHelper.efail(e)
+    #         request.session["active_flat"]['id'] = ''
+    #         request.session["active_flat"]['number'] = ''
+    #         request.session.modified = True
+    #     return True
 
     def get_all_buildings_by_active_project(request):
         try:
