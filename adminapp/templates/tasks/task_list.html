@@ -43,42 +43,28 @@
                         {% if building %}
                         <div class="card-body">
                             {% if building.display_number %}
-                            <div class="summary-building-flat">
-                                <strong>Display Nummer:&nbsp;</strong>{{ building.display_number }}
-                            </div>
+                            <p class="summary-building-flat"><strong>Display Nummer:&nbsp;</strong>{{ building.display_number }}</p>
                             {% endif %}
                             {% if building.description %}
-                            <div class="summary-building-flat">
-                                <strong>Beschreibung:&nbsp;</strong>{{ building.description }}
-                            </div>
+                            <p class="summary-building-flat"><strong>Beschreibung:&nbsp;</strong>{{ building.description }}</p>
                             {% endif %}
                         </div>
                         {% elif flat %}
                         <div class="card-body">
                             {% if flat.client_name %}
-                            <div class="summary-building-flat">
-                                <strong>Client Name:&nbsp;</strong>{{ flat.client_name }}
-                            </div>
+                            <p class="summary-building-flat"><strong>Client Name:&nbsp;</strong>{{ flat.client_name }}</p>
                             {% endif %}
                             {% if flat.client_address %}
-                            <div class="summary-building-flat">
-                                <strong>Client Address:&nbsp;</strong>{{ flat.client_address }}
-                            </div>
+                            <p class="summary-building-flat"><strong>Client Address:&nbsp;</strong>{{ flat.client_address }}</p>
                             {% endif %}
                             {% if flat.client_email %}
-                            <div class="summary-building-flat">
-                                <strong>Client Email:&nbsp;</strong>{{ flat.client_email }}
-                            </div>
+                            <p class="summary-building-flat"><strong>Client Email:&nbsp;</strong>{{ flat.client_email }}</p>
                             {% endif %}
                             {% if flat.client_tel %}
-                            <div class="summary-building-flat">
-                                <strong>Client Telefone:&nbsp;</strong>{{ flat.client_tel }}
-                            </div>
+                            <p class="summary-building-flat"><strong>Client Telefone:&nbsp;</strong>{{ flat.client_tel }}</p>
                             {% endif %}
                             {% if flat.description %}
-                            <div class="summary-building-flat">
-                                <strong>Description:&nbsp;</strong>{{ flat.description }}
-                            </div>
+                            <p class="summary-building-flat"><strong>Description:&nbsp;</strong>{{ flat.description }}</p>
                             {% endif %}
                         </div>
                         {% endif %}
