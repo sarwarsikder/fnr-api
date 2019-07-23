@@ -30,6 +30,12 @@ class LoginView(generic.DetailView):
 
 class LogoutView(generic.DetailView):
     def get(self, request):
+        if 'active_project' in request.session:
+            del request.session['active_project']
+        if 'active_building' in request.session:
+            del request.session['active_building']
+        if 'active_flat' in request.session:
+            del request.session['active_flat']
         logout(request)
         return redirect('login')
 
