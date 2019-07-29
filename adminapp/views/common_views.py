@@ -431,9 +431,9 @@ class NotificationText(generic.DetailView):
         text = "{} hat {} geändert"
         return text.format(user_name, task_title)
 
-    def get_assign_worker_notification_text(company_name, task_title):
-        text = "{} wurde zu {} hinzugefügt"
-        return text.format(company_name, task_title)
+    def get_assign_worker_notification_text(user_name, company_name, task_title):
+        text = "{} hat {} zu {} hinzugefügt"
+        return text.format(user_name, company_name, task_title)
 
     def get_change_task_status_notification_text(user_name, task_title, task_status):
         status = "Noch nicht begonnen"

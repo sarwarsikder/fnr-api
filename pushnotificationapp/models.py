@@ -12,7 +12,7 @@ class Subscribers(models.Model):
     endpoint = models.TextField(max_length=2000)
     expirationTime = models.DateTimeField(null=True)
     keys = models.TextField(max_length=2000, null=True)
-    user_id = models.ForeignKey(Users, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
     device = models.CharField(max_length=512)
 
 

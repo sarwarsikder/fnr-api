@@ -215,7 +215,7 @@ class TasksView(generic.DetailView):
             task.save()
             handworker = HandWorker.objects.get(user_id=user_id)
             # Send Notification
-            message = NotificationText.get_assign_worker_notification_text(handworker.company_name,
+            message = NotificationText.get_assign_worker_notification_text(request.user.get_full_name(), handworker.company_name,
                                                                            component.component.name)
             NotificationsView.create_notfication(request, 'assign_worker', message, task.id, request.user.id)
             handworker_info = {
