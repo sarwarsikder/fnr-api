@@ -36,7 +36,7 @@ class CommentsViewSet(APIView):
     def get(self, request, **kwargs):
         task_id = kwargs['task_id']
         paginator = PageNumberPagination()
-        paginator.page_size = 5
+        paginator.page_size = 10
         comments = Comments.objects.filter(task_id=task_id).order_by('-created_at')
         result_page = paginator.paginate_queryset(comments, request)
         serializer = CommentSerializer(result_page, many=True)
@@ -85,7 +85,7 @@ class CommentsViewSet(APIView):
                                                    args=(request, 'attach_file', message, task_id, request.user.id))
                     task_thread.start()
                 paginator = PageNumberPagination()
-                paginator.page_size = 5
+                paginator.page_size = 10
                 comments = Comments.objects.filter(task_id=task_id).order_by('-created_at')
                 result_page = paginator.paginate_queryset(comments, request)
                 serializer = CommentSerializer(result_page, many=True)
