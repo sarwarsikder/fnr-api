@@ -70,16 +70,20 @@ class CommentsViewSet(APIView):
                 new_comment.save()
                 task = Tasks.objects.get(id=task_id)
                 task.save()
+                if request.user.is_staff:
+                    user_name = request.user.get_full_name()
+                else:
+                    user_name = request.user.handworker.company_name
                 if comment != '':
                     # Send Notification
-                    message = NotificationText.get_task_comment_notification_text(request.user.get_full_name(),
+                    message = NotificationText.get_task_comment_notification_text(user_name,
                                                                                   task.building_component.component.name)
                     task_thread = threading.Thread(target=NotificationsView.create_notfication,
                                                    args=(request, 'task_comment', message, task_id, request.user.id))
                     task_thread.start()
                 if len(file_list) > 0:
                     # Send Notification
-                    message = NotificationText.get_attach_file_notification_text(request.user.get_full_name(),
+                    message = NotificationText.get_attach_file_notification_text(user_name,
                                                                                  task.building_component.component.name)
                     task_thread = threading.Thread(target=NotificationsView.create_notfication,
                                                    args=(request, 'attach_file', message, task_id, request.user.id))

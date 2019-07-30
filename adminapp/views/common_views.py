@@ -441,8 +441,8 @@ class NotificationText(generic.DetailView):
             status = "in Arbeit"
         elif task_status == 'done':
             status = "Fertig"
-        text = "Der Status von {} hat sich geändert: {}"
-        return text.format(task_title, status)
+        text = "{} hat den status von {} geändert: {}"
+        return text.format(user_name, task_title, status)
 
     def get_task_comment_notification_text(user_name, task_title):
         text = "{} hat {} kommentiert"

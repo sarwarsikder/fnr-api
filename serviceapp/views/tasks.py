@@ -149,7 +149,11 @@ class TaskDetailsViewSet(APIView):
                 task.status = task_status
                 task.save()
                 # Send Notification
-                message = NotificationText.get_change_task_status_notification_text(request.user.get_full_name(),
+                if request.user.is_staff:
+                    user_name = request.user.get_full_name()
+                else:
+                    user_name = request.user.handworker.company_name
+                message = NotificationText.get_change_task_status_notification_text(user_name,
                                                                                     task.building_component.component.name,
                                                                                     task.status)
                 task_thread = threading.Thread(target=NotificationsView.create_notfication,
