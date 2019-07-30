@@ -45,7 +45,7 @@ def send_notification(sender, **kwargs):
         if len(registration_ids) > 0:
             push_service = FCMNotification(api_key="AIzaSyDe760rQNsg6JOJbohxdrYTW86E9FtDSyw")
             result = push_service.notify_multiple_devices(registration_ids=registration_ids,
-                                                       message_title="Notification title",
+                                                       message_title="Notification",
                                                        message_body=kwargs['instance'].notification.text)
         # user = Users.objects.get(id=kwargs['instance'].user_id)
         # print(user)

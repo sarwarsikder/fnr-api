@@ -104,9 +104,9 @@ class TaskDetailsViewSet(APIView):
             comments = Comments.objects.filter(task_id=task_id).order_by('-created_at')
             task_comments = []
             more_comments = False
-            if comments.count() > 5:
+            if comments.count() > 10:
                 more_comments = True
-            comments_list = comments[:5]
+            comments_list = comments[:10]
             for comment in comments_list:
                 if comment.user.is_staff:
                     user_info = {

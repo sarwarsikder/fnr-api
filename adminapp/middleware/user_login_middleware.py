@@ -1,6 +1,7 @@
 import json
 
 import requests
+from django.db.models import Case, When
 from django.views import generic
 from adminapp.models import Users, Projects, Buildings, Flats
 from adminapp.views.common_views import CommonView
@@ -19,12 +20,15 @@ class UserLoginMiddleware(generic.DetailView):
         path = request.path.split('/')[1]
         if path == '' and path != 'api' and path != 'media':
             if request.is_ajax() == False:
-                settings.USE_TZ = False
+                # settings.USE_TZ = False
                 browser_current_url = resolve(request.path_info).url_name
                 if browser_current_url != 'login' and browser_current_url != 'forget-password' and browser_current_url != 'reset-password':
                     if not request.user.is_authenticated:
                         return redirect('login')
-                    current_projects = list(Projects.objects.filter(is_complete=False).order_by('-id').values('id', 'name'))
+                    if request.user.is_superuser:
+                        current_projects = list(Projects.objects.filter(is_complete=False).order_by('-id').values('id', 'name'))
+                    else:
+                        current_projects = list(Projects.objects.filter(is_complete=False, projectstuff__user_id=request.user.id).order_by('-id').values('id', 'name').distinct())
                     request.session["current_projects"] = current_projects
                     if request.user.current_activity:
                         current_activity = json.loads(request.user.current_activity)
