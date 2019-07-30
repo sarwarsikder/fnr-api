@@ -988,6 +988,9 @@ button.btn.btn-primary.submit_modal_assignee{
 
 .summary-building-flat{
     margin-left: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
     display: block;
     font-size: 1rem;
+    line-height: 1.5;
 }
