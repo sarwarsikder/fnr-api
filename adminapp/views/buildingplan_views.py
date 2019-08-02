@@ -10,6 +10,8 @@ from adminapp.views.helper import LogHelper
 
 class BuildingPlansView(generic.DetailView):
 
+    # url: building-plans/
+    # This function will get all plans by a building
     def get_all_plans_by_active_building(request):
         response = {}
         try:
@@ -26,6 +28,8 @@ class BuildingPlansView(generic.DetailView):
             response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+    # url: building-plan/delete/
+    # This function will delete a building plan
     def delete(request):
         response = {}
         try:
@@ -44,11 +48,15 @@ class BuildingPlansAddView(generic.DetailView):
     form_class = BuildingPlansForm
     template_name = 'buildings/add_plans.html'
 
+    # url: building/<building_id>/plan/add/
+    # This function will show add building plan form
     def get(self, request, *args, **kwargs):
         building_id = kwargs['building_id']
         form = self.form_class
         return render(request, self.template_name, {'form': form, 'building_id': building_id})
 
+    # url: building/<building_id>/plan/add/
+    # This function will submit add building plan form
     def post(self, request, *args, **kwargs):
         response = {}
         form = self.form_class(request.POST, request.FILES)

@@ -11,10 +11,14 @@ from adminapp.views.helper import LogHelper
 
 
 class CompaniesView(generic.DetailView):
+    # url: companies/
+    # This function will return all the Company list
     def get(self, request):
         context = CommonView.common_datatable_context(self)
         return render(request, 'companies/worker.html', context)
 
+    # url: companies/delete/
+    # This function will delete a company
     def delete(request):
         response = {}
         try:
@@ -28,6 +32,8 @@ class CompaniesView(generic.DetailView):
             response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+    # This function is call from company create function
+    # This will create additional handworker row
     def create_worker(request, data):
         try:
             form_data = {
@@ -41,6 +47,8 @@ class CompaniesView(generic.DetailView):
         except Exception as e:
             LogHelper.efail(e)
 
+    # This function is call from company update function
+    # This will update additional handworker row
     def update_worker(request, data, user_id):
         try:
             form_data = {
@@ -58,11 +66,15 @@ class CompanyFormView(View):
     form_class = WorkerForm
     template_name = 'companies/add_worker.html'
 
+    # url: companies/add/
+    # This function will show the add company form
     def get(self, request, *args, **kwargs):
         form = self.form_class
         components = CommonView.get_all_main_component(request)
         return render(request, self.template_name, {'form': form, 'components': components})
 
+    # url: companies/add/
+    # This function will submit the add company form
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         working_types = []
@@ -95,6 +107,8 @@ class CompanyFormView(View):
         return render(request, self.template_name, {'form': form, 'components': components, 'working_types': working_components})
 
 
+# url: companies/update/
+# This function will show and update the company form
 class CompanyUpdateView(UpdateView):
 
     model = Users
@@ -121,6 +135,7 @@ class CompanyUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('companies')
 
+    # This function return the custom data to comapany update form view
     def get_context_data(self, **kwargs):
         context = super(CompanyUpdateView, self).get_context_data(**kwargs)
         context['components'] = CommonView.get_all_main_component(self.request)
@@ -138,6 +153,9 @@ class CompanyUpdateView(UpdateView):
         return context
 
 
+# url: companies/change-password/
+# Admin can change comapny's password in this function.
+# This function show the form and save the submitted password
 class CompanyPasswordChangeView(UpdateView):
     model = Users
     form_class = UserPasswordChangeForm

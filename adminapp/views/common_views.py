@@ -17,6 +17,8 @@ import io
 
 
 class IndexView(generic.DetailView):
+    # url: /
+    # This function will show the dashboard page
     def get(self, request):
         response = {}
         try:
@@ -32,6 +34,7 @@ class IndexView(generic.DetailView):
 
 class CommonView(generic.DetailView):
 
+    # All the email send through this function
     def sendEmail(request, template, context, subject, to, user_id=None):
         response = {}
         try:
@@ -52,6 +55,7 @@ class CommonView(generic.DetailView):
             response['success'] = False
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+    # All the common settings of datatable comes from this function
     def common_datatable_context(self):
         show_entries = 10
         sorted_column = 0
@@ -73,20 +77,25 @@ class CommonView(generic.DetailView):
             LogHelper.elog(e)
         return file_path
 
+    # This function return all the parent components
+    # We need this in company form view
     def get_all_main_component(request):
         components = Components.objects.filter(parent__isnull=True)
         return components
 
+    # Here we checking is the user is superAdmin
     def superuser_login(request):
         if request.user.is_authenticated and request.user.is_superuser:
             return True
         else:
             return False
 
+    # This function return all the Projects
     def get_all_projects(request):
         projects = Projects.objects.all()
         return projects
 
+    # This function is called when a new building is added and this function created all it's default components
     def create_default_building_components(request, building):
         try:
             default_components = Components.objects.filter(Q(type__isnull=True) | Q(type='') | Q(type=building.grundung) | Q(type=building.aussenwande_eg_og_dg) | Q(type=building.fenster_beschattung) | Q(type=building.dach)).filter(building=True)
@@ -106,6 +115,7 @@ class CommonView(generic.DetailView):
             LogHelper.efail(e)
             return False
 
+    # This function is called when a new flat is added and this function created all it's default components
     def create_default_flat_components(request, flat):
         try:
             default_components = Components.objects.filter(flat=True)
@@ -126,6 +136,7 @@ class CommonView(generic.DetailView):
             LogHelper.efail(e)
             return False
 
+    # This function is called when a new building or flat is added and this function created all it's default components tasks
     def create_default_tasks(request, components):
         try:
             task_list = []
@@ -149,6 +160,7 @@ class CommonView(generic.DetailView):
             LogHelper.efail(e)
             return False
 
+    # In this function we save the QR code for building and flats
     def generate_qr_code(request, building, flat=None):
         unique_key = ''.join(random.choices(string.ascii_lowercase + string.digits, k=16))
         qr_form = {
@@ -183,12 +195,14 @@ class CommonView(generic.DetailView):
             LogHelper.efail(e)
             return ""
 
+    # This function is used for create a random string which we need in upload files name
     def randomString(stringLength=10):
         """Generate a random string of fixed length """
         letters = string.ascii_lowercase
         return ''.join(random.choice(letters) for i in range(stringLength))
 
 
+# In this class we generate the QR code for building and flats
 class QRResponse(generic.View):
     def get(self, request, *args, **kwargs):
         try:
@@ -214,6 +228,9 @@ class QRResponse(generic.View):
 
 
 class CurrentProjects(generic.DetailView):
+    # url: current-buildings/
+    # Here we get all the buildings for selected project and will show in the sidebar
+    # Also update user last active project
     def get_all_current_buildings(request):
         response = {}
         try:
@@ -235,6 +252,9 @@ class CurrentProjects(generic.DetailView):
             response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
+    # url: current-flats/
+    # Here we get all the flats for selected building and will show in the sidebar
+    # Also update user last active project and building
     def get_all_current_flats(request):
         response = {}
         try:
@@ -251,7 +271,7 @@ class CurrentProjects(generic.DetailView):
             response['message'] = "Something went wrong. Please try again"
         return HttpResponse(json.dumps(response), content_type='application/json')
 
-
+    # In this function we update user last active project
     def change_active_project(request, project_id):
         try:
             project = Projects.objects.get(id=project_id)
@@ -272,6 +292,7 @@ class CurrentProjects(generic.DetailView):
             LogHelper.efail(e)
         return True
 
+    # In this function we update user last active building and project
     def change_active_building(request, building_id):
         try:
             building = Buildings.objects.get(id=building_id)
@@ -294,6 +315,7 @@ class CurrentProjects(generic.DetailView):
             LogHelper.efail(e)
         return True
 
+    # In this function we update user last active flat, building and project
     def change_active_flat(request, flat_id):
         try:
             flat = Flats.objects.get(id=flat_id)
@@ -318,95 +340,7 @@ class CurrentProjects(generic.DetailView):
             LogHelper.efail(e)
         return True
 
-    # def change_active_project(request, project_id):
-    #     try:
-    #         request.session['active_project']['id'] = str(project_id)
-    #         request.session['active_project']['name'] = Projects.objects.get(id=project_id).name
-    #         request.session["active_building"]['id'] = ''
-    #         request.session["active_building"]['number'] = ''
-    #         request.session["active_flat"]['id'] = ''
-    #         request.session["active_flat"]['number'] = ''
-    #         request.session.modified = True
-    #         if request.user.current_activity:
-    #             current_activity = json.loads(request.user.current_activity)
-    #             current_activity['project_id'] = request.session['active_project']['id']
-    #             current_activity['project_name'] = request.session['active_project']['name']
-    #             current_activity['building_id'] = request.session['active_building']['id']
-    #             current_activity['building_number'] = request.session['active_building']['number']
-    #             current_activity['flat_id'] = request.session['active_flat']['id']
-    #             current_activity['flat_number'] = request.session['active_flat']['number']
-    #             request.user.current_activity = json.dumps(current_activity)
-    #             request.user.save()
-    #         else:
-    #             current_activity = {
-    #                 'project_id': request.session['active_project']['id'],
-    #                 'project_name': request.session['active_project']['name'],
-    #                 'building_id': request.session['active_building']['id'],
-    #                 'building_number': request.session['active_building']['number'],
-    #                 'flat_id': request.session['active_flat']['id'],
-    #                 'flat_number': request.session['active_flat']['number']
-    #             }
-    #             request.user.current_activity = json.dumps(current_activity)
-    #             request.user.save()
-    #     except Exception as e:
-    #         LogHelper.efail(e)
-    #     return True
-    #
-    # def change_active_building(request, building_id):
-    #     try:
-    #         current_building = Buildings.objects.get(id=building_id)
-    #         # if request.session['active_building']['id'] != str(building_id):
-    #         request.session["active_flat"]['id'] = ''
-    #         request.session["active_flat"]['number'] = ''
-    #         request.session["active_building"]['id'] = str(current_building.id)
-    #         request.session["active_building"]['number'] = current_building.display_number
-    #         request.session.modified = True
-    #         if request.user.current_activity:
-    #             current_activity = json.loads(request.user.current_activity)
-    #             current_activity['building_id'] = request.session['active_building']['id']
-    #             current_activity['building_number'] = request.session['active_building']['number']
-    #             request.user.current_activity = json.dumps(current_activity)
-    #             request.user.save()
-    #         else:
-    #             current_activity = {
-    #                 'building_id': request.session['active_building']['id'],
-    #                 'building_number': request.session['active_building']['number']
-    #             }
-    #             request.user.current_activity = json.dumps(current_activity)
-    #             request.user.save()
-    #     except Exception as e:
-    #         LogHelper.efail(e)
-    #         request.session["active_building"]['id'] = ''
-    #         request.session["active_building"]['number'] = ''
-    #         request.session.modified = True
-    #     return True
-    #
-    # def change_active_flat(request, flat_id):
-    #     try:
-    #         current_flat = Flats.objects.get(id=flat_id)
-    #         request.session["active_flat"]['id'] = str(current_flat.id)
-    #         request.session["active_flat"]['number'] = current_flat.number
-    #         request.session.modified = True
-    #         if request.user.current_activity:
-    #             current_activity = json.loads(request.user.current_activity)
-    #             current_activity['flat_id'] = request.session['active_flat']['id']
-    #             current_activity['flat_number'] = request.session['active_flat']['number']
-    #             request.user.current_activity = json.dumps(current_activity)
-    #             request.user.save()
-    #         else:
-    #             current_activity = {
-    #                 'flat_id': request.session['active_flat']['id'],
-    #                 'flat_number': request.session['active_flat']['number']
-    #             }
-    #             request.user.current_activity = json.dumps(current_activity)
-    #             request.user.save()
-    #     except Exception as e:
-    #         LogHelper.efail(e)
-    #         request.session["active_flat"]['id'] = ''
-    #         request.session["active_flat"]['number'] = ''
-    #         request.session.modified = True
-    #     return True
-
+    # This function will return all the buildings by user last active project
     def get_all_buildings_by_active_project(request):
         try:
             project_id = request.session['active_project']['id']
@@ -416,6 +350,7 @@ class CurrentProjects(generic.DetailView):
             LogHelper.elog(e)
             return redirect('index')
 
+    # This function will return all the falts by user last active building
     def get_all_flats_by_active_building(request):
         try:
             building_id = request.session['active_building']['id']
@@ -426,6 +361,7 @@ class CurrentProjects(generic.DetailView):
             return redirect('index')
 
 
+# All the notification text will set from here
 class NotificationText(generic.DetailView):
     def get_edit_task_notification_text(user_name, task_title):
         text = "{} hat {} geändert"

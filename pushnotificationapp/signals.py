@@ -43,7 +43,7 @@ def send_notification(sender, **kwargs):
                 subscription_info = {"endpoint": subscriber.endpoint, "keys": json.loads(subscriber.keys)}
                 notification_sender(subscription_info, kwargs['instance'].notification.text)
         if len(registration_ids) > 0:
-            push_service = FCMNotification(api_key="AIzaSyDe760rQNsg6JOJbohxdrYTW86E9FtDSyw")
+            push_service = FCMNotification(api_key="AIzaSyCpgbiM5lj0PVSOenKdH0ihP4OnXTEh77c")
             result = push_service.notify_multiple_devices(registration_ids=registration_ids,
                                                        message_title="Notification",
                                                        message_body=kwargs['instance'].notification.text)
