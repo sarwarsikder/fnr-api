@@ -10,10 +10,11 @@ class TaskSerializer(serializers.ModelSerializer):
     updated_at = serializers.CharField(max_length=100, read_only=True)
     name = serializers.CharField(max_length=100, read_only=True)
     description = serializers.CharField(max_length=1000, read_only=True)
+    status = serializers.CharField(max_length=20)
 
     class Meta:
         model = Tasks
-        fields = ('id', 'name', 'description', 'due_date', 'created_by_id', 'updated_by_id', 'created_at', 'updated_at')
+        fields = ('id', 'name', 'description', 'due_date', 'status', 'created_by_id', 'updated_by_id', 'created_at', 'updated_at')
 
 
 class TaskDetailsSerializer(serializers.ModelSerializer):
