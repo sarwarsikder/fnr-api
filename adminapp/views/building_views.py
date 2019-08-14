@@ -9,7 +9,10 @@ from adminapp.views.common_views import CommonView
 from adminapp.views.helper import LogHelper
 from adminapp.forms.building_form import BuildingForm
 
+
 class BuildingsView(generic.DetailView):
+    # url: projects/<project_id>/buildings/
+    # This function will return all the building list of corresponding project_id
     def get(self, request, *args, **kwargs):
         try:
             project_id = kwargs['project_id']
@@ -22,6 +25,8 @@ class BuildingsView(generic.DetailView):
             LogHelper.efail(e)
             return redirect('index')
 
+    # url: buildings/qr/<id>/
+    # This function will show Buildings QR view
     def preview_qr(request, pk):
         try:
             context = {}
@@ -32,6 +37,8 @@ class BuildingsView(generic.DetailView):
             LogHelper.efail(e)
             return redirect('index')
 
+    # url: buildings/delete/
+    # This function will delete the corresponding Building
     def delete(request):
         response = {}
         try:
@@ -50,11 +57,15 @@ class BuildingFormView(View):
     form_class = BuildingForm
     template_name = 'buildings/add_building.html'
 
+    # url: projects/<project_id>/buildings/add/
+    # This function will show add Building form
     def get(self, request, *args, **kwargs):
         project_id = kwargs['project_id']
         form = self.form_class
         return render(request, self.template_name, {'form': form, 'project_id': project_id})
 
+    # url: projects/<project_id>/buildings/add/
+    # This function will submit add Building form
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         project_id = kwargs['project_id']
@@ -73,6 +84,8 @@ class BuildingFormView(View):
         return render(request, self.template_name, {'form': form, 'project_id': project_id})
 
 
+# url: buildings/update/<id>/
+# This class will show and update Building form
 class BuildingUpdateView(UpdateView):
     model = Buildings
     template_name = 'buildings/edit_building.html'

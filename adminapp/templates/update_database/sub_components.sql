@@ -67,8 +67,6 @@ INSERT INTO `components` (`id`, `name`, `static_description`, `created_at`, `upd
 (86, 'Wohnräume', 'Raufasertapete mit weißem Dispersionsanstrich.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '9', '1', '1', '0', NULL),
 (87, 'Treppenhauswände', 'Verputzt', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '9', '1', '1', '0', NULL),
 (88, 'Treppenhausdecken', 'Spachtelung/Dünnputz, alternativ verputzt', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '9', '1', '1', '0', NULL),
-(89, 'Bäder', 'n.a.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '9', '1', '0', '1', NULL),
-(90, 'Wohnräume', 'n.a.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '9', '1', '0', '1', NULL),
 (91, 'Dämmplatten', 'Schwimmender Heizestrich auf Trittschall- und Wärmedämmplatten in den Wohnungen. Schwimmender Estrich im Treppenhaus, auch im Untergeschoß.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '10', '1', '1', '0', NULL),
 (92, 'Wohnräume', 'Schwimmender Heizestrich auf Trittschall- und Wärmedämmplatten in den Wohnungen. Schwimmender Estrich im Treppenhaus, auch im Untergeschoß.', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '10', '1', '1', '0', NULL),
 (93, 'Bäder', 'bader', '2019-05-14 00:00:00.000000', '2019-05-14 00:00:00.000000', '1', '10', '1', '1', '0', NULL),

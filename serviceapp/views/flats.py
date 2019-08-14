@@ -45,7 +45,7 @@ class FlatComponentViewSet(APIView):
         if request.user.is_staff:
             components = BuildingComponents.objects.annotate(name=F('component__name')).filter(flat_id=flat_id, component__parent__isnull=True)
             for component in components:
-                component.total_tasks = Tasks.objects.filter(building_component__flat_id=flat_id).filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).exclude(status='done').count()
+                component.total_tasks = Tasks.objects.filter(building_component__flat_id=flat_id).filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).count()
                 component.tasks_done = Tasks.objects.filter(building_component__flat_id=flat_id, status='done').filter(Q(Q(building_component__component__parent_id=component.component_id) | Q(building_component__component_id=component.component_id))).count()
         else:
             components = BuildingComponents.objects.annotate(name=F('component__name')).filter(flat_id=flat_id, component__parent__isnull=True, assign_to=request.user.id).distinct()

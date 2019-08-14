@@ -69,8 +69,7 @@
                                                 {% for sub_component in component.sub_components %}
                                                     <div class="row">
                                                         <div class="component_wrap">
-                                                            <button type="button" data-toggle="tooltip" disabled
-                                                                    data-placement="top" title="Delete Component" class="btn delete-component"data-id="{{ sub_component.id }}" >
+                                                            <button type="button" data-toggle="tooltip" data-placement="top" title="Delete Component" class="btn delete-component" data-id="{{ sub_component.id }}" >
                                                               <i class="fa fa-trash" aria-hidden="true"></i>
                                                             </button>
                                                             <a href="{% url 'component-update' pk=sub_component.id %}" class="task_title" >

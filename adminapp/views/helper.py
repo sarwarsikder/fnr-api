@@ -13,7 +13,7 @@ class LogHelper(generic.DetailView):
             log = "----------- Error: " + str(exc_obj) + ", File: " + fname + ", Line: " + str(exc_tb.tb_lineno) + " ------------"
             logger = logging.getLogger(__name__)
             logger.debug(log)
-            print(log)
+            # print(log)
         except Exception as e:
             print(e)
 
@@ -24,7 +24,7 @@ class LogHelper(generic.DetailView):
             log = "----------- Info: " + str(value) +", File: " + str(os.path.split(filename)[1] + ", " + function_name + "()" + ", Line:" + str(line_number) + "]")
             logger = logging.getLogger(__name__)
             logger.debug(log)
-            print(log)
+            # print(log)
         except Exception as e:
             print(e)
 
@@ -34,7 +34,7 @@ class LogHelper(generic.DetailView):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             log = "----------- Error: " + str(exc_obj) + ", File: " + fname + ", Line: " + str(
                 exc_tb.tb_lineno) + " ------------"
-            print(log)
+            # print(log)
             logger = logging.getLogger(__name__)
             logger.debug(log)
         except Exception as e:
