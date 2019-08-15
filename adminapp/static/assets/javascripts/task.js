@@ -1,6 +1,16 @@
 $(function () {
+    var previous_status;
     var $body = $('body');
     getPendingComponents();
+
+    $body.on('change', '#task-status-list', function () {
+        var $this = $(this);
+        var task_id = $this.attr('task-id');
+        var status = $(this).children("option:selected").val();
+        previous_status = 'in_progress';
+        // console.log(status);
+        changeTaskStatus(task_id, status, previous_status);
+    });
 
     $body.on('click', '#nav-done-task-tab', function () {
         var url = window.location.pathname.split("/");
@@ -304,7 +314,17 @@ $(function () {
         }
     });
 
-    var previous_status;
+
+    $("#task-status").focus(function (e) {
+        previous_status = $(this).val();
+    }).change(function (e) {
+        var url = window.location.pathname.split("/");
+        var task_id = url[2];
+        var status = $(this).val();
+        changeTaskStatus(task_id, status, previous_status);
+    });
+
+    /* var previous_status;
     $("#task-status").focus(function (e) {
         previous_status = $(this).val();
     }).change(function (e) {
@@ -342,7 +362,7 @@ $(function () {
         } else {
             $("#task-status").val(previous_status);
         }
-    });
+    }); */
     // });
 
     $('body').on('click', '#show-more-comments', function () {
@@ -410,4 +430,41 @@ function getPendingComponents() {
             $('.loader').hide();
         }
     });
+}
+
+function changeTaskStatus(task_id, status) {
+    console.log('changing task status');
+    var task_id = task_id;
+    var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+    var data = {
+        'task_id': task_id,
+        'status': status,
+        'csrfmiddlewaretoken': csrfToken
+    };
+    var changeConfirmation = confirm("Are you sure you want to change the status?");
+    // bootbox.confirm("Are you sure you want to change the status?", function (result) {
+    if (changeConfirmation) {
+        $('.loader').show();
+        $.ajax({
+            url: base_url + '/change-task-status/',
+            type: 'POST',
+            data: data,
+            success: function (responseText) {
+                var response = responseText;
+                $('.loader').hide();
+                if (response.success) {
+                    $.growl.notice({ message: response.message });
+                } else {
+                    $.growl.error({ message: response.message });
+                }
+            },
+            error: function (e) {
+                clog(e);
+                $('.loader').hide();
+            }
+        });
+    } else {
+        $("#task-status").val(previous_status);
+    }
+
 }

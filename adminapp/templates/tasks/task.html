@@ -5,21 +5,24 @@
             <div class="dropdown-divider"></div>
             <p>{{ task.building_component.description }}</p>
             <div class="dropdown-divider"></div>
+    </a>
             <div class="task_detail_bottom">
                 <div class="task_detail_bottom_wrap celarfix">
                     <div class="task_detail_description">
                         <p class="mb-0"><label for="">Letztes Update: </label> {{ task.updated_at|date:'d-m-Y' }}</p>
                     </div>
-                    <div class="task_detail_description">
-                        <p class="text-center mb-0"><label for="">Status: </label>
-                            {% if task.status == 'to_do' %}
-                                Nicht Begonnen <span class="badge badge-info"><i class="fa fa-list-alt"></i></span>
-                            {% elif task.status == 'in_progress' %}
-                                In bearbeitung <span class="badge badge-warning"><i class="fa fa-spinner"></i></span>
-                            {% else %}
-                                Fertig <span class="badge badge-success"><i class="fa fa-check"></i></span>
-                            {% endif %}
-                        </p>
+                    
+                    <div class="task_detail_description" style="display: inline-flex; align-items: center;">
+                        <label for="">Status:</label>
+                        <select class="form-control select-status" id="task-status-list" task-id="{{task.id}}"
+                            data-placeholder="Select Status">
+                            <option value="to_do" {% if task.status == 'to_do' %}selected{% endif %}>Nicht Begonnen
+                            </option>
+                            <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>In Bearbeitung
+                            </option>
+                            <option value="done" {% if task.status == 'done' %}selected{% endif %}>Fertig
+                            </option>
+                        </select>
                     </div>
                     <div class="task_detail_description">
                         <p class="mb-0"><label for="">Update Von: </label> {{ task.updated_by.first_name }} {{ task.updated_by.last_name }}</p>
@@ -36,6 +39,6 @@
                 </div>
             </div>
         </div>
-    </a>
+    
 {% endfor %}
 
