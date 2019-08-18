@@ -14,7 +14,7 @@
                     
                     <div class="task_detail_description" style="display: inline-flex; align-items: center;">
                         <label for="">Status:</label>
-                        <select class="form-control select-status" id="task-status-list" task-id="{{task.id}}"
+                        <select class="form-control select-status" id="task-status-list" task-id="{{task.id}}" task-value="{{ task.status }}"
                             data-placeholder="Select Status">
                             <option value="to_do" {% if task.status == 'to_do' %}selected{% endif %}>Nicht Begonnen
                             </option>
@@ -39,6 +39,5 @@
                 </div>
             </div>
         </div>
-    
 {% endfor %}
 

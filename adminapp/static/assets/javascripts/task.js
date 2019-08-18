@@ -3,13 +3,14 @@ $(function () {
     var $body = $('body');
     getPendingComponents();
 
-    $body.on('change', '#task-status-list', function () {
+    $body.on('change', '#task-status-list', function (e) {
         var $this = $(this);
         var task_id = $this.attr('task-id');
         var status = $(this).children("option:selected").val();
-        previous_status = 'in_progress';
-        // console.log(status);
-        changeTaskStatus(task_id, status, previous_status);
+        previous_status = $(this).attr('task-value');
+        console.log(status);
+        console.log(previous_status);
+        changeTaskStatus($this, task_id, status, previous_status);
     });
 
     $body.on('click', '#nav-done-task-tab', function () {
@@ -321,7 +322,7 @@ $(function () {
         var url = window.location.pathname.split("/");
         var task_id = url[2];
         var status = $(this).val();
-        changeTaskStatus(task_id, status, previous_status);
+        changeTaskStatus($(this), task_id, status, previous_status);
     });
 
     /* var previous_status;
@@ -432,7 +433,7 @@ function getPendingComponents() {
     });
 }
 
-function changeTaskStatus(task_id, status) {
+function changeTaskStatus($this, task_id, status, previous_status) {
     console.log('changing task status');
     var task_id = task_id;
     var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
@@ -464,7 +465,7 @@ function changeTaskStatus(task_id, status) {
             }
         });
     } else {
-        $("#task-status").val(previous_status);
+        $this.val(previous_status);
     }
 
 }
