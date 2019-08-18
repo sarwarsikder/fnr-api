@@ -37,11 +37,11 @@ def send_notification(sender, **kwargs):
         registration_ids = []
         # registration_id = "d7mMlK4FKR4:APA91bGCnJ-fPmlmvRDJTnTBTeg7-ZSeUh-puqrSHdAShkNIZEJrF5c2pTcadmU5rioks8aOIwek9oFKCxI0jIJXC1I19gMhyyD3gnGOU0eTeo8SDjkGTejxjYyDYww7d5t77yqsruUs"
         for subscriber in subscribers:
-            if subscriber.device == "mobile":
-                registration_ids.append(subscriber.endpoint)
-            else:
-                subscription_info = {"endpoint": subscriber.endpoint, "keys": json.loads(subscriber.keys)}
-                notification_sender(subscription_info, kwargs['instance'].notification.text)
+            # if subscriber.device == "mobile":
+            registration_ids.append(subscriber.endpoint)
+            # else:
+            #     subscription_info = {"endpoint": subscriber.endpoint, "keys": json.loads(subscriber.keys)}
+            #     notification_sender(subscription_info, kwargs['instance'].notification.text)
         if len(registration_ids) > 0:
             push_service = FCMNotification(api_key="AIzaSyCpgbiM5lj0PVSOenKdH0ihP4OnXTEh77c")
             result = push_service.notify_multiple_devices(registration_ids=registration_ids,

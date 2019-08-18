@@ -24,6 +24,8 @@ from serviceapp.views.tasks import BuildingTasksViewSet, FlatTasksViewSet, TaskD
 from serviceapp.views.comments import CommentsViewSet
 from serviceapp.views.notifications import NotificationsViewSet
 from serviceapp.views.components import ComponentsViewSet
+from serviceapp.views.notifications import SubscriberDevice
+from django.views.decorators.csrf import csrf_exempt
 
 router = SimpleRouter()
 router.register(r'projects', ProjectViewSet)
@@ -49,4 +51,5 @@ urlpatterns = [
     url(r'^task/(?P<task_id>[\w-]+)/change-due-date/$', TaskDetailsViewSet.change_task_due_date),
     url(r'^notifications/$', NotificationsViewSet.as_view()),
     url(r'^scan/$', ComponentsViewSet.as_view()),
+    url(r'^user-device-info/$', SubscriberDevice.update_device_info, name='user_device'),
 ] + router.urls

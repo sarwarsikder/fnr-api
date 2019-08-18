@@ -21,7 +21,6 @@ from django.urls import path
 urlpatterns = [
     path('', include('adminapp.urls')),
     path('api/', include('serviceapp.urls')),
-    path('push-api/', include('pushnotificationapp.urls')),
     url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ]
 
