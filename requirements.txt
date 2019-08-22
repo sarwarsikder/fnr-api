@@ -26,6 +26,7 @@ Pillow==6.0.0
 py-vapid==1.5.0
 pycparser==2.19
 pyfcm==1.4.5
+python-resize-image==1.1.19
 pytz==2019.1
 pywebpush==1.9.4
 qrcode==6.1

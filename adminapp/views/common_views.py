@@ -14,6 +14,8 @@ from django.db.models import Q, Count
 from datetime import datetime
 import qrcode
 import io
+from PIL import Image
+from resizeimage import resizeimage
 
 
 class IndexView(generic.DetailView):
@@ -178,7 +180,9 @@ class CommonView(generic.DetailView):
         random_number = CommonView.randomString(10)
         file = str(f.name).rsplit('.', 1)
         filename = file[0] + "_" + random_number + "." + file[1]
+        thumb_filename = file[0] + "_" + random_number + "_thumb." + file[1]
         full_filename = os.path.join(settings.MEDIA_ROOT, "comments", filename)
+        thumb_full_filename = os.path.join(settings.MEDIA_ROOT, "comments", thumb_filename)
         fout = open(full_filename, 'wb+')
         # host_url = "http://"+request.get_host()
         host_url = ""
@@ -186,8 +190,13 @@ class CommonView(generic.DetailView):
             for chunk in f.chunks():
                 fout.write(chunk)
             fout.close()
+            with open(full_filename, 'r+b') as f:
+                with Image.open(f) as image:
+                    cover = resizeimage.resize_cover(image, [150, 150])
+                    cover.save(thumb_full_filename, image.format)
             file_info = {
                 "path": host_url + "/media/comments/" + filename,
+                "thumb_path": host_url + "/media/comments/" + thumb_filename,
                 "ext": file[1]
             }
             return file_info
