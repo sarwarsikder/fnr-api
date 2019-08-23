@@ -99,7 +99,7 @@ class TaskDetailsViewSet(APIView):
             else:
                 assign_to = None
             task.assign_to = assign_to
-            status_list = [{"option": "to_do", "value": "To Do"}, {"option": "in_progress", "value": "In Progress"}, {"option": "done", "value": "Done"}]
+            status_list = [{"option": "to_do", "value": "Nicht Begonnen"}, {"option": "in_progress", "value": "In Bearbeitung"}, {"option": "done", "value": "Fertig"}]
             task.status_list = status_list
             comments = Comments.objects.filter(task_id=task_id).order_by('-created_at')
             task_comments = []
