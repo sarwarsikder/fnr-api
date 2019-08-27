@@ -194,6 +194,9 @@ class CommonView(generic.DetailView):
                 with Image.open(f) as image:
                     cover = resizeimage.resize_cover(image, [150, 150])
                     cover.save(thumb_full_filename, image.format)
+                    if os.stat(full_filename).st_size > 1200000:
+                        resized_image = resizeimage.resize_cover(image, [1700, 1500])
+                        resized_image.save(full_filename, image.format)
             file_info = {
                 "path": host_url + "/media/comments/" + filename,
                 "thumb_path": host_url + "/media/comments/" + thumb_filename,
