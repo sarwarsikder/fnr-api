@@ -994,3 +994,7 @@ button.btn.btn-primary.submit_modal_assignee{
     font-size: 1rem;
     line-height: 1.5;
 }
+
+.ul-no-bullet li{
+    list-style-type: none;
+}
