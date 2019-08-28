@@ -19,7 +19,7 @@ from django.views.generic import TemplateView
 
 from adminapp.views import common_views, login_views, staff_views, company_views, project_views, building_views, \
     flat_views, buildingplan_views, flatplan_views, component_views, reset_password, datatables, profile_views, \
-    projectplan_views, task_views, notification_views, update_database
+    projectplan_views, task_views, notification_views, update_database, misc_views
 from django.conf import settings
 from django.views.static import serve
 urlpatterns = [
@@ -120,6 +120,7 @@ urlpatterns = [
     url(r'^get-all-notifications/$', notification_views.NotificationsView.as_view(), name='get-all-notifications'),
     url(r'^get-more-notifications/$', notification_views.NotificationsView.get_more_notifications, name='get-more-notifications'),
     url(r'^read-all-notifications/$', notification_views.NotificationsView.read_all_notification, name='read-all-notifications'),
+    url(r'^privacy_policy/$', misc_views.privacy_policy.as_view(), name='privacy_policy'),
 
     url(r'^update-database/$', update_database.UpdateDatabaseView.as_view(), name='update-database'),
     url(r'^update-database-request/$', update_database.UpdateDatabaseView.update_database, name='update-database-request'),
