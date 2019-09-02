@@ -1,5 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/bash
+echo "starting django"
 
-python manage.py makemigrations
+# python myproject/manage.py makemigrations
 python manage.py migrate
-exec "$@"
+python manage.py runserver 0.0.0.0:8000
