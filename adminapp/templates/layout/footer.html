@@ -46,18 +46,33 @@
     {% endif %}
 </div>
 <footer class="main-footer">
-    <!-- To the right -->
-    <div class="float-right d-none d-sm-block-down">
-        Anything you want
+    <div>
+        <div class="float-right d-none d-sm-block-down">
+            Anything you want
+        </div>
+        {#          <button disabled class="js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">#}
+        {#        Enable Push Messaging#}
+        {#      </button>#}
+        
+        
+        <!-- Default to the left -->
+        <div><a href="{% url 'privacy_policy' %}">Datenschutz</a></div>
+        
+        <strong>Copyright &copy; 2019 <a href="{% url 'index' %}">F&R Projekt Manager</a>.</strong> All rights reserved.
+
     </div>
-{#          <button disabled class="js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">#}
-{#        Enable Push Messaging#}
-{#      </button>#}
-
-
-    <!-- Default to the left -->
-    <div><a href="{% url 'privacy_policy' %}">Datenschutz</a></div>
-    <strong>Copyright &copy; 2019 <a href="{% url 'index' %}">F&R Projekt Manager</a>.</strong> All rights reserved.
+    <div class="appstore-badge-wrapper">
+        <!-- To the right -->
+        <div >
+            <a href="https://play.google.com/store/apps/details?id=com.apper.sarwar.fnr"><img class="appstore-badge" src="{% static 'assets/images/android_badge.png' %}" alt="android app"></a>
+        </div>
+        <div >
+            <a href="https://testflight.apple.com/join/9fT57qJW"><img class="appstore-badge" src="{% static 'assets/images/ios_badge.png' %}" alt="iOS app"></a>
+        </div>
+    </div>
+    
+    
+    
 </footer>
 <input type="hidden" id="active-project" value="{{ request.session.active_project.id }}">
 <script>

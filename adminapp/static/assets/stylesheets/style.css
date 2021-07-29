@@ -998,3 +998,20 @@ button.btn.btn-primary.submit_modal_assignee{
 .ul-no-bullet li{
     list-style-type: none;
 }
+
+
+.main-footer {
+    /* display: flex; */
+}
+.appstore-badge-wrapper{
+    display: flex; 
+    justify-content: flex-end;
+    margin-right: 12%;
+}
+.appstore-badge{
+    width: 150px;
+    
+
+    /* display: inline-flexbox; */
+    
+}
